@@ -7,6 +7,9 @@ using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 using Discord;
 using Discord.WebSocket;
+using DiscordVoiceChannelButler.Bot.Options;
+using DiscordVoiceChannelButler.Bot.Services;
+using DiscordVoiceChannelButler.Bot.Workers;
 using Microsoft.Extensions.Configuration;
 
 namespace DiscordVoiceChannelButler.Bot
@@ -23,20 +26,24 @@ namespace DiscordVoiceChannelButler.Bot
                 .ConfigureAppConfiguration(x => x.AddUserSecrets<Program>())
                 .ConfigureServices((hostContext, services) =>
                 {
-                    services.AddHostedService<Worker>();
-
                     services.Configure<BotOptions>(hostContext.Configuration.GetSection("Bot"));
+                    
+                    services.AddSingleton<BotState>();
+                    services.AddSingleton<IRoomService, SocketRoomService>();
 
                     services.AddSingleton<IDiscordClient, DiscordSocketClient>(sp => sp.GetRequiredService<DiscordSocketClient>())
                         .AddSingleton<DiscordSocketClient>(sp =>
                         {
+                            var token = hostContext.Configuration.GetConnectionString("DiscordBotToken");
                             var client = new DiscordSocketClient();
-                            Task.WaitAll(
-                                client.LoginAsync(TokenType.Bot, hostContext.Configuration.GetConnectionString("DiscordBotToken")),
-                                client.StartAsync());
+
+                            Task.WaitAll(client.LoginAsync(TokenType.Bot, token), client.StartAsync());
 
                             return client;
                         });
+
+                    services.AddHostedService<RoomWorker>();
+                    services.AddHostedService<CleanUpWorker>();
                 });
     }
 }
