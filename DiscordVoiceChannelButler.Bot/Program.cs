@@ -29,6 +29,8 @@ namespace DiscordVoiceChannelButler.Bot
 
                     services.Configure<BotOptions>(hostContext.Configuration.GetSection("Bot"));
 
+                    services.AddSingleton<BotState>();
+
                     services.AddSingleton<IDiscordClient, DiscordSocketClient>(sp => sp.GetRequiredService<DiscordSocketClient>())
                         .AddSingleton<DiscordSocketClient>(sp =>
                         {

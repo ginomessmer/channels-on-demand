@@ -1,10 +1,7 @@
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Discord;
 using Discord.WebSocket;
-using DiscordVoiceChannelButler.Bot.Models;
 using DiscordVoiceChannelButler.Bot.Options;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
@@ -15,14 +12,14 @@ namespace DiscordVoiceChannelButler.Bot.Workers
     public class Worker : BackgroundService
     {
         private readonly DiscordSocketClient _client;
+        private readonly BotState _botState;
         private readonly BotOptions _options;
         private readonly ILogger<Worker> _logger;
 
-        public IList<Room> Rooms { get; set; } = new List<Room>();
-
-        public Worker(DiscordSocketClient client, IOptions<BotOptions> options, ILogger<Worker> logger)
+        public Worker(DiscordSocketClient client, BotState botState, IOptions<BotOptions> options, ILogger<Worker> logger)
         {
             _client = client;
+            _botState = botState;
             _options = options.Value;
             _logger = logger;
 
@@ -32,12 +29,10 @@ namespace DiscordVoiceChannelButler.Bot.Workers
         private async Task ClientOnUserVoiceStateUpdated(SocketUser arg1, SocketVoiceState previousState, SocketVoiceState newState)
         {
             // Check rooms
-
-
             if (newState.VoiceChannel is null)
             {
                 // Check if its part of Rooms
-                if (!Rooms.ToList().Exists(x => x.ChannelId == previousState.VoiceChannel.Id))
+                if (!_botState.ExistsRoom(previousState.VoiceChannel.Id))
                     return;
 
                 // Handle disconnect
@@ -66,17 +61,13 @@ namespace DiscordVoiceChannelButler.Bot.Workers
 
             await user.ModifyAsync(x => x.Channel = voiceChannel);
 
-            Rooms.Add(new Room
-            {
-                ChannelId = voiceChannel.Id,
-                HostUserId = user.Id
-            });
+            _botState.AddRoom(voiceChannel.Id, user.Id);
         }
 
         private async Task ScheduleRemovalAsync(SocketVoiceChannel voiceChannel)
         {
             await voiceChannel.DeleteAsync();
-            Rooms.Remove(Rooms.First(x => x.ChannelId == voiceChannel.Id));
+            _botState.RemoveRoom(voiceChannel.Id);
         }
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
