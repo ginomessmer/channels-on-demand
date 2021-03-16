@@ -11,22 +11,6 @@ using Microsoft.Extensions.Options;
 
 namespace DiscordVoiceChannelButler.Bot
 {
-    public class Room
-    {
-        public IVoiceChannel Channel { get; set; }
-
-        public IUser Host { get; set; }
-    }
-
-    public class BotOptions
-    {
-        public ulong CategoryId { get; set; }
-
-        public ulong GatewayVoiceChannelId { get; set; }
-
-        public string RoomName { get; set; } = "Meeting Room";
-    }
-
     public class Worker : BackgroundService
     {
         private readonly DiscordSocketClient _client;
