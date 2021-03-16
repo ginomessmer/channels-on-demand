@@ -1,15 +1,16 @@
-using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Discord;
 using Discord.WebSocket;
+using DiscordVoiceChannelButler.Bot.Models;
+using DiscordVoiceChannelButler.Bot.Options;
+using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
-namespace DiscordVoiceChannelButler.Bot
+namespace DiscordVoiceChannelButler.Bot.Workers
 {
     public class Worker : BackgroundService
     {
@@ -36,7 +37,7 @@ namespace DiscordVoiceChannelButler.Bot
             if (newState.VoiceChannel is null)
             {
                 // Check if its part of Rooms
-                if (!Rooms.ToList().Exists(x => x.Channel.Id == previousState.VoiceChannel.Id))
+                if (!Rooms.ToList().Exists(x => x.ChannelId == previousState.VoiceChannel.Id))
                     return;
 
                 // Handle disconnect
@@ -67,15 +68,15 @@ namespace DiscordVoiceChannelButler.Bot
 
             Rooms.Add(new Room
             {
-                Channel = voiceChannel,
-                Host = user
+                ChannelId = voiceChannel.Id,
+                HostUserId = user.Id
             });
         }
 
         private async Task ScheduleRemovalAsync(SocketVoiceChannel voiceChannel)
         {
             await voiceChannel.DeleteAsync();
-            Rooms.Remove(Rooms.First(x => x.Channel.Id == voiceChannel.Id));
+            Rooms.Remove(Rooms.First(x => x.ChannelId == voiceChannel.Id));
         }
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
