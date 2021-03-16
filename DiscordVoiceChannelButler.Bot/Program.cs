@@ -26,6 +26,7 @@ namespace DiscordVoiceChannelButler.Bot
                 .ConfigureServices((hostContext, services) =>
                 {
                     services.AddHostedService<Worker>();
+                    services.AddHostedService<CleanUpWorker>();
 
                     services.Configure<BotOptions>(hostContext.Configuration.GetSection("Bot"));
 

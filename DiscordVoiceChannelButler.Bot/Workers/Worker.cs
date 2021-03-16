@@ -28,22 +28,6 @@ namespace DiscordVoiceChannelButler.Bot.Workers
 
         private async Task ClientOnUserVoiceStateUpdated(SocketUser arg1, SocketVoiceState previousState, SocketVoiceState newState)
         {
-            // Check rooms
-            if (newState.VoiceChannel is null)
-            {
-                // Check if its part of Rooms
-                if (!_botState.ExistsRoom(previousState.VoiceChannel.Id))
-                    return;
-
-                // Handle disconnect
-                if (previousState.VoiceChannel.Users.Count > 0)
-                    return;
-
-                await ScheduleRemovalAsync(previousState.VoiceChannel);
-
-                return;
-            }
-
             // Check if user is typeof(SocketGuildUser)
             if (arg1 is not SocketGuildUser user)
                 return;
@@ -62,12 +46,6 @@ namespace DiscordVoiceChannelButler.Bot.Workers
             await user.ModifyAsync(x => x.Channel = voiceChannel);
 
             _botState.AddRoom(voiceChannel.Id, user.Id);
-        }
-
-        private async Task ScheduleRemovalAsync(SocketVoiceChannel voiceChannel)
-        {
-            await voiceChannel.DeleteAsync();
-            _botState.RemoveRoom(voiceChannel.Id);
         }
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
