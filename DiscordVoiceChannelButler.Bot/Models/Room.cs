@@ -1,15 +1,22 @@
+using System.ComponentModel.DataAnnotations;
+
 namespace DiscordVoiceChannelButler.Bot.Models
 {
     public class Room
     {
-        public ulong ChannelId { get; set; }
+        [Key]
+        public string ChannelId { get; set; }
 
-        public ulong HostUserId { get; set; }
+        public string HostUserId { get; set; }
 
         public Room(ulong channelId, ulong hostUserId)
         {
-            ChannelId = channelId;
-            HostUserId = hostUserId;
+            ChannelId = channelId.ToString();
+            HostUserId = hostUserId.ToString();
+        }
+
+        public Room()
+        {
         }
     }
 }

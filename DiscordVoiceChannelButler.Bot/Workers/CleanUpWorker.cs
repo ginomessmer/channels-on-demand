@@ -1,6 +1,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 using Discord.WebSocket;
+using DiscordVoiceChannelButler.Bot.Infrastructure;
 using DiscordVoiceChannelButler.Bot.Services;
 using Microsoft.Extensions.Hosting;
 
@@ -10,13 +11,13 @@ namespace DiscordVoiceChannelButler.Bot.Workers
     {
         private readonly DiscordSocketClient _client;
         private readonly IRoomService _roomService;
-        private readonly BotState _botState;
+        private readonly IRoomRepository _roomRepository;
 
-        public CleanUpWorker(DiscordSocketClient client, IRoomService roomService, BotState botState)
+        public CleanUpWorker(DiscordSocketClient client, IRoomService roomService, IRoomRepository roomRepository)
         {
             _client = client;
             _roomService = roomService;
-            _botState = botState;
+            _roomRepository = roomRepository;
         }
 
         /// <inheritdoc />
@@ -32,7 +33,7 @@ namespace DiscordVoiceChannelButler.Bot.Workers
                 return;
 
             // Check if its part of Rooms
-            if (!_botState.ExistsRoom(previousState.VoiceChannel.Id))
+            if (!await _roomRepository.ExistsAsync(previousState.VoiceChannel.Id))
                 return;
 
             // Handle disconnect
