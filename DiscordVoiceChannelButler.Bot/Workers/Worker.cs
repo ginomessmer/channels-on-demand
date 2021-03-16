@@ -22,8 +22,6 @@ namespace DiscordVoiceChannelButler.Bot.Workers
             _botState = botState;
             _options = options.Value;
             _logger = logger;
-
-            _client.UserVoiceStateUpdated += ClientOnUserVoiceStateUpdated;
         }
 
         private async Task ClientOnUserVoiceStateUpdated(SocketUser arg1, SocketVoiceState previousState, SocketVoiceState newState)
@@ -48,9 +46,10 @@ namespace DiscordVoiceChannelButler.Bot.Workers
             _botState.AddRoom(voiceChannel.Id, user.Id);
         }
 
-        protected override async Task ExecuteAsync(CancellationToken stoppingToken)
+        protected override Task ExecuteAsync(CancellationToken stoppingToken)
         {
-            await _client.SetActivityAsync(new Game("Hello world"));
+            _client.UserVoiceStateUpdated += ClientOnUserVoiceStateUpdated;
+            return Task.CompletedTask;
         }
     }
 }
