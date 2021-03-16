@@ -6,6 +6,6 @@ namespace DiscordVoiceChannelButler.Bot.Options
 
         public ulong GatewayVoiceChannelId { get; set; }
 
-        public string RoomName { get; set; } = "Meeting Room";
+        public string RoomNameFormat { get; set; } = "Meeting Room {0}";
     }
 }

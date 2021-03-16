@@ -3,31 +3,36 @@ using System.Threading.Tasks;
 using Discord;
 using Discord.WebSocket;
 using DiscordVoiceChannelButler.Bot.Options;
+using DiscordVoiceChannelButler.Bot.Services;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
 namespace DiscordVoiceChannelButler.Bot.Workers
 {
-    public class Worker : BackgroundService
+    public class RoomWorker : BackgroundService
     {
         private readonly DiscordSocketClient _client;
-        private readonly BotState _botState;
+        private readonly IRoomService _roomService;
         private readonly BotOptions _options;
-        private readonly ILogger<Worker> _logger;
+        private readonly ILogger<RoomWorker> _logger;
 
-        public Worker(DiscordSocketClient client, BotState botState, IOptions<BotOptions> options, ILogger<Worker> logger)
+        public RoomWorker(DiscordSocketClient client, IRoomService roomService,
+            IOptions<BotOptions> options, ILogger<RoomWorker> logger)
         {
             _client = client;
-            _botState = botState;
+            _roomService = roomService;
             _options = options.Value;
             _logger = logger;
         }
 
-        private async Task ClientOnUserVoiceStateUpdated(SocketUser arg1, SocketVoiceState previousState, SocketVoiceState newState)
+        private Task ClientOnUserVoiceStateUpdated(SocketUser socketUser,
+            SocketVoiceState previousState, SocketVoiceState newState) => HandleAsync(socketUser);
+
+        private async Task HandleAsync(IUser socketUser)
         {
             // Check if user is typeof(SocketGuildUser)
-            if (arg1 is not SocketGuildUser user)
+            if (socketUser is not SocketGuildUser user)
                 return;
 
             // Check voice channel
@@ -35,15 +40,8 @@ namespace DiscordVoiceChannelButler.Bot.Workers
                 return;
 
             // Create new voice channel
-            var guild = _client.GetGuild(user.Guild.Id);
-            var voiceChannel = await guild.CreateVoiceChannelAsync(_options.RoomName + $" {user.Nickname}", p =>
-            {
-                p.CategoryId = _options.CategoryId;
-            });
-
-            await user.ModifyAsync(x => x.Channel = voiceChannel);
-
-            _botState.AddRoom(voiceChannel.Id, user.Id);
+            var channel = await _roomService.CreateNewRoomAsync(user);
+            _logger.LogInformation("Created new room {VoiceChannel} for user {User}", channel, user);
         }
 
         protected override Task ExecuteAsync(CancellationToken stoppingToken)

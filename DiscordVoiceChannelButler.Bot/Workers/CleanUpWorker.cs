@@ -1,6 +1,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 using Discord.WebSocket;
+using DiscordVoiceChannelButler.Bot.Services;
 using Microsoft.Extensions.Hosting;
 
 namespace DiscordVoiceChannelButler.Bot.Workers
@@ -8,11 +9,13 @@ namespace DiscordVoiceChannelButler.Bot.Workers
     public class CleanUpWorker : BackgroundService
     {
         private readonly DiscordSocketClient _client;
+        private readonly IRoomService _roomService;
         private readonly BotState _botState;
 
-        public CleanUpWorker(DiscordSocketClient client, BotState botState)
+        public CleanUpWorker(DiscordSocketClient client, IRoomService roomService, BotState botState)
         {
             _client = client;
+            _roomService = roomService;
             _botState = botState;
         }
 
@@ -36,13 +39,7 @@ namespace DiscordVoiceChannelButler.Bot.Workers
             if (previousState.VoiceChannel.Users.Count > 0)
                 return;
 
-            await ScheduleRemovalAsync(previousState.VoiceChannel);
-        }
-
-        private async Task ScheduleRemovalAsync(SocketVoiceChannel voiceChannel)
-        {
-            await voiceChannel.DeleteAsync();
-            _botState.RemoveRoom(voiceChannel.Id);
+            await _roomService.DeleteRoomAsync(previousState.VoiceChannel);
         }
     }
 }
