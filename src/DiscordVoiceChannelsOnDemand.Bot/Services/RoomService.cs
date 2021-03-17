@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Discord;
 using Discord.WebSocket;
 using DiscordVoiceChannelsOnDemand.Bot.Infrastructure;
@@ -30,8 +31,16 @@ namespace DiscordVoiceChannelsOnDemand.Bot.Services
             var slot = await _tenantRepository.FindSlotAsync(user.VoiceChannel.Id.ToString());
             var guild = await _client.GetGuildAsync(user.Guild.Id);
 
-            var roomVoiceChannel = await guild.CreateVoiceChannelAsync($"Test {user.Nickname}",
-                p => { p.CategoryId = Convert.ToUInt64(slot.CategoryId); });
+            var roomVoiceChannel = await guild.CreateVoiceChannelAsync(user.Nickname,
+                p =>
+                {
+                    p.CategoryId = Convert.ToUInt64(slot.CategoryId);
+                    p.PermissionOverwrites = new Optional<IEnumerable<Overwrite>>(new[]
+                    {
+                        new Overwrite(user.Id, PermissionTarget.User,
+                            new OverwritePermissions(manageChannel: PermValue.Allow))
+                    });
+                });
 
             // Move user
             await user.ModifyAsync(x => x.ChannelId = roomVoiceChannel.Id);
