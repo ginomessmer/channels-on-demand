@@ -6,13 +6,10 @@ using System.Threading.Tasks;
 
 namespace DiscordVoiceChannelsOnDemand.Bot.Infrastructure
 {
-    public class LiteDbRoomRepository : IRoomRepository
+    public class LiteDbRoomLiteDbRepository : LiteDbRepositoryBase<Room>, IRoomRepository
     {
-        private readonly ILiteDatabase _database;
-
-        public LiteDbRoomRepository(ILiteDatabase database)
+        public LiteDbRoomLiteDbRepository(ILiteDatabase database) : base(database)
         {
-            _database = database;
         }
 
         /// <inheritdoc />
@@ -32,18 +29,7 @@ namespace DiscordVoiceChannelsOnDemand.Bot.Infrastructure
         }
 
         /// <inheritdoc />
-        public Task RemoveAsync(string voiceChannelId) => Task.FromResult(Collection.Delete(voiceChannelId));
-
-        /// <inheritdoc />
-        public Task<bool> ExistsAsync(string voiceChannelId) => Task.FromResult(Collection.FindById(voiceChannelId) is not null);
-
-        /// <inheritdoc />
-        public Task<IEnumerable<Room>> GetAllAsync() => Task.FromResult(Collection.FindAll());
-
-        /// <inheritdoc />
         public Task<IEnumerable<Room>> GetAllAsync(string guildId) =>
             Task.FromResult(Collection.Find(x => x.GuildId == guildId));
-
-        protected ILiteCollection<Room> Collection => _database.GetCollection<Room>();
     }
 }

@@ -30,15 +30,20 @@ namespace DiscordVoiceChannelsOnDemand.Bot
                     
                     // Infrastructure
                     services.AddSingleton<ILiteDatabase, LiteDatabase>(_ => new LiteDatabase("data.db"));
-                    services.AddSingleton<IRoomRepository, LiteDbRoomRepository>();
+                    services.AddSingleton<ITenantRepository, LiteDbTenantRepository>();
+                    services.AddSingleton<IRoomRepository, LiteDbRoomLiteDbRepository>();
 
                     // Bot Services
+                    services.AddSingleton<ITenantService, TenantService>();
                     services.AddSingleton<IRoomService, RoomService>();
                     services.AddSingleton<IVoiceChannelService, SocketVoiceChannelService>();
 
-                    services.AddSingleton<IDiscordClient, DiscordSocketClient>(sp => sp.GetRequiredService<DiscordSocketClient>())
-                        .AddSingleton<DiscordSocketClient>(sp => CreateDiscordSocketClient(hostContext));
+                    // Discord
+                    services.AddSingleton<DiscordSocketClient>(sp => CreateDiscordSocketClient(hostContext));
+                    services.AddSingleton<IDiscordClient, DiscordSocketClient>(sp => sp.GetRequiredService<DiscordSocketClient>());
 
+                    // Workers
+                    services.AddHostedService<InitializeWorker>();
                     services.AddHostedService<RestoreWorker>();
                     services.AddHostedService<OnDemandRoomWorker>();
                     services.AddHostedService<CleanUpWorker>();

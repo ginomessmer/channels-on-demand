@@ -18,7 +18,7 @@ namespace DiscordVoiceChannelsOnDemand.Tests
         public async Task LiteDbRoomRepository_Add_ExistSuccessfully()
         {
             // Arrange
-            var repository = new LiteDbRoomRepositoryTraversal(_dbFactory.CreateDatabase());
+            var repository = new LiteDbRoomLiteDbRepositoryTraversal(_dbFactory.CreateDatabase());
             
             // Act
             var room = await repository.AddAsync("1111", "2222", "3333");
@@ -34,7 +34,7 @@ namespace DiscordVoiceChannelsOnDemand.Tests
         public async Task LiteDbRoomRepository_AddRemove_Successfully()
         {
             // Arrange
-            var repository = new LiteDbRoomRepositoryTraversal(_dbFactory.CreateDatabase());
+            var repository = new LiteDbRoomLiteDbRepositoryTraversal(_dbFactory.CreateDatabase());
 
             // Act
             var room = await repository.AddAsync("1111", "2222", "3333");
@@ -48,7 +48,7 @@ namespace DiscordVoiceChannelsOnDemand.Tests
         public async Task LiteDbRoomRepository_FindAll_Successfully()
         {
             // Arrange
-            var repository = new LiteDbRoomRepositoryTraversal(_dbFactory.CreateDatabase());
+            var repository = new LiteDbRoomLiteDbRepositoryTraversal(_dbFactory.CreateDatabase());
 
             // Act
             var room1 = await repository.AddAsync("11111", "2222", "3333");
@@ -70,7 +70,7 @@ namespace DiscordVoiceChannelsOnDemand.Tests
         public async Task LiteDbRoomRepository_FindByGuild_Successfully()
         {
             // Arrange
-            var repository = new LiteDbRoomRepositoryTraversal(_dbFactory.CreateDatabase());
+            var repository = new LiteDbRoomLiteDbRepositoryTraversal(_dbFactory.CreateDatabase());
 
             // Act
             var room1 = await repository.AddAsync("11111", "2222", "3333");

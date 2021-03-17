@@ -5,10 +5,10 @@ using System.Collections.Generic;
 
 namespace DiscordVoiceChannelsOnDemand.Tests.SeedWork
 {
-    public class LiteDbRoomRepositoryTraversal : LiteDbRoomRepository
+    public class LiteDbRoomLiteDbRepositoryTraversal : LiteDbRoomLiteDbRepository
     {
         /// <inheritdoc />
-        public LiteDbRoomRepositoryTraversal(LiteDatabase database) : base(database)
+        public LiteDbRoomLiteDbRepositoryTraversal(LiteDatabase database) : base(database)
         {
         }
 
