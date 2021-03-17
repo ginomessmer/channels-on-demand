@@ -40,24 +40,26 @@ namespace DiscordVoiceChannelsOnDemand.Bot
                     services.AddSingleton<IVoiceChannelService, SocketVoiceChannelService>();
 
                     services.AddSingleton<IDiscordClient, DiscordSocketClient>(sp => sp.GetRequiredService<DiscordSocketClient>())
-                        .AddSingleton<DiscordSocketClient>(sp =>
-                        {
-                            var readyEvent = new AutoResetEvent(false);
-
-                            var token = hostContext.Configuration.GetConnectionString("DiscordBotToken");
-
-                            var client = new DiscordSocketClient();
-                            client.Ready += () => Task.FromResult(readyEvent.Set());
-
-                            Task.WaitAll(client.LoginAsync(TokenType.Bot, token), client.StartAsync());
-
-                            readyEvent.WaitOne(TimeSpan.FromSeconds(30));
-                            return client;
-                        });
+                        .AddSingleton<DiscordSocketClient>(sp => CreateDiscordSocketClient(hostContext));
 
                     services.AddHostedService<RestoreWorker>();
                     services.AddHostedService<OnDemandRoomWorker>();
                     services.AddHostedService<CleanUpWorker>();
                 });
+
+        private static DiscordSocketClient CreateDiscordSocketClient(HostBuilderContext hostContext)
+        {
+            var readyEvent = new AutoResetEvent(false);
+
+            var token = hostContext.Configuration.GetConnectionString("DiscordBotToken");
+
+            var client = new DiscordSocketClient();
+            client.Ready += () => Task.FromResult(readyEvent.Set());
+
+            Task.WaitAll(client.LoginAsync(TokenType.Bot, token), client.StartAsync());
+
+            readyEvent.WaitOne(TimeSpan.FromSeconds(30));
+            return client;
+        }
     }
 }
