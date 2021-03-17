@@ -4,6 +4,7 @@ using Discord.WebSocket;
 using DiscordVoiceChannelsOnDemand.Bot.Infrastructure;
 using DiscordVoiceChannelsOnDemand.Bot.Services;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 
 namespace DiscordVoiceChannelsOnDemand.Bot.Workers
 {
@@ -15,12 +16,15 @@ namespace DiscordVoiceChannelsOnDemand.Bot.Workers
         private readonly DiscordSocketClient _client;
         private readonly IRoomService _roomService;
         private readonly IRoomRepository _roomRepository;
+        private readonly ILogger<CleanUpWorker> _logger;
 
-        public CleanUpWorker(DiscordSocketClient client, IRoomService roomService, IRoomRepository roomRepository)
+        public CleanUpWorker(DiscordSocketClient client, IRoomService roomService, IRoomRepository roomRepository,
+            ILogger<CleanUpWorker> logger)
         {
             _client = client;
             _roomService = roomService;
             _roomRepository = roomRepository;
+            _logger = logger;
         }
 
         /// <inheritdoc />
@@ -32,18 +36,21 @@ namespace DiscordVoiceChannelsOnDemand.Bot.Workers
 
         private async Task ClientOnUserVoiceStateUpdated(SocketUser arg1, SocketVoiceState previousState, SocketVoiceState newState)
         {
-            if (previousState.VoiceChannel is null)
+            var voiceChannel = previousState.VoiceChannel;
+
+            if (voiceChannel is null)
                 return;
 
             // Check if its part of Rooms
-            if (!await _roomRepository.ExistsAsync(previousState.VoiceChannel.Id.ToString()))
+            if (!await _roomRepository.ExistsAsync(voiceChannel.Id.ToString()))
                 return;
 
             // Handle disconnect
-            if (previousState.VoiceChannel.Users.Count > 0)
+            if (voiceChannel.Users.Count > 0)
                 return;
 
-            await _roomService.DeleteRoomAsync(previousState.VoiceChannel);
+            await _roomService.DeleteRoomAsync(voiceChannel);
+            _logger.LogInformation($"Purged voice channel {voiceChannel}");
         }
     }
 }

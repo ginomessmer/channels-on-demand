@@ -61,7 +61,7 @@ namespace DiscordVoiceChannelsOnDemand.Bot.Workers
                     continue;
                 }
 
-                _logger.LogInformation("Purged voice channel {VoiceChannel}", voiceChannel);
+                _logger.LogInformation("Purged voice channel {VoiceChannel} from last bot session", voiceChannel);
             }
         }
     }
