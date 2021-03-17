@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
@@ -90,7 +91,14 @@ namespace DiscordVoiceChannelsOnDemand.Bot.Commands
             var tenant = await _tenantRepository.GetAsync(Context.Guild.Id.ToString());
             var slot = tenant.GetSlot(voiceChannel.Id.ToString());
 
-            slot.RandomNames = names;
+            if (names.Length > 1)
+                slot.RandomNames = names;
+            else
+            {
+                slot.RandomNames = new List<string>();
+                slot.NameFormat = names.First();
+            }
+
             await _tenantRepository.UpdateAsync(tenant);
         }
     }

@@ -31,7 +31,8 @@ namespace DiscordVoiceChannelsOnDemand.Bot.Services
             var slot = await _tenantRepository.FindSlotAsync(user.VoiceChannel.Id.ToString());
             var guild = await _client.GetGuildAsync(user.Guild.Id);
 
-            var roomVoiceChannel = await guild.CreateVoiceChannelAsync(slot.GetSuggestedName(),
+            var name = string.Format(slot.GetSuggestedName(), user.Nickname);
+            var roomVoiceChannel = await guild.CreateVoiceChannelAsync(name,
                 p =>
                 {
                     p.CategoryId = Convert.ToUInt64(slot.CategoryId);
