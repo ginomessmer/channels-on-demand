@@ -2,6 +2,7 @@ using System;
 using System.Threading.Tasks;
 using Discord;
 using DiscordVoiceChannelsOnDemand.Bot.Infrastructure;
+using DiscordVoiceChannelsOnDemand.Bot.Models;
 using DiscordVoiceChannelsOnDemand.Bot.Services;
 using Microsoft.Extensions.Options;
 using Moq;
@@ -15,7 +16,16 @@ namespace DiscordVoiceChannelsOnDemand.Tests
         public async Task Test()
         {
             // Arrange
-            var repository = new InMemoryRoomRepository();
+            var roomRepository = new InMemoryRoomRepository();
+            
+            // Mock => Server Repository
+            var serverRepositoryMock = new Mock<IServerRepository>();
+            {
+                serverRepositoryMock.Setup(x => x.FindLobbyAsync(It.IsAny<string>())).ReturnsAsync(() => new Lobby
+                {
+                    CategoryId = "1111"
+                });
+            }
 
             // Mock => Voice Channel
             var voiceChannelMock = new Mock<IVoiceChannel>();
@@ -34,9 +44,10 @@ namespace DiscordVoiceChannelsOnDemand.Tests
             // Mock => User
             var userMock = new Mock<IGuildUser>();
             {
-                userMock.Setup(x => x.Guild).Returns(guildMock.Object);
                 userMock.Setup(x => x.Id).Returns(guildMock.Object.Id);
                 userMock.Setup(x => x.Nickname).Returns("Martha");
+                userMock.Setup(x => x.Guild).Returns(guildMock.Object);
+                userMock.Setup(x => x.VoiceChannel.Id).Returns(It.IsAny<ulong>());
             }
 
             // Mock => Client
@@ -50,13 +61,13 @@ namespace DiscordVoiceChannelsOnDemand.Tests
             }
 
             // Service
-            var service = new RoomService(discordClientMock.Object, repository, null);
+            var service = new RoomService(discordClientMock.Object, roomRepository, serverRepositoryMock.Object);
 
             // Act
             var room = await service.CreateNewRoomAsync(userMock.Object);
 
             // Assert
-            Assert.Single(await repository.GetAllAsync());
+            Assert.Single(await roomRepository.GetAllAsync());
         }
     }
 }
