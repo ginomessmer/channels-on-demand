@@ -1,7 +1,6 @@
 using Discord;
 using Discord.WebSocket;
 using DiscordVoiceChannelsOnDemand.Bot.Infrastructure;
-using DiscordVoiceChannelsOnDemand.Bot.Options;
 using DiscordVoiceChannelsOnDemand.Bot.Services;
 using DiscordVoiceChannelsOnDemand.Bot.Workers;
 using LiteDB;
@@ -28,8 +27,6 @@ namespace DiscordVoiceChannelsOnDemand.Bot
                 .ConfigureAppConfiguration(x => x.AddUserSecrets<Program>())
                 .ConfigureServices((hostContext, services) =>
                 {
-                    services.Configure<BotOptions>(hostContext.Configuration.GetSection("Bot"));
-                    
                     // Infrastructure
                     services.AddSingleton<ILiteDatabase, LiteDatabase>(_ => new LiteDatabase("data.db"));
                     services.AddSingleton<ITenantRepository, LiteDbTenantRepository>();

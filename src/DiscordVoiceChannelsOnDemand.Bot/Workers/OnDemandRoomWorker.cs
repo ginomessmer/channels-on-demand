@@ -1,12 +1,12 @@
 using Discord;
 using Discord.WebSocket;
-using DiscordVoiceChannelsOnDemand.Bot.Options;
 using DiscordVoiceChannelsOnDemand.Bot.Services;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using System.Threading;
 using System.Threading.Tasks;
+using DiscordVoiceChannelsOnDemand.Bot.Infrastructure;
 
 namespace DiscordVoiceChannelsOnDemand.Bot.Workers
 {
@@ -18,29 +18,38 @@ namespace DiscordVoiceChannelsOnDemand.Bot.Workers
     {
         private readonly DiscordSocketClient _client;
         private readonly IRoomService _roomService;
-        private readonly BotOptions _options;
+        private readonly ITenantRepository _tenantRepository;
         private readonly ILogger<OnDemandRoomWorker> _logger;
 
         public OnDemandRoomWorker(DiscordSocketClient client, IRoomService roomService,
-            IOptions<BotOptions> options, ILogger<OnDemandRoomWorker> logger)
+            ITenantRepository tenantRepository,
+            ILogger<OnDemandRoomWorker> logger)
         {
             _client = client;
             _roomService = roomService;
-            _options = options.Value;
+            _tenantRepository = tenantRepository;
             _logger = logger;
         }
 
         private Task ClientOnUserVoiceStateUpdated(SocketUser socketUser,
-            SocketVoiceState previousState, SocketVoiceState newState) => HandleAsync(socketUser);
+            SocketVoiceState previousState, SocketVoiceState newState)
+        {
+            var user = socketUser as IGuildUser;
+            var voiceChannel = newState.VoiceChannel ?? previousState.VoiceChannel;
+            return HandleAsync(socketUser, voiceChannel);
+        }
 
-        private async Task HandleAsync(IUser socketUser)
+        private async Task HandleAsync(IUser socketUser, IVoiceChannel voiceChannel)
         {
             // Check if user is typeof(SocketGuildUser)
             if (socketUser is not SocketGuildUser user)
                 return;
 
+            if (voiceChannel is null)
+                return;
+
             // Check voice channel
-            if (user.VoiceChannel?.Id != _options.GatewayVoiceChannelId)
+            if (!await _tenantRepository.SlotsExistsAsync(voiceChannel.Id.ToString()))
                 return;
 
             // Create new voice channel

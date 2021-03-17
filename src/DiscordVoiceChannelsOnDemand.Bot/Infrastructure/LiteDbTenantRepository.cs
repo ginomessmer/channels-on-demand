@@ -27,9 +27,22 @@ namespace DiscordVoiceChannelsOnDemand.Bot.Infrastructure
         #region Implementation of ITenantRepository
 
         /// <inheritdoc />
-        public Task<IEnumerable<Slot>> QueryAllSlotsAsync()
+        public Task<IEnumerable<Slot>> QueryAllSlotsAsync() => 
+            Task.FromResult(Collection.FindAll().SelectMany(x => x.Slots));
+
+        /// <inheritdoc />
+        public async Task<bool> SlotsExistsAsync(string voiceChannelId)
         {
-            return Task.FromResult(Collection.FindAll().SelectMany(x => x.Slots));
+            var slot = await FindSlotAsync(voiceChannelId);
+            return slot is not null;
+        }
+
+        /// <inheritdoc />
+        public async Task<Slot> FindSlotAsync(string voiceChannelId)
+        {
+            var slots = await QueryAllSlotsAsync();
+            var slot = slots.FirstOrDefault(x => x.TriggerVoiceChannelId == voiceChannelId);
+            return slot;
         }
 
         #endregion

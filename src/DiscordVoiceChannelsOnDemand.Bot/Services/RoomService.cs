@@ -1,7 +1,7 @@
+using System;
 using Discord;
 using Discord.WebSocket;
 using DiscordVoiceChannelsOnDemand.Bot.Infrastructure;
-using DiscordVoiceChannelsOnDemand.Bot.Options;
 using Microsoft.Extensions.Options;
 using System.Threading.Tasks;
 
@@ -15,30 +15,31 @@ namespace DiscordVoiceChannelsOnDemand.Bot.Services
     {
         private readonly IDiscordClient _client;
         private readonly IRoomRepository _roomRepository;
-        private readonly BotOptions _options;
+        private readonly ITenantRepository _tenantRepository;
 
-        public RoomService(IDiscordClient client, IRoomRepository roomRepository,
-            IOptions<BotOptions> options)
+        public RoomService(IDiscordClient client, IRoomRepository roomRepository, ITenantRepository tenantRepository)
         {
             _client = client;
             _roomRepository = roomRepository;
-            _options = options.Value;
+            _tenantRepository = tenantRepository;
         }
 
         /// <inheritdoc />
         public async Task<IVoiceChannel> CreateNewRoomAsync(IGuildUser user)
         {
+            var slot = await _tenantRepository.FindSlotAsync(user.VoiceChannel.Id.ToString());
             var guild = await _client.GetGuildAsync(user.Guild.Id);
-            var voiceChannel = await guild.CreateVoiceChannelAsync(string.Format(_options.RoomNameFormat, user.Nickname),
-                p => { p.CategoryId = _options.CategoryId; });
+
+            var roomVoiceChannel = await guild.CreateVoiceChannelAsync($"Test {user.Nickname}",
+                p => { p.CategoryId = Convert.ToUInt64(slot.CategoryId); });
 
             // Move user
-            await user.ModifyAsync(x => x.ChannelId = voiceChannel.Id);
+            await user.ModifyAsync(x => x.ChannelId = roomVoiceChannel.Id);
 
-            await _roomRepository.AddAsync(voiceChannel.Id.ToString(), user.Id.ToString(),
+            await _roomRepository.AddAsync(roomVoiceChannel.Id.ToString(), user.Id.ToString(),
                 guild.Id.ToString());
 
-            return voiceChannel;
+            return roomVoiceChannel;
         }
 
         /// <inheritdoc />

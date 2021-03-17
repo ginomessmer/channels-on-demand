@@ -7,5 +7,9 @@ namespace DiscordVoiceChannelsOnDemand.Bot.Infrastructure
     public interface ITenantRepository : IGenericRepository<Tenant>
     {
         Task<IEnumerable<Slot>> QueryAllSlotsAsync();
+
+        Task<bool> SlotsExistsAsync(string voiceChannelId);
+        
+        Task<Slot> FindSlotAsync(string voiceChannelId);
     }
 }
