@@ -37,7 +37,7 @@ namespace DiscordVoiceChannelsOnDemand.Bot.Commands
 
             // Check if lobby already exists
             var id = voiceChannel.Id.ToString();
-            var lobbys = await _serverRepository.QueryAllLobbysAsync();
+            var lobbys = await _serverRepository.QueryAllLobbiesAsync();
             if (lobbys.ToList().Exists(x => x.TriggerVoiceChannelId == id))
             {
                 await ReplyAsync($"Voice channel `{voiceChannel.Name}` is already configured as a lobby");
@@ -50,7 +50,7 @@ namespace DiscordVoiceChannelsOnDemand.Bot.Commands
                 CategoryId = categoryChannel.Id.ToString()
             };
 
-            server.Lobbys.Add(lobby);
+            server.Lobbies.Add(lobby);
             await _serverRepository.UpdateAsync(server);
 
             await ReplyAsync($"Voice channel `{voiceChannel.Name}` was successfully registered as a lobby");
@@ -75,7 +75,7 @@ namespace DiscordVoiceChannelsOnDemand.Bot.Commands
         public async Task List()
         {
             var guild = await _serverRepository.GetAsync(Context.Guild.Id.ToString());
-            var lobbys = guild.Lobbys;
+            var lobbys = guild.Lobbies;
 
             var channels = lobbys.Select(x => Context.Guild.GetVoiceChannel(Convert.ToUInt64(x.TriggerVoiceChannelId)));
             var list = string.Join("\n", channels.Select(x => $"{x.Name}\t#{x.Id}"));

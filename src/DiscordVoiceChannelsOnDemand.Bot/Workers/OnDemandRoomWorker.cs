@@ -18,15 +18,19 @@ namespace DiscordVoiceChannelsOnDemand.Bot.Workers
     {
         private readonly DiscordSocketClient _client;
         private readonly IRoomService _roomService;
+        private readonly IServerService _serverService;
         private readonly IServerRepository _serverRepository;
         private readonly ILogger<OnDemandRoomWorker> _logger;
 
-        public OnDemandRoomWorker(DiscordSocketClient client, IRoomService roomService,
+        public OnDemandRoomWorker(DiscordSocketClient client,
+            IRoomService roomService,
+            IServerService serverService,
             IServerRepository serverRepository,
             ILogger<OnDemandRoomWorker> logger)
         {
             _client = client;
             _roomService = roomService;
+            _serverService = serverService;
             _serverRepository = serverRepository;
             _logger = logger;
         }
@@ -48,8 +52,8 @@ namespace DiscordVoiceChannelsOnDemand.Bot.Workers
             if (voiceChannel is null)
                 return;
 
-            // Check voice channel
-            if (!await _serverRepository.LobbysExistsAsync(voiceChannel.Id.ToString()))
+            // Check whether lobby exists for the channel
+            if (!await _serverService.IsLobbyRegisteredAsync(voiceChannel))
                 return;
 
             // Create new voice channel

@@ -7,7 +7,7 @@ namespace DiscordVoiceChannelsOnDemand.Bot.Infrastructure
     /// <summary>
     /// The room repository - what did ya expect?
     /// </summary>
-    public interface IRoomRepository : IGenericRepository<Room>
+    public interface IRoomRepository : IRepository<Room>
     {
         /// <summary>
         /// Adds a new room to the repository.

@@ -1,4 +1,5 @@
 using Discord;
+using Discord.WebSocket;
 using System.Threading.Tasks;
 
 namespace DiscordVoiceChannelsOnDemand.Bot.Services
@@ -23,7 +24,7 @@ namespace DiscordVoiceChannelsOnDemand.Bot.Services
         Task DeleteRoomAsync(IVoiceChannel voiceChannel);
 
         /// <summary>
-        /// <inheritdoc cref="DeleteRoomAsync(Discord.WebSocket.SocketVoiceChannel)"/>
+        /// <inheritdoc cref="DeleteRoomAsync(Discord.IVoiceChannel)"/>
         /// </summary>
         /// <param name="voiceChannelId"></param>
         /// <param name="guildId"></param>

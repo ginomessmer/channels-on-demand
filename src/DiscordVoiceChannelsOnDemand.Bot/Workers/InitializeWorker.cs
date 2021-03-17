@@ -31,7 +31,7 @@ namespace DiscordVoiceChannelsOnDemand.Bot.Workers
                 await _serverRepository.AddAsync(new Server
                 {
                     GuildId = guild.Id.ToString(),
-                    Lobbys = new List<Lobby>()
+                    Lobbies = new List<Lobby>()
                 });
             }
         }

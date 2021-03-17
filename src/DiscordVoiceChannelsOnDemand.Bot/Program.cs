@@ -11,7 +11,7 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 using Discord.Commands;
-using DiscordVoiceChannelsOnDemand.Bot.Handlers;
+using DiscordVoiceChannelsOnDemand.Bot.Commands;
 
 namespace DiscordVoiceChannelsOnDemand.Bot
 {

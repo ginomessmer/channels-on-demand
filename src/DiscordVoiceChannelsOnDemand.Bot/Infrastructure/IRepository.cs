@@ -5,24 +5,24 @@ using DiscordVoiceChannelsOnDemand.Bot.Models;
 
 namespace DiscordVoiceChannelsOnDemand.Bot.Infrastructure
 {
-    public interface IGenericRepository<T>
+    public interface IRepository<T>
     {
         /// <summary>
-        /// Adds a new entity.
+        /// Adds a new item.
         /// </summary>
         /// <param name="item"></param>
         /// <returns></returns>
         Task AddAsync(T item);
 
         /// <summary>
-        /// Removes an entity entirely.
+        /// Removes an item entirely.
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
         Task RemoveAsync(string id);
 
         /// <summary>
-        /// Checks whether a voice channel exists in the repository. Returns true if that's the case.
+        /// Checks whether an item exists in the repository. Returns true if that's the case.
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
@@ -31,18 +31,18 @@ namespace DiscordVoiceChannelsOnDemand.Bot.Infrastructure
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="lobby"></param>
+        /// <param name="item"></param>
         /// <returns></returns>
-        Task UpdateAsync(T lobby);
+        Task UpdateAsync(T item);
 
         /// <summary>
-        /// Returns all voice channels that are stored.
+        /// Returns all items stored in the repository.
         /// </summary>
         /// <returns></returns>
         Task<IEnumerable<T>> GetAllAsync();
 
         /// <summary>
-        /// Gets a single item.
+        /// Gets a single item by its ID.
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>

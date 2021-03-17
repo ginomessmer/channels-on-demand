@@ -31,10 +31,10 @@ namespace DiscordVoiceChannelsOnDemand.Bot.Infrastructure
             Task.FromResult(_rooms.Exists(x => x.ChannelId == id));
 
         /// <inheritdoc />
-        public Task UpdateAsync(Room room)
+        public Task UpdateAsync(Room item)
         {
-            _rooms.RemoveAll(x => x.ChannelId == room.ChannelId);
-            _rooms.Add(room);
+            _rooms.RemoveAll(x => x.ChannelId == item.ChannelId);
+            _rooms.Add(item);
             return Task.CompletedTask;
         }
 
