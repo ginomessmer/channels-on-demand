@@ -8,9 +8,9 @@ namespace DiscordVoiceChannelButler.Bot.Infrastructure
 {
     public class LiteDbRoomRepository : IRoomRepository
     {
-        private readonly LiteDatabase _database;
+        private readonly ILiteDatabase _database;
 
-        public LiteDbRoomRepository(LiteDatabase database)
+        public LiteDbRoomRepository(ILiteDatabase database)
         {
             _database = database;
         }
