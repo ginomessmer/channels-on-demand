@@ -3,6 +3,7 @@ using Discord.WebSocket;
 using DiscordVoiceChannelsOnDemand.Bot.Infrastructure;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -88,6 +89,12 @@ namespace DiscordVoiceChannelsOnDemand.Bot.Services
             }
 
             return results;
+        }
+
+        /// <inheritdoc />
+        public Task<bool> ExistsAsync([NotNull] IVoiceChannel voiceChannel)
+        {
+            return _roomRepository.ExistsAsync(voiceChannel.Id.ToString());
         }
     }
 }

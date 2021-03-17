@@ -28,7 +28,8 @@ namespace DiscordVoiceChannelsOnDemand.Bot.Workers
         /// <inheritdoc />
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
-            var voiceChannels = (await _roomService.GetAllRoomVoiceChannelsAsync()).Cast<SocketVoiceChannel>();
+            var voiceChannels = (await _roomService.GetAllRoomVoiceChannelsAsync())
+                .Cast<SocketVoiceChannel>();
 
             foreach (var voiceChannel in voiceChannels)
             {

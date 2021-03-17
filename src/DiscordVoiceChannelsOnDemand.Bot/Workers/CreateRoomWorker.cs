@@ -12,17 +12,17 @@ namespace DiscordVoiceChannelsOnDemand.Bot.Workers
     /// This worker creates a new room on demand whenever someone joins
     /// the lobby voice channel.
     /// </summary>
-    public class OnDemandRoomWorker : BackgroundService
+    public class CreateRoomWorker : BackgroundService
     {
         private readonly DiscordSocketClient _client;
         private readonly IRoomService _roomService;
         private readonly IServerService _serverService;
-        private readonly ILogger<OnDemandRoomWorker> _logger;
+        private readonly ILogger<CreateRoomWorker> _logger;
 
-        public OnDemandRoomWorker(DiscordSocketClient client,
+        public CreateRoomWorker(DiscordSocketClient client,
             IRoomService roomService,
             IServerService serverService,
-            ILogger<OnDemandRoomWorker> logger)
+            ILogger<CreateRoomWorker> logger)
         {
             _client = client;
             _roomService = roomService;

@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using Discord;
 using System.Threading.Tasks;
+using Discord.WebSocket;
 
 namespace DiscordVoiceChannelsOnDemand.Bot.Services
 {
@@ -36,5 +37,12 @@ namespace DiscordVoiceChannelsOnDemand.Bot.Services
         /// </summary>
         /// <returns></returns>
         Task<IEnumerable<IVoiceChannel>> GetAllRoomVoiceChannelsAsync();
+
+        /// <summary>
+        /// Checks if the <paramref name="voiceChannel"/> is registered as a room.
+        /// </summary>
+        /// <param name="voiceChannel"></param>
+        /// <returns></returns>
+        Task<bool> ExistsAsync(IVoiceChannel voiceChannel);
     }
 }
