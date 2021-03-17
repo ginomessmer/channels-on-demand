@@ -1,4 +1,6 @@
+using System;
 using System.Linq;
+using System.Net.WebSockets;
 using System.Threading;
 using System.Threading.Tasks;
 using Discord;
@@ -49,7 +51,16 @@ namespace DiscordVoiceChannelsOnDemand.Bot.Workers
                 if (userCount > 0)
                     continue;
 
-                await _roomService.DeleteRoomAsync(voiceChannel.Id, voiceChannel.Guild.Id);
+                try
+                {
+                    await _roomService.DeleteRoomAsync(voiceChannel.Id, voiceChannel.Guild.Id);
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogError(ex, "Couldn't purge voice channel {VoiceChannel}. Skipping...", voiceChannel);
+                    continue;
+                }
+
                 _logger.LogInformation("Purged voice channel {VoiceChannel}", voiceChannel);
             }
         }
