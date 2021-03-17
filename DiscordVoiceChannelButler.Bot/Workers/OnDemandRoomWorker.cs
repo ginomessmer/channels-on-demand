@@ -2,13 +2,13 @@ using System.Threading;
 using System.Threading.Tasks;
 using Discord;
 using Discord.WebSocket;
-using DiscordVoiceChannelButler.Bot.Options;
-using DiscordVoiceChannelButler.Bot.Services;
+using DiscordVoiceChannelsOnDemand.Bot.Options;
+using DiscordVoiceChannelsOnDemand.Bot.Services;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
-namespace DiscordVoiceChannelButler.Bot.Workers
+namespace DiscordVoiceChannelsOnDemand.Bot.Workers
 {
     /// <summary>
     /// This worker creates a new room on demand whenever someone joins

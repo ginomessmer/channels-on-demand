@@ -1,11 +1,11 @@
 using System.Threading.Tasks;
 using Discord;
 using Discord.WebSocket;
-using DiscordVoiceChannelButler.Bot.Infrastructure;
-using DiscordVoiceChannelButler.Bot.Options;
+using DiscordVoiceChannelsOnDemand.Bot.Infrastructure;
+using DiscordVoiceChannelsOnDemand.Bot.Options;
 using Microsoft.Extensions.Options;
 
-namespace DiscordVoiceChannelButler.Bot.Services
+namespace DiscordVoiceChannelsOnDemand.Bot.Services
 {
     /// <summary>
     /// <inheritdoc />

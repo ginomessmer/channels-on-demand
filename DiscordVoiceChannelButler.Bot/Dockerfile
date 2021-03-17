@@ -5,16 +5,16 @@ WORKDIR /app
 
 FROM mcr.microsoft.com/dotnet/sdk:5.0 AS build
 WORKDIR /src
-COPY ["DiscordVoiceChannelButler.Bot/DiscordVoiceChannelButler.Bot.csproj", "DiscordVoiceChannelButler.Bot/"]
-RUN dotnet restore "DiscordVoiceChannelButler.Bot/DiscordVoiceChannelButler.Bot.csproj"
+COPY ["DiscordVoiceChannelsOnDemand.Bot/DiscordVoiceChannelsOnDemand.Bot.csproj", "DiscordVoiceChannelsOnDemand.Bot/"]
+RUN dotnet restore "DiscordVoiceChannelsOnDemand.Bot/DiscordVoiceChannelsOnDemand.Bot.csproj"
 COPY . .
-WORKDIR "/src/DiscordVoiceChannelButler.Bot"
-RUN dotnet build "DiscordVoiceChannelButler.Bot.csproj" -c Release -o /app/build
+WORKDIR "/src/DiscordVoiceChannelsOnDemand.Bot"
+RUN dotnet build "DiscordVoiceChannelsOnDemand.Bot.csproj" -c Release -o /app/build
 
 FROM build AS publish
-RUN dotnet publish "DiscordVoiceChannelButler.Bot.csproj" -c Release -o /app/publish
+RUN dotnet publish "DiscordVoiceChannelsOnDemand.Bot.csproj" -c Release -o /app/publish
 
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-ENTRYPOINT ["dotnet", "DiscordVoiceChannelButler.Bot.dll"]
+ENTRYPOINT ["dotnet", "DiscordVoiceChannelsOnDemand.Bot.dll"]

@@ -1,7 +1,7 @@
 using System;
 using LiteDB;
 
-namespace DiscordVoiceChannelButler.Tests.SeedWork
+namespace DiscordVoiceChannelsOnDemand.Tests.SeedWork
 {
     public class LiteDbFactory
     {

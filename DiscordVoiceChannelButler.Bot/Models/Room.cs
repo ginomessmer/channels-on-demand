@@ -1,7 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using LiteDB;
 
-namespace DiscordVoiceChannelButler.Bot.Models
+namespace DiscordVoiceChannelsOnDemand.Bot.Models
 {
     public class Room
     {

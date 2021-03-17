@@ -7,14 +7,14 @@ using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 using Discord;
 using Discord.WebSocket;
-using DiscordVoiceChannelButler.Bot.Infrastructure;
-using DiscordVoiceChannelButler.Bot.Options;
-using DiscordVoiceChannelButler.Bot.Services;
-using DiscordVoiceChannelButler.Bot.Workers;
+using DiscordVoiceChannelsOnDemand.Bot.Infrastructure;
+using DiscordVoiceChannelsOnDemand.Bot.Options;
+using DiscordVoiceChannelsOnDemand.Bot.Services;
+using DiscordVoiceChannelsOnDemand.Bot.Workers;
 using LiteDB;
 using Microsoft.Extensions.Configuration;
 
-namespace DiscordVoiceChannelButler.Bot
+namespace DiscordVoiceChannelsOnDemand.Bot
 {
     public class Program
     {

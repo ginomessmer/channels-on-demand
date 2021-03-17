@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using DiscordVoiceChannelButler.Bot.Models;
+using DiscordVoiceChannelsOnDemand.Bot.Models;
 
-namespace DiscordVoiceChannelButler.Bot.Infrastructure
+namespace DiscordVoiceChannelsOnDemand.Bot.Infrastructure
 {
     /// <summary>
     /// The room repository - what did ya expect?

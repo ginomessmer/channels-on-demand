@@ -361,5 +361,5 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
-/DiscordVoiceChannelButler.Bot/data.db
-/DiscordVoiceChannelButler.Bot/data-log.db
+/DiscordVoiceChannelsOnDemand.Bot/data.db
+/DiscordVoiceChannelsOnDemand.Bot/data-log.db
