@@ -31,7 +31,7 @@ namespace DiscordVoiceChannelButler.Bot.Services
             // Move user
             await user.ModifyAsync(x => x.Channel = voiceChannel);
 
-            await _roomRepository.AddAsync(voiceChannel.Id, user.Id);
+            await _roomRepository.AddAsync(voiceChannel.Id.ToString(), user.Id.ToString());
 
             return voiceChannel;
         }
@@ -40,7 +40,7 @@ namespace DiscordVoiceChannelButler.Bot.Services
         public async Task DeleteRoomAsync(SocketVoiceChannel voiceChannel)
         {
             await voiceChannel.DeleteAsync();
-            await _roomRepository.RemoveAsync(voiceChannel.Id);
+            await _roomRepository.RemoveAsync(voiceChannel.Id.ToString());
         }
     }
 }

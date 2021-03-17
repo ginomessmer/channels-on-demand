@@ -21,13 +21,27 @@ namespace DiscordVoiceChannelButler.Tests
             var repository = new LiteDbRoomRepositoryTraversal(_dbFactory.CreateDatabase());
             
             // Act
-            var room = await repository.AddAsync(1234, 5678);
+            var room = await repository.AddAsync("1234", "5678");
 
             // Assert
             var rooms = repository.GetAll().ToList();
             Assert.NotNull(room);
             Assert.Single(rooms);
             Assert.Contains(rooms, r => r.ChannelId == room.ChannelId);
+        }
+
+        [Fact]
+        public async Task LiteDbRoomRepository_AddRemove_Successfully()
+        {
+            // Arrange
+            var repository = new LiteDbRoomRepositoryTraversal(_dbFactory.CreateDatabase());
+
+            // Act
+            var room = await repository.AddAsync("1234", "5678");
+            await repository.RemoveAsync(room.ChannelId);
+
+            // Assert
+            Assert.Empty(repository.GetAll());
         }
     }
 }

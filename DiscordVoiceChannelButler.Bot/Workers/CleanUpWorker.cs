@@ -33,7 +33,7 @@ namespace DiscordVoiceChannelButler.Bot.Workers
                 return;
 
             // Check if its part of Rooms
-            if (!await _roomRepository.ExistsAsync(previousState.VoiceChannel.Id))
+            if (!await _roomRepository.ExistsAsync(previousState.VoiceChannel.Id.ToString()))
                 return;
 
             // Handle disconnect

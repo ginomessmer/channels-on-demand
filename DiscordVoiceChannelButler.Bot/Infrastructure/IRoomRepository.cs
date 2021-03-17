@@ -15,20 +15,20 @@ namespace DiscordVoiceChannelButler.Bot.Infrastructure
         /// <param name="voiceChannelId">The voice channel's ID</param>
         /// <param name="hostUserId">The host's user ID</param>
         /// <returns>The persisted room model instance</returns>
-        Task<Room> AddAsync(ulong voiceChannelId, ulong hostUserId);
+        Task<Room> AddAsync(string voiceChannelId, string hostUserId);
 
         /// <summary>
         /// Removes a room entirely.
         /// </summary>
         /// <param name="voiceChannelId"></param>
         /// <returns></returns>
-        Task RemoveAsync(ulong voiceChannelId);
+        Task RemoveAsync(string voiceChannelId);
 
         /// <summary>
         /// Checks whether a voice channel exists in the repository. Returns true if that's the case.
         /// </summary>
         /// <param name="voiceChannelId"></param>
         /// <returns></returns>
-        Task<bool> ExistsAsync(ulong voiceChannelId);
+        Task<bool> ExistsAsync(string voiceChannelId);
     }
 }

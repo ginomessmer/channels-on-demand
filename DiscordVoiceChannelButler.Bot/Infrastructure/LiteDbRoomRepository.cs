@@ -16,7 +16,7 @@ namespace DiscordVoiceChannelButler.Bot.Infrastructure
         }
 
         /// <inheritdoc />
-        public Task<Room> AddAsync(ulong voiceChannelId, ulong hostUserId)
+        public Task<Room> AddAsync(string voiceChannelId, string hostUserId)
         {
             if (Collection.Exists(x => x.ChannelId == voiceChannelId.ToString()))
                 throw new DuplicateNameException("The voice channel was already inserted");
@@ -31,10 +31,10 @@ namespace DiscordVoiceChannelButler.Bot.Infrastructure
         }
 
         /// <inheritdoc />
-        public Task RemoveAsync(ulong voiceChannelId) => Task.FromResult(Collection.Delete(voiceChannelId));
+        public Task RemoveAsync(string voiceChannelId) => Task.FromResult(Collection.Delete(voiceChannelId));
 
         /// <inheritdoc />
-        public Task<bool> ExistsAsync(ulong voiceChannelId) => Task.FromResult(Collection.FindById(voiceChannelId) is not null);
+        public Task<bool> ExistsAsync(string voiceChannelId) => Task.FromResult(Collection.FindById(voiceChannelId) is not null);
 
         protected ILiteCollection<Room> Collection => _database.GetCollection<Room>();
     }
