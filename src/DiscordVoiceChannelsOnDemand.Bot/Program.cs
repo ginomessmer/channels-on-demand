@@ -36,7 +36,7 @@ namespace DiscordVoiceChannelsOnDemand.Bot
                     // Bot Services
                     services.AddSingleton<ITenantService, TenantService>();
                     services.AddSingleton<IRoomService, RoomService>();
-                    services.AddSingleton<IVoiceChannelService, SocketVoiceChannelService>();
+                    services.AddSingleton<IVoiceChannelService, VoiceChannelService>();
 
                     // Discord
                     services.AddSingleton<DiscordSocketClient>(sp => CreateDiscordSocketClient(hostContext));
