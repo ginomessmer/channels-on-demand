@@ -15,19 +15,13 @@ namespace DiscordVoiceChannelsOnDemand.Bot.Workers
     /// </summary>
     public class RestoreWorker : BackgroundService
     {
-        private readonly IServerService _serverService;
         private readonly IRoomService _roomService;
-        private readonly IVoiceChannelService _voiceChannelService;
         private readonly ILogger<RestoreWorker> _logger;
 
-        public RestoreWorker(IServerService serverService,
-            IRoomService roomService,
-            IVoiceChannelService voiceChannelService,
+        public RestoreWorker(IRoomService roomService,
             ILogger<RestoreWorker> logger)
         {
-            _serverService = serverService;
             _roomService = roomService;
-            _voiceChannelService = voiceChannelService;
             _logger = logger;
         }
 
