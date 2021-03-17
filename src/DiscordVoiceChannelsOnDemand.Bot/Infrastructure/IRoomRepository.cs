@@ -1,9 +1,6 @@
-﻿using System;
+﻿using DiscordVoiceChannelsOnDemand.Bot.Models;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
-using DiscordVoiceChannelsOnDemand.Bot.Models;
 
 namespace DiscordVoiceChannelsOnDemand.Bot.Infrastructure
 {
@@ -33,5 +30,11 @@ namespace DiscordVoiceChannelsOnDemand.Bot.Infrastructure
         /// <param name="voiceChannelId"></param>
         /// <returns></returns>
         Task<bool> ExistsAsync(string voiceChannelId);
+
+        /// <summary>
+        /// Returns all voice channels that are stored.
+        /// </summary>
+        /// <returns></returns>
+        Task<IEnumerable<Room>> GetAllAsync();
     }
 }

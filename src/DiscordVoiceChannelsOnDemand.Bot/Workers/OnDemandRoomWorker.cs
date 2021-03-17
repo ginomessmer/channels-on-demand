@@ -1,5 +1,3 @@
-using System.Threading;
-using System.Threading.Tasks;
 using Discord;
 using Discord.WebSocket;
 using DiscordVoiceChannelsOnDemand.Bot.Options;
@@ -7,6 +5,8 @@ using DiscordVoiceChannelsOnDemand.Bot.Services;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace DiscordVoiceChannelsOnDemand.Bot.Workers
 {

@@ -1,9 +1,9 @@
-using System.Threading.Tasks;
 using Discord;
 using Discord.WebSocket;
 using DiscordVoiceChannelsOnDemand.Bot.Infrastructure;
 using DiscordVoiceChannelsOnDemand.Bot.Options;
 using Microsoft.Extensions.Options;
+using System.Threading.Tasks;
 
 namespace DiscordVoiceChannelsOnDemand.Bot.Services
 {
@@ -45,6 +45,13 @@ namespace DiscordVoiceChannelsOnDemand.Bot.Services
         {
             await voiceChannel.DeleteAsync();
             await _roomRepository.RemoveAsync(voiceChannel.Id.ToString());
+        }
+
+        /// <inheritdoc />
+        public Task DeleteRoomAsync(ulong voiceChannelId, ulong guildId)
+        {
+            var channel = _client.GetGuild(guildId).GetVoiceChannel(voiceChannelId);
+            return DeleteRoomAsync(channel);
         }
     }
 }

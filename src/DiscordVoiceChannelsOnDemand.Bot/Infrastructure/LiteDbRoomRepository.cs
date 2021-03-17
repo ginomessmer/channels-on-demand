@@ -1,8 +1,8 @@
-﻿using System;
+﻿using DiscordVoiceChannelsOnDemand.Bot.Models;
+using LiteDB;
+using System.Collections.Generic;
 using System.Data;
 using System.Threading.Tasks;
-using DiscordVoiceChannelsOnDemand.Bot.Models;
-using LiteDB;
 
 namespace DiscordVoiceChannelsOnDemand.Bot.Infrastructure
 {
@@ -35,6 +35,9 @@ namespace DiscordVoiceChannelsOnDemand.Bot.Infrastructure
 
         /// <inheritdoc />
         public Task<bool> ExistsAsync(string voiceChannelId) => Task.FromResult(Collection.FindById(voiceChannelId) is not null);
+
+        /// <inheritdoc />
+        public Task<IEnumerable<Room>> GetAllAsync() => Task.FromResult(Collection.FindAll());
 
         protected ILiteCollection<Room> Collection => _database.GetCollection<Room>();
     }
