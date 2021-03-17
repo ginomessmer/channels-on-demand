@@ -11,15 +11,15 @@ namespace DiscordVoiceChannelsOnDemand.Bot.Workers
     /// <summary>
     /// This worker removes empty voice channels created by the butler.
     /// </summary>
-    public class ClearRoomWorker : BackgroundService
+    public class PurgeRoomWorker : BackgroundService
     {
         private readonly DiscordSocketClient _client;
         private readonly IRoomService _roomService;
-        private readonly ILogger<ClearRoomWorker> _logger;
+        private readonly ILogger<PurgeRoomWorker> _logger;
 
-        public ClearRoomWorker(DiscordSocketClient client,
+        public PurgeRoomWorker(DiscordSocketClient client,
             IRoomService roomService,
-            ILogger<ClearRoomWorker> logger)
+            ILogger<PurgeRoomWorker> logger)
         {
             _client = client;
             _roomService = roomService;
