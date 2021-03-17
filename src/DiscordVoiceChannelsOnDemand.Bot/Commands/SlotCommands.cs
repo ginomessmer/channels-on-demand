@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using Discord;
@@ -78,6 +79,19 @@ namespace DiscordVoiceChannelsOnDemand.Bot.Commands
             var channels = slots.Select(x => Context.Guild.GetVoiceChannel(Convert.ToUInt64(x.TriggerVoiceChannelId)));
             var list = string.Join("\n", channels.Select(x => $"{x.Name}\t#{x.Id}"));
             await ReplyAsync(list);
+        }
+
+        [Command("set names")]
+        [RequireBotPermission(GuildPermission.ManageChannels)]
+        [RequireUserPermission(GuildPermission.ManageChannels)]
+        [RequireContext(ContextType.Guild)]
+        public async Task SetNames(IVoiceChannel voiceChannel, params string[] names)
+        {
+            var tenant = await _tenantRepository.GetAsync(Context.Guild.Id.ToString());
+            var slot = tenant.GetSlot(voiceChannel.Id.ToString());
+
+            slot.RandomNames = names;
+            await _tenantRepository.UpdateAsync(tenant);
         }
     }
 }

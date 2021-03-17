@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
 using LiteDB;
 
 namespace DiscordVoiceChannelsOnDemand.Bot.Models
@@ -12,11 +13,6 @@ namespace DiscordVoiceChannelsOnDemand.Bot.Models
 
         public ICollection<Slot> Slots { get; set; } = new List<Slot>();
 
-
-
-        /// <summary>
-        /// The room's naming scheme.
-        /// </summary>
-        public string RoomNameFormat { get; set; } = "Meeting Room {0}";
+        public Slot GetSlot(string id) => Slots.FirstOrDefault(x => x.TriggerVoiceChannelId == id);
     }
 }
