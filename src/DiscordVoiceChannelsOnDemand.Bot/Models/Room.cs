@@ -1,4 +1,6 @@
 using System.ComponentModel.DataAnnotations;
+using System.Runtime.CompilerServices;
+using System.Runtime.Serialization;
 using LiteDB;
 
 namespace DiscordVoiceChannelsOnDemand.Bot.Models
