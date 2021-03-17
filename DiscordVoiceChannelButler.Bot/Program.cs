@@ -48,7 +48,7 @@ namespace DiscordVoiceChannelButler.Bot
                             return client;
                         });
 
-                    services.AddHostedService<RoomWorker>();
+                    services.AddHostedService<OnDemandRoomWorker>();
                     services.AddHostedService<CleanUpWorker>();
                 });
     }

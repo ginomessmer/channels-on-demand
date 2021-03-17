@@ -7,6 +7,10 @@ using Microsoft.Extensions.Options;
 
 namespace DiscordVoiceChannelButler.Bot.Services
 {
+    /// <summary>
+    /// <inheritdoc />
+    /// Based on <seealso cref="DiscordSocketClient"/>.
+    /// </summary>
     public class SocketRoomService : IRoomService
     {
         private readonly DiscordSocketClient _client;

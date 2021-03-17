@@ -10,15 +10,19 @@ using Microsoft.Extensions.Options;
 
 namespace DiscordVoiceChannelButler.Bot.Workers
 {
-    public class RoomWorker : BackgroundService
+    /// <summary>
+    /// This worker creates a new room on demand whenever someone joins
+    /// the <seealso cref="BotOptions.GatewayVoiceChannelId"/> voice channel.
+    /// </summary>
+    public class OnDemandRoomWorker : BackgroundService
     {
         private readonly DiscordSocketClient _client;
         private readonly IRoomService _roomService;
         private readonly BotOptions _options;
-        private readonly ILogger<RoomWorker> _logger;
+        private readonly ILogger<OnDemandRoomWorker> _logger;
 
-        public RoomWorker(DiscordSocketClient client, IRoomService roomService,
-            IOptions<BotOptions> options, ILogger<RoomWorker> logger)
+        public OnDemandRoomWorker(DiscordSocketClient client, IRoomService roomService,
+            IOptions<BotOptions> options, ILogger<OnDemandRoomWorker> logger)
         {
             _client = client;
             _roomService = roomService;

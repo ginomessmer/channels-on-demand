@@ -7,6 +7,9 @@ using Microsoft.Extensions.Hosting;
 
 namespace DiscordVoiceChannelButler.Bot.Workers
 {
+    /// <summary>
+    /// This worker removes empty voice channels created by the butler.
+    /// </summary>
     public class CleanUpWorker : BackgroundService
     {
         private readonly DiscordSocketClient _client;

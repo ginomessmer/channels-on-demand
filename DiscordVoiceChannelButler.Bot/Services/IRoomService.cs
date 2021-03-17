@@ -4,6 +4,9 @@ using Discord.WebSocket;
 
 namespace DiscordVoiceChannelButler.Bot.Services
 {
+    /// <summary>
+    /// A service class that is responsible for managing the rooms.
+    /// </summary>
     public interface IRoomService
     {
         /// <summary>
