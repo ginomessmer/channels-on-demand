@@ -1,9 +1,9 @@
 using System.Linq;
 using System.Threading.Tasks;
-using DiscordVoiceChannelButler.Tests.SeedWork;
+using DiscordVoiceChannelsOnDemand.Tests.SeedWork;
 using Xunit;
 
-namespace DiscordVoiceChannelButler.Tests
+namespace DiscordVoiceChannelsOnDemand.Tests
 {
     public class LiteDbRoomRepositoryIntegrationTests : IClassFixture<LiteDbFactory>
     {

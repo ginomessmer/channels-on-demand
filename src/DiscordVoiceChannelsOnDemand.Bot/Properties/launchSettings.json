@@ -1,6 +1,6 @@
 {
   "profiles": {
-    "DiscordVoiceChannelButler.Bot": {
+    "DiscordVoiceChannelsOnDemand.Bot": {
       "commandName": "Project",
       "environmentVariables": {
         "DOTNET_ENVIRONMENT": "Development"

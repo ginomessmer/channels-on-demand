@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
-    <UserSecretsId>dotnet-DiscordVoiceChannelButler.Bot-08063583-D6AF-4C58-9703-8AF332ED5490</UserSecretsId>
+    <UserSecretsId>dotnet-DiscordVoiceChannelsOnDemand.Bot-08063583-D6AF-4C58-9703-8AF332ED5490</UserSecretsId>
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
   </PropertyGroup>
 

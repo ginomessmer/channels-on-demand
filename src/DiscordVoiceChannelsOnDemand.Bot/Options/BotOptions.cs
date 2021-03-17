@@ -1,4 +1,4 @@
-namespace DiscordVoiceChannelButler.Bot.Options
+namespace DiscordVoiceChannelsOnDemand.Bot.Options
 {
     public class BotOptions
     {

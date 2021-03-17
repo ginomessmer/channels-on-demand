@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Data;
 using System.Threading.Tasks;
-using DiscordVoiceChannelButler.Bot.Models;
+using DiscordVoiceChannelsOnDemand.Bot.Models;
 using LiteDB;
 
-namespace DiscordVoiceChannelButler.Bot.Infrastructure
+namespace DiscordVoiceChannelsOnDemand.Bot.Infrastructure
 {
     public class LiteDbRoomRepository : IRoomRepository
     {

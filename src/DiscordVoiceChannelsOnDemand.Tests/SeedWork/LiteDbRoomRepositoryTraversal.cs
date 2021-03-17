@@ -1,9 +1,9 @@
 using System.Collections.Generic;
-using DiscordVoiceChannelButler.Bot.Infrastructure;
-using DiscordVoiceChannelButler.Bot.Models;
+using DiscordVoiceChannelsOnDemand.Bot.Infrastructure;
+using DiscordVoiceChannelsOnDemand.Bot.Models;
 using LiteDB;
 
-namespace DiscordVoiceChannelButler.Tests.SeedWork
+namespace DiscordVoiceChannelsOnDemand.Tests.SeedWork
 {
     public class LiteDbRoomRepositoryTraversal : LiteDbRoomRepository
     {

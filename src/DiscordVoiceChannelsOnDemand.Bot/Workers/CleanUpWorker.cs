@@ -1,11 +1,11 @@
 using System.Threading;
 using System.Threading.Tasks;
 using Discord.WebSocket;
-using DiscordVoiceChannelButler.Bot.Infrastructure;
-using DiscordVoiceChannelButler.Bot.Services;
+using DiscordVoiceChannelsOnDemand.Bot.Infrastructure;
+using DiscordVoiceChannelsOnDemand.Bot.Services;
 using Microsoft.Extensions.Hosting;
 
-namespace DiscordVoiceChannelButler.Bot.Workers
+namespace DiscordVoiceChannelsOnDemand.Bot.Workers
 {
     /// <summary>
     /// This worker removes empty voice channels created by the butler.

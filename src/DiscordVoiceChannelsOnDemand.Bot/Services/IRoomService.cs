@@ -2,7 +2,7 @@ using System.Threading.Tasks;
 using Discord;
 using Discord.WebSocket;
 
-namespace DiscordVoiceChannelButler.Bot.Services
+namespace DiscordVoiceChannelsOnDemand.Bot.Services
 {
     /// <summary>
     /// A service class that is responsible for managing the rooms.

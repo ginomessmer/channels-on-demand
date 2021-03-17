@@ -20,7 +20,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\DiscordVoiceChannelButler.Bot\DiscordVoiceChannelButler.Bot.csproj" />
+    <ProjectReference Include="..\DiscordVoiceChannelsOnDemand.Bot\DiscordVoiceChannelsOnDemand.Bot.csproj" />
   </ItemGroup>
 
 </Project>
