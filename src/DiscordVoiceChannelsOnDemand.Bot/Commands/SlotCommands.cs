@@ -1,4 +1,6 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using Discord;
 using Discord.Commands;
@@ -20,11 +22,11 @@ namespace DiscordVoiceChannelsOnDemand.Bot.Commands
             _tenantRepository = tenantRepository;
         }
 
-        [Command("setup")]
+        [Command("register")]
         [RequireBotPermission(GuildPermission.ManageChannels)]
         [RequireUserPermission(GuildPermission.ManageChannels)]
         [RequireContext(ContextType.Guild)]
-        public async Task Setup(IVoiceChannel voiceChannel, ICategoryChannel categoryChannel = null)
+        public async Task Register(IVoiceChannel voiceChannel, ICategoryChannel categoryChannel = null)
         {
             categoryChannel ??= await voiceChannel.GetCategoryAsync();
 
@@ -48,6 +50,34 @@ namespace DiscordVoiceChannelsOnDemand.Bot.Commands
 
             tenant.Slots.Add(slot);
             await _tenantRepository.UpdateAsync(tenant);
+
+            await ReplyAsync($"Voice channel `{voiceChannel.Name}` was successfully registered as a slot");
+        }
+
+        [Command("unregister")]
+        [RequireBotPermission(GuildPermission.ManageChannels)]
+        [RequireUserPermission(GuildPermission.ManageChannels)]
+        [RequireContext(ContextType.Guild)]
+        public async Task Unregister(IVoiceChannel voiceChannel)
+        {
+            var slot = await _tenantRepository.FindSlotAsync(voiceChannel.Id.ToString());
+            await _tenantRepository.DeleteSlotAsync(voiceChannel.Id.ToString());
+
+            await ReplyAsync($"Voice channel `{voiceChannel.Name}` was successfully unregistered");
+        }
+
+        [Command("list")]
+        [RequireBotPermission(GuildPermission.ManageChannels)]
+        [RequireUserPermission(GuildPermission.ManageChannels)]
+        [RequireContext(ContextType.Guild)]
+        public async Task List()
+        {
+            var guild = await _tenantRepository.GetAsync(Context.Guild.Id.ToString());
+            var slots = guild.Slots;
+
+            var channels = slots.Select(x => Context.Guild.GetVoiceChannel(Convert.ToUInt64(x.TriggerVoiceChannelId)));
+            var list = string.Join("\n", channels.Select(x => $"{x.Name}\t#{x.Id}"));
+            await ReplyAsync(list);
         }
     }
 }

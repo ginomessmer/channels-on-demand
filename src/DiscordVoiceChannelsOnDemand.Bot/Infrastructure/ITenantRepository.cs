@@ -11,5 +11,7 @@ namespace DiscordVoiceChannelsOnDemand.Bot.Infrastructure
         Task<bool> SlotsExistsAsync(string voiceChannelId);
         
         Task<Slot> FindSlotAsync(string voiceChannelId);
+
+        Task DeleteSlotAsync(string voiceChannelId);
     }
 }

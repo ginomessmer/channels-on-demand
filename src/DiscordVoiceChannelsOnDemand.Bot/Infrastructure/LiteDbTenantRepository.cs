@@ -45,6 +45,16 @@ namespace DiscordVoiceChannelsOnDemand.Bot.Infrastructure
             return slot;
         }
 
+        /// <inheritdoc />
+        public async Task DeleteSlotAsync(string voiceChannelId)
+        {
+            var tenant = Collection.Find(x => x.Slots.SingleOrDefault(x => x.TriggerVoiceChannelId == voiceChannelId) != null).Single();
+            var slot = tenant.Slots.Single(x => x.TriggerVoiceChannelId == voiceChannelId);
+
+            var isSuccess = tenant.Slots.Remove(slot);
+            await UpdateAsync(tenant);
+        }
+
         #endregion
     }
 }
