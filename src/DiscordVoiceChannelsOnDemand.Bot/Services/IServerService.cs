@@ -33,6 +33,13 @@ namespace DiscordVoiceChannelsOnDemand.Bot.Services
         Task RegisterAsync(IGuild guild);
 
         /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="guild"></param>
+        /// <returns></returns>
+        Task DeregisterAsync(IGuild guild);
+
+        /// <summary>
         /// Returns the server that is linked to <paramref name="guild"/>.
         /// </summary>
         /// <param name="guild"></param>

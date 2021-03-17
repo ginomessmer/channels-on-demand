@@ -57,6 +57,12 @@ namespace DiscordVoiceChannelsOnDemand.Bot.Services
         }
 
         /// <inheritdoc />
+        public async Task DeregisterAsync(IGuild guild)
+        {
+            await _serverRepository.RemoveAsync(guild.Id.ToString());
+        }
+
+        /// <inheritdoc />
         public Task<Server> GetAsync(IGuild guild)
         {
             return _serverRepository.GetAsync(guild.Id.ToString());

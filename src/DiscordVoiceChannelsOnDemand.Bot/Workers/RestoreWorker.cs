@@ -33,13 +33,16 @@ namespace DiscordVoiceChannelsOnDemand.Bot.Workers
 
             foreach (var voiceChannel in voiceChannels)
             {
+                if (voiceChannel is null)
+                    continue;
+
                 var userCount = voiceChannel.Users.Count;
                 if (userCount > 0)
                     continue;
 
                 try
                 {
-                    await _roomService.DeleteRoomAsync(voiceChannel.Id, voiceChannel.Guild.Id);
+                    await _roomService.DeleteRoomAsync(voiceChannel);
                 }
                 catch (Exception ex)
                 {

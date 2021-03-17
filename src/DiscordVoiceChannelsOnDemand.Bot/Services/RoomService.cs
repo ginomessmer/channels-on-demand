@@ -6,6 +6,8 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Threading.Tasks;
+using Discord.Net;
+using Microsoft.Extensions.Logging;
 
 namespace DiscordVoiceChannelsOnDemand.Bot.Services
 {
@@ -18,12 +20,15 @@ namespace DiscordVoiceChannelsOnDemand.Bot.Services
         private readonly IDiscordClient _client;
         private readonly IRoomRepository _roomRepository;
         private readonly IServerRepository _serverRepository;
+        private readonly ILogger<RoomService> _logger;
 
-        public RoomService(IDiscordClient client, IRoomRepository roomRepository, IServerRepository serverRepository)
+        public RoomService(IDiscordClient client, IRoomRepository roomRepository, IServerRepository serverRepository,
+            ILogger<RoomService> logger)
         {
             _client = client;
             _roomRepository = roomRepository;
             _serverRepository = serverRepository;
+            _logger = logger;
         }
 
         /// <inheritdoc />
@@ -54,18 +59,30 @@ namespace DiscordVoiceChannelsOnDemand.Bot.Services
         }
 
         /// <inheritdoc />
-        public async Task DeleteRoomAsync(IVoiceChannel voiceChannel)
-        {
-            await voiceChannel.DeleteAsync();
-            await _roomRepository.RemoveAsync(voiceChannel.Id.ToString());
-        }
+        public Task DeleteRoomAsync(IVoiceChannel voiceChannel) =>
+            DeleteRoomAsync(voiceChannel.Id, voiceChannel.Guild.Id);
 
         /// <inheritdoc />
         public async Task DeleteRoomAsync(ulong voiceChannelId, ulong guildId)
         {
             var guild = await _client.GetGuildAsync(guildId);
-            var channel = await guild.GetVoiceChannelAsync(voiceChannelId);
-            await DeleteRoomAsync(channel);
+            var voiceChannel = await guild.GetVoiceChannelAsync(voiceChannelId);
+
+            if (voiceChannel is not null)
+            {
+                try
+                {
+                    await voiceChannel.DeleteAsync();
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogWarning(ex, "Couldn't remove voice channel automatically");
+                }
+            }
+            else
+                _logger.LogWarning("Couldn't find voice channel {VoiceChannelId}. Removing from database...", voiceChannelId);
+
+            await _roomRepository.RemoveAsync(voiceChannelId.ToString());
         }
 
         /// <inheritdoc />
@@ -83,7 +100,15 @@ namespace DiscordVoiceChannelsOnDemand.Bot.Services
 
                 foreach (var room in groupedRoom)
                 {
-                    var channel = await guild.GetVoiceChannelAsync(Convert.ToUInt64(room.ChannelId));
+                    var id = Convert.ToUInt64(room.ChannelId);
+
+                    var channel = await guild.GetVoiceChannelAsync(id);
+                    if (channel is null)
+                    {
+                        await DeleteRoomAsync(id, guildId);
+                        continue;
+                    }
+
                     results.Add(channel);
                 }
             }
