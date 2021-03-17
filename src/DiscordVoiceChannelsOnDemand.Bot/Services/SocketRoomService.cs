@@ -13,11 +13,11 @@ namespace DiscordVoiceChannelsOnDemand.Bot.Services
     /// </summary>
     public class SocketRoomService : IRoomService
     {
-        private readonly DiscordSocketClient _client;
+        private readonly IDiscordClient _client;
         private readonly IRoomRepository _roomRepository;
         private readonly BotOptions _options;
 
-        public SocketRoomService(DiscordSocketClient client, IRoomRepository roomRepository,
+        public SocketRoomService(IDiscordClient client, IRoomRepository roomRepository,
             IOptions<BotOptions> options)
         {
             _client = client;
@@ -26,14 +26,14 @@ namespace DiscordVoiceChannelsOnDemand.Bot.Services
         }
 
         /// <inheritdoc />
-        public async Task<IVoiceChannel> CreateNewRoomAsync(SocketGuildUser user)
+        public async Task<IVoiceChannel> CreateNewRoomAsync(IGuildUser user)
         {
-            var guild = _client.GetGuild(user.Guild.Id);
+            var guild = await _client.GetGuildAsync(user.Guild.Id);
             var voiceChannel = await guild.CreateVoiceChannelAsync(string.Format(_options.RoomNameFormat, user.Nickname),
                 p => { p.CategoryId = _options.CategoryId; });
 
             // Move user
-            await user.ModifyAsync(x => x.Channel = voiceChannel);
+            await user.ModifyAsync(x => x.ChannelId = voiceChannel.Id);
 
             await _roomRepository.AddAsync(voiceChannel.Id.ToString(), user.Id.ToString(),
                 guild.Id.ToString());
@@ -42,17 +42,18 @@ namespace DiscordVoiceChannelsOnDemand.Bot.Services
         }
 
         /// <inheritdoc />
-        public async Task DeleteRoomAsync(SocketVoiceChannel voiceChannel)
+        public async Task DeleteRoomAsync(IVoiceChannel voiceChannel)
         {
             await voiceChannel.DeleteAsync();
             await _roomRepository.RemoveAsync(voiceChannel.Id.ToString());
         }
 
         /// <inheritdoc />
-        public Task DeleteRoomAsync(ulong voiceChannelId, ulong guildId)
+        public async Task DeleteRoomAsync(ulong voiceChannelId, ulong guildId)
         {
-            var channel = _client.GetGuild(guildId).GetVoiceChannel(voiceChannelId);
-            return DeleteRoomAsync(channel);
+            var guild = await _client.GetGuildAsync(guildId);
+            var channel = await guild.GetVoiceChannelAsync(voiceChannelId);
+            await DeleteRoomAsync(channel);
         }
     }
 }

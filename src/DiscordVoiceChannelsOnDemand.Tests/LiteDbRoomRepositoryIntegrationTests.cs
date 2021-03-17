@@ -1,10 +1,61 @@
+using System;
 using DiscordVoiceChannelsOnDemand.Tests.SeedWork;
 using System.Linq;
+using System.Net.Sockets;
 using System.Threading.Tasks;
+using Discord;
+using Discord.Rest;
+using Discord.WebSocket;
+using DiscordVoiceChannelsOnDemand.Bot.Infrastructure;
+using DiscordVoiceChannelsOnDemand.Bot.Options;
+using DiscordVoiceChannelsOnDemand.Bot.Services;
+using Microsoft.Extensions.Options;
+using Moq;
 using Xunit;
+using ISocketAudioChannel = Discord.WebSocket.ISocketAudioChannel;
 
 namespace DiscordVoiceChannelsOnDemand.Tests
 {
+    public class SocketRoomServiceUnitTests
+    {
+        [Fact]
+        public async Task Test()
+        {
+            // Arrange
+            var repositoryMock = new Mock<IRoomRepository>();
+            var options = new BotOptions();
+
+            // Mock: Voice Channel
+            var voiceChannelMock = new Mock<IVoiceChannel>();
+            voiceChannelMock.SetupGet(x => x.Id).Returns(2222);
+
+            // Mock: Guild
+            var guildMock = new Mock<IGuild>();
+            guildMock.Setup(x => x.Id).Returns(1111);
+            guildMock.Setup(x => x.CreateVoiceChannelAsync(It.IsAny<string>(), It.IsAny<Action<VoiceChannelProperties>>(), It.IsAny<RequestOptions>()))
+                .ReturnsAsync(() => voiceChannelMock.Object);
+
+            // Mock: User
+            var userMock = new Mock<IGuildUser>();
+            userMock.Setup(x => x.Guild).Returns(guildMock.Object);
+            userMock.Setup(x => x.Id).Returns(guildMock.Object.Id);
+            userMock.Setup(x => x.Nickname).Returns("Martha");
+
+            // Mock: Client
+            var discordClientMock = new Mock<IDiscordClient>();
+            discordClientMock.Setup(x => x.GetGuildAsync(It.IsAny<ulong>(), It.IsAny<CacheMode>(), It.IsAny<RequestOptions>())).ReturnsAsync(guildMock.Object);
+
+            // Service
+            var service = new SocketRoomService(discordClientMock.Object, repositoryMock.Object,
+                new OptionsWrapper<BotOptions>(options));
+
+            // Act
+            await service.CreateNewRoomAsync(userMock.Object);
+
+            // Assert
+        }
+    }
+
     public class LiteDbRoomRepositoryIntegrationTests : IClassFixture<LiteDbFactory>
     {
         private readonly LiteDbFactory _dbFactory;
