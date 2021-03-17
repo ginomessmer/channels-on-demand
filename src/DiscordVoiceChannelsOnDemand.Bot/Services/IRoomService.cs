@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Discord;
 using System.Threading.Tasks;
 
@@ -29,5 +30,11 @@ namespace DiscordVoiceChannelsOnDemand.Bot.Services
         /// <param name="guildId"></param>
         /// <returns></returns>
         Task DeleteRoomAsync(ulong voiceChannelId, ulong guildId);
+
+        /// <summary>
+        /// Gets all rooms as voice channels.
+        /// </summary>
+        /// <returns></returns>
+        Task<IEnumerable<IVoiceChannel>> GetAllRoomVoiceChannelsAsync();
     }
 }

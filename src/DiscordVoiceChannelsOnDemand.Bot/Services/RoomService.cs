@@ -3,6 +3,7 @@ using Discord.WebSocket;
 using DiscordVoiceChannelsOnDemand.Bot.Infrastructure;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace DiscordVoiceChannelsOnDemand.Bot.Services
@@ -64,6 +65,29 @@ namespace DiscordVoiceChannelsOnDemand.Bot.Services
             var guild = await _client.GetGuildAsync(guildId);
             var channel = await guild.GetVoiceChannelAsync(voiceChannelId);
             await DeleteRoomAsync(channel);
+        }
+
+        /// <inheritdoc />
+        public async Task<IEnumerable<IVoiceChannel>> GetAllRoomVoiceChannelsAsync()
+        {
+            var results = new List<IVoiceChannel>();
+            
+            var rooms = await _roomRepository.GetAllAsync();
+            var groupedRooms = rooms.GroupBy(x => x.GuildId);
+            
+            foreach (var groupedRoom in groupedRooms)
+            {
+                var guildId = Convert.ToUInt64(groupedRoom.Key);
+                var guild = await _client.GetGuildAsync(guildId);
+
+                foreach (var room in groupedRoom)
+                {
+                    var channel = await guild.GetVoiceChannelAsync(Convert.ToUInt64(room.ChannelId));
+                    results.Add(channel);
+                }
+            }
+
+            return results;
         }
     }
 }

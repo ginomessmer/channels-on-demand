@@ -15,17 +15,17 @@ namespace DiscordVoiceChannelsOnDemand.Bot.Workers
     /// </summary>
     public class RestoreWorker : BackgroundService
     {
-        private readonly IRoomRepository _roomRepository;
+        private readonly IServerService _serverService;
         private readonly IRoomService _roomService;
         private readonly IVoiceChannelService _voiceChannelService;
         private readonly ILogger<RestoreWorker> _logger;
 
-        public RestoreWorker(IRoomRepository roomRepository,
+        public RestoreWorker(IServerService serverService,
             IRoomService roomService,
             IVoiceChannelService voiceChannelService,
             ILogger<RestoreWorker> logger)
         {
-            _roomRepository = roomRepository;
+            _serverService = serverService;
             _roomService = roomService;
             _voiceChannelService = voiceChannelService;
             _logger = logger;
@@ -34,16 +34,9 @@ namespace DiscordVoiceChannelsOnDemand.Bot.Workers
         /// <inheritdoc />
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
-            // Purge dangling channels
-            var allVoiceChannels = (await _voiceChannelService.GetAllAsync()).ToList();
-            var allRooms = (await _roomRepository.GetAllAsync()).ToList();
+            var voiceChannels = (await _roomService.GetAllRoomVoiceChannelsAsync()).Cast<SocketVoiceChannel>();
 
-            var selectVoiceChannels = allVoiceChannels
-                .Where(x => allRooms
-                    .Exists(z => z.ChannelId == x.Id.ToString()))
-                .Cast<SocketVoiceChannel>();
-
-            foreach (var voiceChannel in selectVoiceChannels)
+            foreach (var voiceChannel in voiceChannels)
             {
                 var userCount = voiceChannel.Users.Count;
                 if (userCount > 0)

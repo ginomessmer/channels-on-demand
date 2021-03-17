@@ -1,6 +1,5 @@
 using Discord;
 using Discord.WebSocket;
-using DiscordVoiceChannelsOnDemand.Bot.Infrastructure;
 using DiscordVoiceChannelsOnDemand.Bot.Services;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
@@ -11,7 +10,7 @@ namespace DiscordVoiceChannelsOnDemand.Bot.Workers
 {
     /// <summary>
     /// This worker creates a new room on demand whenever someone joins
-    /// the <seealso cref="BotOptions.GatewayVoiceChannelId"/> voice channel.
+    /// the lobby voice channel.
     /// </summary>
     public class OnDemandRoomWorker : BackgroundService
     {
@@ -23,7 +22,6 @@ namespace DiscordVoiceChannelsOnDemand.Bot.Workers
         public OnDemandRoomWorker(DiscordSocketClient client,
             IRoomService roomService,
             IServerService serverService,
-            IServerRepository serverRepository,
             ILogger<OnDemandRoomWorker> logger)
         {
             _client = client;
