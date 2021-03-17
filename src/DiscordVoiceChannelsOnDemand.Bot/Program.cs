@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography.X509Certificates;
+using System.Threading;
 using System.Threading.Tasks;
 using Discord;
 using Discord.WebSocket;
@@ -36,18 +37,25 @@ namespace DiscordVoiceChannelsOnDemand.Bot
 
                     // Bot Services
                     services.AddSingleton<IRoomService, SocketRoomService>();
+                    services.AddSingleton<IVoiceChannelService, SocketVoiceChannelService>();
 
                     services.AddSingleton<IDiscordClient, DiscordSocketClient>(sp => sp.GetRequiredService<DiscordSocketClient>())
                         .AddSingleton<DiscordSocketClient>(sp =>
                         {
+                            var readyEvent = new AutoResetEvent(false);
+
                             var token = hostContext.Configuration.GetConnectionString("DiscordBotToken");
+
                             var client = new DiscordSocketClient();
+                            client.Ready += () => Task.FromResult(readyEvent.Set());
 
                             Task.WaitAll(client.LoginAsync(TokenType.Bot, token), client.StartAsync());
 
+                            readyEvent.WaitOne(TimeSpan.FromSeconds(30));
                             return client;
                         });
 
+                    services.AddHostedService<RestoreWorker>();
                     services.AddHostedService<OnDemandRoomWorker>();
                     services.AddHostedService<CleanUpWorker>();
                 });
