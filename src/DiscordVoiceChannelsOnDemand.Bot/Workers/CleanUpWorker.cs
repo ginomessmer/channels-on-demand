@@ -50,7 +50,7 @@ namespace DiscordVoiceChannelsOnDemand.Bot.Workers
                 return;
 
             await _roomService.DeleteRoomAsync(voiceChannel);
-            _logger.LogInformation($"Purged voice channel {voiceChannel}");
+            _logger.LogInformation($"Purged room {voiceChannel}");
         }
     }
 }
