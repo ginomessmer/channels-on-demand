@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
+using DiscordVoiceChannelsOnDemand.Bot.Models;
 
 namespace DiscordVoiceChannelsOnDemand.Bot.Infrastructure
 {
@@ -27,9 +29,23 @@ namespace DiscordVoiceChannelsOnDemand.Bot.Infrastructure
         Task<bool> ExistsAsync(string id);
 
         /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="slot"></param>
+        /// <returns></returns>
+        Task UpdateAsync(T slot);
+
+        /// <summary>
         /// Returns all voice channels that are stored.
         /// </summary>
         /// <returns></returns>
         Task<IEnumerable<T>> GetAllAsync();
+
+        /// <summary>
+        /// Gets a single item.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        Task<T> GetAsync(string id);
     }
 }

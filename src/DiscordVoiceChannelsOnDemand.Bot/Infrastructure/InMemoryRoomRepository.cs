@@ -31,8 +31,19 @@ namespace DiscordVoiceChannelsOnDemand.Bot.Infrastructure
             Task.FromResult(_rooms.Exists(x => x.ChannelId == id));
 
         /// <inheritdoc />
+        public Task UpdateAsync(Room room)
+        {
+            _rooms.RemoveAll(x => x.ChannelId == room.ChannelId);
+            _rooms.Add(room);
+            return Task.CompletedTask;
+        }
+
+        /// <inheritdoc />
         public Task<IEnumerable<Room>> GetAllAsync() =>
             Task.FromResult(_rooms as IEnumerable<Room>);
+
+        /// <inheritdoc />
+        public Task<Room> GetAsync(string id) => Task.FromResult(_rooms.SingleOrDefault(x => x.ChannelId == id));
 
         /// <inheritdoc />
         public Task<IEnumerable<Room>> GetAllAsync(string guildId) =>

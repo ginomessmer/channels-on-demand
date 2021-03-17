@@ -7,7 +7,7 @@ using Discord.Commands;
 
 namespace DiscordVoiceChannelsOnDemand.Bot.Commands
 {
-    public class PingCommand : ModuleBase<SocketCommandContext>
+    public class PingCommands : ModuleBase<SocketCommandContext>
     {
         [Command("ping")]
         public async Task Ping()

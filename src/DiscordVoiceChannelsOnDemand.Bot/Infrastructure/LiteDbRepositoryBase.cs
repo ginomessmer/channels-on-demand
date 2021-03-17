@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using LiteDB;
 
@@ -16,7 +17,7 @@ namespace DiscordVoiceChannelsOnDemand.Bot.Infrastructure
         protected ILiteCollection<T> Collection => _database.GetCollection<T>();
 
         /// <inheritdoc />
-        public Task AddAsync(T item) => Task.FromResult(Collection.Insert(item));
+        public virtual Task AddAsync(T item) => Task.FromResult(Collection.Insert(item));
 
         /// <inheritdoc />
         public Task RemoveAsync(string id) => Task.FromResult<bool>(Collection.Delete(id));
@@ -26,5 +27,10 @@ namespace DiscordVoiceChannelsOnDemand.Bot.Infrastructure
 
         /// <inheritdoc />
         public Task<IEnumerable<T>> GetAllAsync() => Task.FromResult<IEnumerable<T>>(Collection.FindAll());
+
+        /// <inheritdoc />
+        public Task<T> GetAsync(string id) => Task.FromResult(Collection.FindById(id));
+
+        public Task UpdateAsync(T item) => Task.FromResult(Collection.Update(item));
     }
 }

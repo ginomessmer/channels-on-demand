@@ -7,7 +7,7 @@ namespace DiscordVoiceChannelsOnDemand.Bot.Models
     {
         [Key]
         [BsonId]
-        public string GatewayChannelId { get; set; }
+        public string TriggerVoiceChannelId { get; set; }
 
         public string CategoryId { get; set; }
     }

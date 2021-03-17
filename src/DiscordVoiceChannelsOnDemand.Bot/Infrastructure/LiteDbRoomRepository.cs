@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace DiscordVoiceChannelsOnDemand.Bot.Infrastructure
 {
-    public class LiteDbRoomLiteDbRepository : LiteDbRepositoryBase<Room>, IRoomRepository
+    public class LiteDbRoomRepository : LiteDbRepositoryBase<Room>, IRoomRepository
     {
-        public LiteDbRoomLiteDbRepository(ILiteDatabase database) : base(database)
+        public LiteDbRoomRepository(ILiteDatabase database) : base(database)
         {
         }
 
