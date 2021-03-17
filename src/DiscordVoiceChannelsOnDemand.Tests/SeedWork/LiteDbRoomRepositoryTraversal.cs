@@ -2,6 +2,7 @@ using DiscordVoiceChannelsOnDemand.Bot.Infrastructure;
 using DiscordVoiceChannelsOnDemand.Bot.Models;
 using LiteDB;
 using System.Collections.Generic;
+using DiscordVoiceChannelsOnDemand.Bot.Infrastructure.LiteDb;
 
 namespace DiscordVoiceChannelsOnDemand.Tests.SeedWork
 {

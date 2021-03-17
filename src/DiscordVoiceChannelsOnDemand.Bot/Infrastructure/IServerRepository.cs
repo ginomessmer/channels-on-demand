@@ -1,6 +1,6 @@
+using DiscordVoiceChannelsOnDemand.Bot.Models;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using DiscordVoiceChannelsOnDemand.Bot.Models;
 
 namespace DiscordVoiceChannelsOnDemand.Bot.Infrastructure
 {

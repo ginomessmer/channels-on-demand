@@ -1,9 +1,8 @@
-using System;
-using System.Collections.Generic;
 using Discord;
 using Discord.WebSocket;
 using DiscordVoiceChannelsOnDemand.Bot.Infrastructure;
-using Microsoft.Extensions.Options;
+using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace DiscordVoiceChannelsOnDemand.Bot.Services

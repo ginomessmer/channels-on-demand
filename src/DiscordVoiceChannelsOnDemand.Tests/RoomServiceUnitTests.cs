@@ -1,12 +1,11 @@
-using System;
-using System.Linq;
-using System.Threading.Tasks;
 using Discord;
 using DiscordVoiceChannelsOnDemand.Bot.Infrastructure;
+using DiscordVoiceChannelsOnDemand.Bot.Infrastructure.InMemory;
 using DiscordVoiceChannelsOnDemand.Bot.Models;
 using DiscordVoiceChannelsOnDemand.Bot.Services;
-using Microsoft.Extensions.Options;
 using Moq;
+using System;
+using System.Threading.Tasks;
 using Xunit;
 
 namespace DiscordVoiceChannelsOnDemand.Tests

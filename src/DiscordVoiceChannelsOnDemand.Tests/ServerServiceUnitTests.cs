@@ -1,9 +1,9 @@
-using System.Threading.Tasks;
 using Discord;
 using DiscordVoiceChannelsOnDemand.Bot.Infrastructure;
 using DiscordVoiceChannelsOnDemand.Bot.Models;
 using DiscordVoiceChannelsOnDemand.Bot.Services;
 using Moq;
+using System.Threading.Tasks;
 using Xunit;
 
 namespace DiscordVoiceChannelsOnDemand.Tests

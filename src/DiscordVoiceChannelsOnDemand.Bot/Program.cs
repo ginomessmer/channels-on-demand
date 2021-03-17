@@ -1,6 +1,9 @@
 using Discord;
+using Discord.Commands;
 using Discord.WebSocket;
+using DiscordVoiceChannelsOnDemand.Bot.Commands;
 using DiscordVoiceChannelsOnDemand.Bot.Infrastructure;
+using DiscordVoiceChannelsOnDemand.Bot.Infrastructure.LiteDb;
 using DiscordVoiceChannelsOnDemand.Bot.Services;
 using DiscordVoiceChannelsOnDemand.Bot.Workers;
 using LiteDB;
@@ -10,8 +13,6 @@ using Microsoft.Extensions.Hosting;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
-using Discord.Commands;
-using DiscordVoiceChannelsOnDemand.Bot.Commands;
 
 namespace DiscordVoiceChannelsOnDemand.Bot
 {

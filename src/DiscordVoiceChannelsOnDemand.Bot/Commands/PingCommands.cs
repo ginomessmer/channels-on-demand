@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using Discord.Commands;
 using System.Threading.Tasks;
-using Discord.Commands;
 
 namespace DiscordVoiceChannelsOnDemand.Bot.Commands
 {

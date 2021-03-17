@@ -1,11 +1,11 @@
-﻿using System;
+﻿using DiscordVoiceChannelsOnDemand.Bot.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
-using DiscordVoiceChannelsOnDemand.Bot.Models;
 
-namespace DiscordVoiceChannelsOnDemand.Bot.Infrastructure
+namespace DiscordVoiceChannelsOnDemand.Bot.Infrastructure.InMemory
 {
     public class InMemoryRoomRepository : IRoomRepository
     {

@@ -1,10 +1,10 @@
-﻿using DiscordVoiceChannelsOnDemand.Bot.Models;
-using LiteDB;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Data;
 using System.Threading.Tasks;
+using DiscordVoiceChannelsOnDemand.Bot.Models;
+using LiteDB;
 
-namespace DiscordVoiceChannelsOnDemand.Bot.Infrastructure
+namespace DiscordVoiceChannelsOnDemand.Bot.Infrastructure.LiteDb
 {
     public class LiteDbRoomRepository : LiteDbRepositoryBase<Room>, IRoomRepository
     {

@@ -1,12 +1,10 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Threading.Tasks;
 using DiscordVoiceChannelsOnDemand.Bot.Models;
 using LiteDB;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
-namespace DiscordVoiceChannelsOnDemand.Bot.Infrastructure
+namespace DiscordVoiceChannelsOnDemand.Bot.Infrastructure.LiteDb
 {
     public class LiteDbServerRepository : LiteDbRepositoryBase<Server>, IServerRepository
     {
