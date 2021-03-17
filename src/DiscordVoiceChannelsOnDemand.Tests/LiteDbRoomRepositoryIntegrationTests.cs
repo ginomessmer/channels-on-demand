@@ -1,6 +1,6 @@
+using DiscordVoiceChannelsOnDemand.Tests.SeedWork;
 using System.Linq;
 using System.Threading.Tasks;
-using DiscordVoiceChannelsOnDemand.Tests.SeedWork;
 using Xunit;
 
 namespace DiscordVoiceChannelsOnDemand.Tests

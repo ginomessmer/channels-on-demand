@@ -1,8 +1,8 @@
+using Discord;
+using Discord.WebSocket;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Discord;
-using Discord.WebSocket;
 
 namespace DiscordVoiceChannelsOnDemand.Bot.Services
 {
@@ -16,15 +16,11 @@ namespace DiscordVoiceChannelsOnDemand.Bot.Services
         }
 
         /// <inheritdoc />
-        public Task<IEnumerable<IVoiceChannel>> GetAllAsync()
-        {
-            return Task.FromResult(_client.Guilds.SelectMany(x => x.VoiceChannels.Cast<IVoiceChannel>()));
-        }
+        public Task<IEnumerable<IVoiceChannel>> GetAllAsync() => 
+            Task.FromResult(_client.Guilds.SelectMany(x => x.VoiceChannels.Cast<IVoiceChannel>()));
 
         /// <inheritdoc />
-        public Task<IEnumerable<IVoiceChannel>> GetAllAsync(ulong guildId)
-        {
-            return Task.FromResult(_client.GetGuild(guildId).VoiceChannels.Cast<IVoiceChannel>());
-        }
+        public Task<IEnumerable<IVoiceChannel>> GetAllAsync(ulong guildId) => 
+            Task.FromResult(_client.GetGuild(guildId).VoiceChannels.Cast<IVoiceChannel>());
     }
 }
