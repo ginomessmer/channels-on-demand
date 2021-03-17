@@ -11,13 +11,13 @@ namespace DiscordVoiceChannelsOnDemand.Bot.Services
     /// <inheritdoc />
     /// Based on <seealso cref="DiscordSocketClient"/>.
     /// </summary>
-    public class SocketRoomService : IRoomService
+    public class RoomService : IRoomService
     {
         private readonly IDiscordClient _client;
         private readonly IRoomRepository _roomRepository;
         private readonly BotOptions _options;
 
-        public SocketRoomService(IDiscordClient client, IRoomRepository roomRepository,
+        public RoomService(IDiscordClient client, IRoomRepository roomRepository,
             IOptions<BotOptions> options)
         {
             _client = client;

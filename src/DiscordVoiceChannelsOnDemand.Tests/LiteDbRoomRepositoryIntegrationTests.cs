@@ -1,18 +1,14 @@
-using System;
-using DiscordVoiceChannelsOnDemand.Tests.SeedWork;
-using System.Linq;
-using System.Net.Sockets;
-using System.Threading.Tasks;
 using Discord;
-using Discord.Rest;
-using Discord.WebSocket;
 using DiscordVoiceChannelsOnDemand.Bot.Infrastructure;
 using DiscordVoiceChannelsOnDemand.Bot.Options;
 using DiscordVoiceChannelsOnDemand.Bot.Services;
+using DiscordVoiceChannelsOnDemand.Tests.SeedWork;
 using Microsoft.Extensions.Options;
 using Moq;
+using System;
+using System.Linq;
+using System.Threading.Tasks;
 using Xunit;
-using ISocketAudioChannel = Discord.WebSocket.ISocketAudioChannel;
 
 namespace DiscordVoiceChannelsOnDemand.Tests
 {
@@ -46,7 +42,7 @@ namespace DiscordVoiceChannelsOnDemand.Tests
             discordClientMock.Setup(x => x.GetGuildAsync(It.IsAny<ulong>(), It.IsAny<CacheMode>(), It.IsAny<RequestOptions>())).ReturnsAsync(guildMock.Object);
 
             // Service
-            var service = new SocketRoomService(discordClientMock.Object, repositoryMock.Object,
+            var service = new RoomService(discordClientMock.Object, repositoryMock.Object,
                 new OptionsWrapper<BotOptions>(options));
 
             // Act

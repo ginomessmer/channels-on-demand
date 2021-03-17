@@ -33,7 +33,7 @@ namespace DiscordVoiceChannelsOnDemand.Bot
                     services.AddSingleton<IRoomRepository, LiteDbRoomRepository>();
 
                     // Bot Services
-                    services.AddSingleton<IRoomService, SocketRoomService>();
+                    services.AddSingleton<IRoomService, RoomService>();
                     services.AddSingleton<IVoiceChannelService, SocketVoiceChannelService>();
 
                     services.AddSingleton<IDiscordClient, DiscordSocketClient>(sp => sp.GetRequiredService<DiscordSocketClient>())
