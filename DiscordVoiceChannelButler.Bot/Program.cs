@@ -7,9 +7,11 @@ using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 using Discord;
 using Discord.WebSocket;
+using DiscordVoiceChannelButler.Bot.Infrastructure;
 using DiscordVoiceChannelButler.Bot.Options;
 using DiscordVoiceChannelButler.Bot.Services;
 using DiscordVoiceChannelButler.Bot.Workers;
+using LiteDB;
 using Microsoft.Extensions.Configuration;
 
 namespace DiscordVoiceChannelButler.Bot
@@ -28,7 +30,11 @@ namespace DiscordVoiceChannelButler.Bot
                 {
                     services.Configure<BotOptions>(hostContext.Configuration.GetSection("Bot"));
                     
-                    services.AddSingleton<BotState>();
+                    // Infrastructure
+                    services.AddSingleton<ILiteDatabase, LiteDatabase>(_ => new LiteDatabase("data.db"));
+                    services.AddSingleton<IRoomRepository, LiteDbRoomRepository>();
+
+                    // Bot Services
                     services.AddSingleton<IRoomService, SocketRoomService>();
 
                     services.AddSingleton<IDiscordClient, DiscordSocketClient>(sp => sp.GetRequiredService<DiscordSocketClient>())

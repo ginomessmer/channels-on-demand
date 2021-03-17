@@ -1,6 +1,7 @@
 using System.Threading.Tasks;
 using Discord;
 using Discord.WebSocket;
+using DiscordVoiceChannelButler.Bot.Infrastructure;
 using DiscordVoiceChannelButler.Bot.Options;
 using Microsoft.Extensions.Options;
 
@@ -9,14 +10,14 @@ namespace DiscordVoiceChannelButler.Bot.Services
     public class SocketRoomService : IRoomService
     {
         private readonly DiscordSocketClient _client;
-        private readonly BotState _botState;
+        private readonly IRoomRepository _roomRepository;
         private readonly BotOptions _options;
 
-        public SocketRoomService(DiscordSocketClient client, BotState botState,
+        public SocketRoomService(DiscordSocketClient client, IRoomRepository roomRepository,
             IOptions<BotOptions> options)
         {
             _client = client;
-            _botState = botState;
+            _roomRepository = roomRepository;
             _options = options.Value;
         }
 
@@ -30,7 +31,7 @@ namespace DiscordVoiceChannelButler.Bot.Services
             // Move user
             await user.ModifyAsync(x => x.Channel = voiceChannel);
 
-            _botState.AddRoom(voiceChannel.Id, user.Id);
+            await _roomRepository.AddAsync(voiceChannel.Id.ToString(), user.Id.ToString());
 
             return voiceChannel;
         }
@@ -39,7 +40,7 @@ namespace DiscordVoiceChannelButler.Bot.Services
         public async Task DeleteRoomAsync(SocketVoiceChannel voiceChannel)
         {
             await voiceChannel.DeleteAsync();
-            _botState.RemoveRoom(voiceChannel.Id);
+            await _roomRepository.RemoveAsync(voiceChannel.Id.ToString());
         }
     }
 }
