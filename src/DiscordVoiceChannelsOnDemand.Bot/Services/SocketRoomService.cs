@@ -35,7 +35,8 @@ namespace DiscordVoiceChannelsOnDemand.Bot.Services
             // Move user
             await user.ModifyAsync(x => x.Channel = voiceChannel);
 
-            await _roomRepository.AddAsync(voiceChannel.Id.ToString(), user.Id.ToString());
+            await _roomRepository.AddAsync(voiceChannel.Id.ToString(), user.Id.ToString(),
+                guild.Id.ToString());
 
             return voiceChannel;
         }

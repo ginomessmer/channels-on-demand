@@ -15,7 +15,7 @@ namespace DiscordVoiceChannelsOnDemand.Bot.Infrastructure
         /// <param name="voiceChannelId">The voice channel's ID</param>
         /// <param name="hostUserId">The host's user ID</param>
         /// <returns>The persisted room model instance</returns>
-        Task<Room> AddAsync(string voiceChannelId, string hostUserId);
+        Task<Room> AddAsync(string voiceChannelId, string hostUserId, string guildId);
 
         /// <summary>
         /// Removes a room entirely.
@@ -36,5 +36,12 @@ namespace DiscordVoiceChannelsOnDemand.Bot.Infrastructure
         /// </summary>
         /// <returns></returns>
         Task<IEnumerable<Room>> GetAllAsync();
+
+        /// <summary>
+        /// <inheritdoc cref="GetAllAsync()"/>
+        /// </summary>
+        /// <param name="guildId">The guild's ID that is used to filter the results</param>
+        /// <returns></returns>
+        Task<IEnumerable<Room>> GetAllAsync(string guildId);
     }
 }
