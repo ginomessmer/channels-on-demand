@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 using LiteDB;
 
@@ -32,5 +34,7 @@ namespace DiscordVoiceChannelsOnDemand.Bot.Infrastructure
         public Task<T> GetAsync(string id) => Task.FromResult(Collection.FindById(id));
 
         public Task UpdateAsync(T item) => Task.FromResult(Collection.Update(item));
+
+        public Task<IEnumerable<T>> QueryAsync(Expression<Func<T, bool>> expression) => Task.FromResult(Collection.Find(expression));
     }
 }

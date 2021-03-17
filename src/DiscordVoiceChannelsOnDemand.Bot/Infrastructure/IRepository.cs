@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 using DiscordVoiceChannelsOnDemand.Bot.Models;
 
@@ -47,5 +49,12 @@ namespace DiscordVoiceChannelsOnDemand.Bot.Infrastructure
         /// <param name="id"></param>
         /// <returns></returns>
         Task<T> GetAsync(string id);
+
+        /// <summary>
+        /// Queries the repository by expression.
+        /// </summary>
+        /// <param name="expression"></param>
+        /// <returns></returns>
+        Task<IEnumerable<T>> QueryAsync(Expression<Func<T, bool>> expression);
     }
 }

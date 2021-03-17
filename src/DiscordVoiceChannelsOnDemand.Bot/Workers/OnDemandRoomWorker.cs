@@ -19,7 +19,6 @@ namespace DiscordVoiceChannelsOnDemand.Bot.Workers
         private readonly DiscordSocketClient _client;
         private readonly IRoomService _roomService;
         private readonly IServerService _serverService;
-        private readonly IServerRepository _serverRepository;
         private readonly ILogger<OnDemandRoomWorker> _logger;
 
         public OnDemandRoomWorker(DiscordSocketClient client,
@@ -31,14 +30,12 @@ namespace DiscordVoiceChannelsOnDemand.Bot.Workers
             _client = client;
             _roomService = roomService;
             _serverService = serverService;
-            _serverRepository = serverRepository;
             _logger = logger;
         }
 
         private Task ClientOnUserVoiceStateUpdated(SocketUser socketUser,
             SocketVoiceState previousState, SocketVoiceState newState)
         {
-            var user = socketUser as IGuildUser;
             var voiceChannel = newState.VoiceChannel ?? previousState.VoiceChannel;
             return HandleAsync(socketUser, voiceChannel);
         }

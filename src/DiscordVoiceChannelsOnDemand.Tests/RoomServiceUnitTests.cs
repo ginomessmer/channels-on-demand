@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Discord;
 using DiscordVoiceChannelsOnDemand.Bot.Infrastructure;
@@ -13,7 +14,7 @@ namespace DiscordVoiceChannelsOnDemand.Tests
     public class RoomServiceUnitTests
     {
         [Fact]
-        public async Task Test()
+        public async Task RoomService_CreateRoom_EndUpInRepository()
         {
             // Arrange
             var roomRepository = new InMemoryRoomRepository();
@@ -21,10 +22,8 @@ namespace DiscordVoiceChannelsOnDemand.Tests
             // Mock => Server Repository
             var serverRepositoryMock = new Mock<IServerRepository>();
             {
-                serverRepositoryMock.Setup(x => x.FindLobbyAsync(It.IsAny<string>())).ReturnsAsync(() => new Lobby
-                {
-                    CategoryId = "1111"
-                });
+                serverRepositoryMock.Setup(x => x.FindLobbyAsync(It.IsAny<string>()))
+                    .ReturnsAsync(() => new Lobby {CategoryId = "1111"});
             }
 
             // Mock => Voice Channel

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Discord;
 using DiscordVoiceChannelsOnDemand.Bot.Infrastructure;
+using DiscordVoiceChannelsOnDemand.Bot.Models;
 
 namespace DiscordVoiceChannelsOnDemand.Bot.Services
 {
@@ -33,6 +34,23 @@ namespace DiscordVoiceChannelsOnDemand.Bot.Services
         {
             var lobby = await _serverRepository.FindLobbyAsync(voiceChannel.Id.ToString());
             return lobby is not null;
+        }
+
+        /// <inheritdoc />
+        public async Task<bool> IsRegisteredAsync(IGuild guild)
+        {
+            var result = await _serverRepository.QueryAsync(x => x.GuildId == guild.Id.ToString());
+            return result.SingleOrDefault() is not null;
+        }
+
+        /// <inheritdoc />
+        public async Task RegisterAsync(IGuild guild)
+        {
+            await _serverRepository.AddAsync(new Server
+            {
+                GuildId = guild.Id.ToString(),
+                Lobbies = new List<Lobby>()
+            });
         }
 
         #endregion
