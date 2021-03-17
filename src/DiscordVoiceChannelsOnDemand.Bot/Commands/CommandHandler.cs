@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
-using Discord.Commands;
+﻿using Discord.Commands;
 using Discord.WebSocket;
+using System;
+using System.Threading.Tasks;
 
-namespace DiscordVoiceChannelsOnDemand.Bot.Handlers
+namespace DiscordVoiceChannelsOnDemand.Bot.Commands
 {
     public class CommandHandler
     {

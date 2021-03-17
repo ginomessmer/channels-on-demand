@@ -1,10 +1,10 @@
+using DiscordVoiceChannelsOnDemand.Bot.Models;
+using LiteDB;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using DiscordVoiceChannelsOnDemand.Bot.Models;
-using LiteDB;
 
-namespace DiscordVoiceChannelsOnDemand.Bot.Infrastructure
+namespace DiscordVoiceChannelsOnDemand.Bot.Infrastructure.LiteDb
 {
     public class LiteDbServerRepository : LiteDbRepositoryBase<Server>, IServerRepository
     {
@@ -27,11 +27,11 @@ namespace DiscordVoiceChannelsOnDemand.Bot.Infrastructure
         #region Implementation of IServerRepository
 
         /// <inheritdoc />
-        public Task<IEnumerable<Lobby>> QueryAllLobbysAsync() => 
-            Task.FromResult(Collection.FindAll().SelectMany(x => x.Lobbys));
+        public Task<IEnumerable<Lobby>> QueryAllLobbiesAsync() => 
+            Task.FromResult(Collection.FindAll().SelectMany(x => x.Lobbies));
 
         /// <inheritdoc />
-        public async Task<bool> LobbysExistsAsync(string voiceChannelId)
+        public async Task<bool> LobbyExistsAsync(string voiceChannelId)
         {
             var lobby = await FindLobbyAsync(voiceChannelId);
             return lobby is not null;
@@ -40,7 +40,7 @@ namespace DiscordVoiceChannelsOnDemand.Bot.Infrastructure
         /// <inheritdoc />
         public async Task<Lobby> FindLobbyAsync(string voiceChannelId)
         {
-            var lobbys = await QueryAllLobbysAsync();
+            var lobbys = await QueryAllLobbiesAsync();
             var lobby = lobbys.FirstOrDefault(x => x.TriggerVoiceChannelId == voiceChannelId);
             return lobby;
         }
@@ -48,10 +48,10 @@ namespace DiscordVoiceChannelsOnDemand.Bot.Infrastructure
         /// <inheritdoc />
         public async Task DeleteLobbyAsync(string voiceChannelId)
         {
-            var server = Collection.Find(x => x.Lobbys.SingleOrDefault(x => x.TriggerVoiceChannelId == voiceChannelId) != null).Single();
-            var lobby = server.Lobbys.Single(x => x.TriggerVoiceChannelId == voiceChannelId);
+            var server = Collection.Find(x => x.Lobbies.SingleOrDefault(x => x.TriggerVoiceChannelId == voiceChannelId) != null).Single();
+            var lobby = server.Lobbies.Single(x => x.TriggerVoiceChannelId == voiceChannelId);
 
-            var isSuccess = server.Lobbys.Remove(lobby);
+            var isSuccess = server.Lobbies.Remove(lobby);
             await UpdateAsync(server);
         }
 

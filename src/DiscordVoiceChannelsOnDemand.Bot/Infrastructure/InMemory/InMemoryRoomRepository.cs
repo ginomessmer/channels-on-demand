@@ -1,9 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using DiscordVoiceChannelsOnDemand.Bot.Models;
+using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
-using DiscordVoiceChannelsOnDemand.Bot.Models;
 
-namespace DiscordVoiceChannelsOnDemand.Bot.Infrastructure
+namespace DiscordVoiceChannelsOnDemand.Bot.Infrastructure.InMemory
 {
     public class InMemoryRoomRepository : IRoomRepository
     {
@@ -31,10 +33,10 @@ namespace DiscordVoiceChannelsOnDemand.Bot.Infrastructure
             Task.FromResult(_rooms.Exists(x => x.ChannelId == id));
 
         /// <inheritdoc />
-        public Task UpdateAsync(Room room)
+        public Task UpdateAsync(Room item)
         {
-            _rooms.RemoveAll(x => x.ChannelId == room.ChannelId);
-            _rooms.Add(room);
+            _rooms.RemoveAll(x => x.ChannelId == item.ChannelId);
+            _rooms.Add(item);
             return Task.CompletedTask;
         }
 
@@ -44,6 +46,9 @@ namespace DiscordVoiceChannelsOnDemand.Bot.Infrastructure
 
         /// <inheritdoc />
         public Task<Room> GetAsync(string id) => Task.FromResult(_rooms.SingleOrDefault(x => x.ChannelId == id));
+
+        /// <inheritdoc />
+        public Task<IEnumerable<Room>> QueryAsync(Expression<Func<Room, bool>> expression) => Task.FromResult(_rooms.Where(expression.Compile()));
 
         /// <inheritdoc />
         public Task<IEnumerable<Room>> GetAllAsync(string guildId) =>

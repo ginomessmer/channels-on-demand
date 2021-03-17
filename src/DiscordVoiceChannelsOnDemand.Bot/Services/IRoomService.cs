@@ -1,5 +1,7 @@
+using System.Collections.Generic;
 using Discord;
 using System.Threading.Tasks;
+using Discord.WebSocket;
 
 namespace DiscordVoiceChannelsOnDemand.Bot.Services
 {
@@ -23,11 +25,24 @@ namespace DiscordVoiceChannelsOnDemand.Bot.Services
         Task DeleteRoomAsync(IVoiceChannel voiceChannel);
 
         /// <summary>
-        /// <inheritdoc cref="DeleteRoomAsync(Discord.WebSocket.SocketVoiceChannel)"/>
+        /// <inheritdoc cref="DeleteRoomAsync(Discord.IVoiceChannel)"/>
         /// </summary>
         /// <param name="voiceChannelId"></param>
         /// <param name="guildId"></param>
         /// <returns></returns>
         Task DeleteRoomAsync(ulong voiceChannelId, ulong guildId);
+
+        /// <summary>
+        /// Gets all rooms as voice channels.
+        /// </summary>
+        /// <returns></returns>
+        Task<IEnumerable<IVoiceChannel>> GetAllRoomVoiceChannelsAsync();
+
+        /// <summary>
+        /// Checks if the <paramref name="voiceChannel"/> is registered as a room.
+        /// </summary>
+        /// <param name="voiceChannel"></param>
+        /// <returns></returns>
+        Task<bool> ExistsAsync(IVoiceChannel voiceChannel);
     }
 }

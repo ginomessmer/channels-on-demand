@@ -1,6 +1,9 @@
 using Discord;
+using Discord.Commands;
 using Discord.WebSocket;
+using DiscordVoiceChannelsOnDemand.Bot.Commands;
 using DiscordVoiceChannelsOnDemand.Bot.Infrastructure;
+using DiscordVoiceChannelsOnDemand.Bot.Infrastructure.LiteDb;
 using DiscordVoiceChannelsOnDemand.Bot.Services;
 using DiscordVoiceChannelsOnDemand.Bot.Workers;
 using LiteDB;
@@ -10,8 +13,6 @@ using Microsoft.Extensions.Hosting;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
-using Discord.Commands;
-using DiscordVoiceChannelsOnDemand.Bot.Handlers;
 
 namespace DiscordVoiceChannelsOnDemand.Bot
 {
@@ -48,8 +49,8 @@ namespace DiscordVoiceChannelsOnDemand.Bot
                     services.AddHostedService<CommandWorker>();
                     services.AddHostedService<InitializeWorker>();
                     services.AddHostedService<RestoreWorker>();
-                    services.AddHostedService<OnDemandRoomWorker>();
-                    services.AddHostedService<CleanUpWorker>();
+                    services.AddHostedService<CreateRoomWorker>();
+                    services.AddHostedService<ClearRoomWorker>();
                 });
 
         private static DiscordSocketClient CreateDiscordSocketClient(HostBuilderContext hostContext)

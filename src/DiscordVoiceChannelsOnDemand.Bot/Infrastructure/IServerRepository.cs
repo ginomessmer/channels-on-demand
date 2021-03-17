@@ -1,15 +1,13 @@
+using DiscordVoiceChannelsOnDemand.Bot.Models;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using DiscordVoiceChannelsOnDemand.Bot.Models;
 
 namespace DiscordVoiceChannelsOnDemand.Bot.Infrastructure
 {
-    public interface IServerRepository : IGenericRepository<Server>
+    public interface IServerRepository : IRepository<Server>
     {
-        Task<IEnumerable<Lobby>> QueryAllLobbysAsync();
+        Task<IEnumerable<Lobby>> QueryAllLobbiesAsync();
 
-        Task<bool> LobbysExistsAsync(string voiceChannelId);
-        
         Task<Lobby> FindLobbyAsync(string voiceChannelId);
 
         Task DeleteLobbyAsync(string voiceChannelId);

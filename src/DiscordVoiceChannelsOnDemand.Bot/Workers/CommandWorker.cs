@@ -1,7 +1,7 @@
+using DiscordVoiceChannelsOnDemand.Bot.Commands;
+using Microsoft.Extensions.Hosting;
 using System.Threading;
 using System.Threading.Tasks;
-using DiscordVoiceChannelsOnDemand.Bot.Handlers;
-using Microsoft.Extensions.Hosting;
 
 namespace DiscordVoiceChannelsOnDemand.Bot.Workers
 {

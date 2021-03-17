@@ -1,4 +1,4 @@
-using DiscordVoiceChannelsOnDemand.Bot.Infrastructure;
+using DiscordVoiceChannelsOnDemand.Bot.Infrastructure.LiteDb;
 using DiscordVoiceChannelsOnDemand.Bot.Models;
 using LiteDB;
 using System.Collections.Generic;

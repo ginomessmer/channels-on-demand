@@ -11,19 +11,18 @@ namespace DiscordVoiceChannelsOnDemand.Bot.Workers
     /// <summary>
     /// This worker removes empty voice channels created by the butler.
     /// </summary>
-    public class CleanUpWorker : BackgroundService
+    public class ClearRoomWorker : BackgroundService
     {
         private readonly DiscordSocketClient _client;
         private readonly IRoomService _roomService;
-        private readonly IRoomRepository _roomRepository;
-        private readonly ILogger<CleanUpWorker> _logger;
+        private readonly ILogger<ClearRoomWorker> _logger;
 
-        public CleanUpWorker(DiscordSocketClient client, IRoomService roomService, IRoomRepository roomRepository,
-            ILogger<CleanUpWorker> logger)
+        public ClearRoomWorker(DiscordSocketClient client,
+            IRoomService roomService,
+            ILogger<ClearRoomWorker> logger)
         {
             _client = client;
             _roomService = roomService;
-            _roomRepository = roomRepository;
             _logger = logger;
         }
 
@@ -34,15 +33,15 @@ namespace DiscordVoiceChannelsOnDemand.Bot.Workers
             return Task.CompletedTask;
         }
 
-        private async Task ClientOnUserVoiceStateUpdated(SocketUser arg1, SocketVoiceState previousState, SocketVoiceState newState)
+        private async Task ClientOnUserVoiceStateUpdated(SocketUser user, SocketVoiceState previousState, SocketVoiceState newState)
         {
             var voiceChannel = previousState.VoiceChannel;
 
             if (voiceChannel is null)
                 return;
 
-            // Check if its part of Rooms
-            if (!await _roomRepository.ExistsAsync(voiceChannel.Id.ToString()))
+            // Check if its a room
+            if (!await _roomService.ExistsAsync(voiceChannel))
                 return;
 
             // Handle disconnect

@@ -1,22 +1,17 @@
-using System.Collections.Generic;
-using System.Threading;
-using System.Threading.Tasks;
-using DiscordVoiceChannelsOnDemand.Bot.Infrastructure;
-using DiscordVoiceChannelsOnDemand.Bot.Models;
 using DiscordVoiceChannelsOnDemand.Bot.Services;
 using Microsoft.Extensions.Hosting;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace DiscordVoiceChannelsOnDemand.Bot.Workers
 {
     public class InitializeWorker : BackgroundService
     {
         private readonly IServerService _serverService;
-        private readonly IServerRepository _serverRepository;
 
-        public InitializeWorker(IServerService serverService, IServerRepository serverRepository)
+        public InitializeWorker(IServerService serverService)
         {
             _serverService = serverService;
-            _serverRepository = serverRepository;
         }
 
         /// <inheritdoc />
@@ -25,14 +20,10 @@ namespace DiscordVoiceChannelsOnDemand.Bot.Workers
             var guilds = await _serverService.GetAllGuildsAsync();
             foreach (var guild in guilds)
             {
-                if (await _serverRepository.ExistsAsync(guild.Id.ToString()))
+                if (await _serverService.IsRegisteredAsync(guild))
                     continue;
 
-                await _serverRepository.AddAsync(new Server
-                {
-                    GuildId = guild.Id.ToString(),
-                    Lobbys = new List<Lobby>()
-                });
+                await _serverService.RegisterAsync(guild);
             }
         }
     }

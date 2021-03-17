@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Threading.Tasks;
 
-namespace DiscordVoiceChannelsOnDemand.Bot.Infrastructure
+namespace DiscordVoiceChannelsOnDemand.Bot.Infrastructure.LiteDb
 {
     public class LiteDbRoomRepository : LiteDbRepositoryBase<Room>, IRoomRepository
     {
