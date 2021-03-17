@@ -11,6 +11,8 @@ using Microsoft.Extensions.Hosting;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
+using Discord.Commands;
+using DiscordVoiceChannelsOnDemand.Bot.Handlers;
 
 namespace DiscordVoiceChannelsOnDemand.Bot
 {
@@ -41,8 +43,12 @@ namespace DiscordVoiceChannelsOnDemand.Bot
                     // Discord
                     services.AddSingleton<DiscordSocketClient>(sp => CreateDiscordSocketClient(hostContext));
                     services.AddSingleton<IDiscordClient, DiscordSocketClient>(sp => sp.GetRequiredService<DiscordSocketClient>());
+                    services.AddSingleton<CommandServiceConfig>();
+                    services.AddSingleton<CommandService>();
+                    services.AddSingleton<CommandHandler>();
 
                     // Workers
+                    services.AddHostedService<CommandWorker>();
                     services.AddHostedService<InitializeWorker>();
                     services.AddHostedService<RestoreWorker>();
                     services.AddHostedService<OnDemandRoomWorker>();
