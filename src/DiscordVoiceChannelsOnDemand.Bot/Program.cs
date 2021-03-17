@@ -1,7 +1,6 @@
 using Discord;
 using Discord.WebSocket;
 using DiscordVoiceChannelsOnDemand.Bot.Infrastructure;
-using DiscordVoiceChannelsOnDemand.Bot.Options;
 using DiscordVoiceChannelsOnDemand.Bot.Services;
 using DiscordVoiceChannelsOnDemand.Bot.Workers;
 using LiteDB;
@@ -11,6 +10,8 @@ using Microsoft.Extensions.Hosting;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
+using Discord.Commands;
+using DiscordVoiceChannelsOnDemand.Bot.Handlers;
 
 namespace DiscordVoiceChannelsOnDemand.Bot
 {
@@ -26,19 +27,26 @@ namespace DiscordVoiceChannelsOnDemand.Bot
                 .ConfigureAppConfiguration(x => x.AddUserSecrets<Program>())
                 .ConfigureServices((hostContext, services) =>
                 {
-                    services.Configure<BotOptions>(hostContext.Configuration.GetSection("Bot"));
-                    
                     // Infrastructure
                     services.AddSingleton<ILiteDatabase, LiteDatabase>(_ => new LiteDatabase("data.db"));
+                    services.AddSingleton<IServerRepository, LiteDbServerRepository>();
                     services.AddSingleton<IRoomRepository, LiteDbRoomRepository>();
 
                     // Bot Services
-                    services.AddSingleton<IRoomService, SocketRoomService>();
-                    services.AddSingleton<IVoiceChannelService, SocketVoiceChannelService>();
+                    services.AddSingleton<IServerService, ServerService>();
+                    services.AddSingleton<IRoomService, RoomService>();
+                    services.AddSingleton<IVoiceChannelService, VoiceChannelService>();
 
-                    services.AddSingleton<IDiscordClient, DiscordSocketClient>(sp => sp.GetRequiredService<DiscordSocketClient>())
-                        .AddSingleton<DiscordSocketClient>(sp => CreateDiscordSocketClient(hostContext));
+                    // Discord
+                    services.AddSingleton<DiscordSocketClient>(sp => CreateDiscordSocketClient(hostContext));
+                    services.AddSingleton<IDiscordClient, DiscordSocketClient>(sp => sp.GetRequiredService<DiscordSocketClient>());
+                    services.AddSingleton<CommandServiceConfig>();
+                    services.AddSingleton<CommandService>();
+                    services.AddSingleton<CommandHandler>();
 
+                    // Workers
+                    services.AddHostedService<CommandWorker>();
+                    services.AddHostedService<InitializeWorker>();
                     services.AddHostedService<RestoreWorker>();
                     services.AddHostedService<OnDemandRoomWorker>();
                     services.AddHostedService<CleanUpWorker>();

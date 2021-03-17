@@ -1,5 +1,4 @@
 using Discord;
-using Discord.WebSocket;
 using System.Threading.Tasks;
 
 namespace DiscordVoiceChannelsOnDemand.Bot.Services
@@ -14,14 +13,14 @@ namespace DiscordVoiceChannelsOnDemand.Bot.Services
         /// </summary>
         /// <param name="user">The owner of the room.</param>
         /// <returns>The voice channel room.</returns>
-        Task<IVoiceChannel> CreateNewRoomAsync(SocketGuildUser user);
+        Task<IVoiceChannel> CreateNewRoomAsync(IGuildUser user);
 
         /// <summary>
         /// Removes a room.
         /// </summary>
         /// <param name="voiceChannel"></param>
         /// <returns></returns>
-        Task DeleteRoomAsync(SocketVoiceChannel voiceChannel);
+        Task DeleteRoomAsync(IVoiceChannel voiceChannel);
 
         /// <summary>
         /// <inheritdoc cref="DeleteRoomAsync(Discord.WebSocket.SocketVoiceChannel)"/>

@@ -1,5 +1,5 @@
-using System.ComponentModel.DataAnnotations;
 using LiteDB;
+using System.ComponentModel.DataAnnotations;
 
 namespace DiscordVoiceChannelsOnDemand.Bot.Models
 {
@@ -17,14 +17,21 @@ namespace DiscordVoiceChannelsOnDemand.Bot.Models
         /// </summary>
         public string HostUserId { get; set; }
 
-        public Room(ulong channelId, ulong hostUserId) : this(channelId.ToString(), hostUserId.ToString())
+        /// <summary>
+        /// The voice channel's server ID
+        /// </summary>
+        public string GuildId { get; set; }
+
+        public Room(ulong channelId, ulong hostUserId, ulong guildId) 
+            : this(channelId.ToString(), hostUserId.ToString(), guildId.ToString())
         {
         }
 
-        public Room(string channelId, string hostUserId)
+        public Room(string channelId, string hostUserId, string guildId)
         {
             ChannelId = channelId;
             HostUserId = hostUserId;
+            GuildId = guildId;
         }
 
         public Room()
