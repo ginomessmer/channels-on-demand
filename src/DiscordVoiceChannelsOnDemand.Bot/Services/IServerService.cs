@@ -4,7 +4,7 @@ using Discord;
 
 namespace DiscordVoiceChannelsOnDemand.Bot.Services
 {
-    public interface ITenantService
+    public interface IServerService
     {
         Task<IEnumerable<IGuild>> GetAllGuildsAsync();
     }

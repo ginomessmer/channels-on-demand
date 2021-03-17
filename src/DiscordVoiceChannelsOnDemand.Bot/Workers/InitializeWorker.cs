@@ -10,28 +10,28 @@ namespace DiscordVoiceChannelsOnDemand.Bot.Workers
 {
     public class InitializeWorker : BackgroundService
     {
-        private readonly ITenantService _tenantService;
-        private readonly ITenantRepository _tenantRepository;
+        private readonly IServerService _serverService;
+        private readonly IServerRepository _serverRepository;
 
-        public InitializeWorker(ITenantService tenantService, ITenantRepository tenantRepository)
+        public InitializeWorker(IServerService serverService, IServerRepository serverRepository)
         {
-            _tenantService = tenantService;
-            _tenantRepository = tenantRepository;
+            _serverService = serverService;
+            _serverRepository = serverRepository;
         }
 
         /// <inheritdoc />
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
-            var guilds = await _tenantService.GetAllGuildsAsync();
+            var guilds = await _serverService.GetAllGuildsAsync();
             foreach (var guild in guilds)
             {
-                if (await _tenantRepository.ExistsAsync(guild.Id.ToString()))
+                if (await _serverRepository.ExistsAsync(guild.Id.ToString()))
                     continue;
 
-                await _tenantRepository.AddAsync(new Tenant
+                await _serverRepository.AddAsync(new Server
                 {
                     GuildId = guild.Id.ToString(),
-                    Slots = new List<Slot>()
+                    Lobbys = new List<Lobby>()
                 });
             }
         }

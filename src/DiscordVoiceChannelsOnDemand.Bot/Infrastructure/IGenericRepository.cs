@@ -31,9 +31,9 @@ namespace DiscordVoiceChannelsOnDemand.Bot.Infrastructure
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="slot"></param>
+        /// <param name="lobby"></param>
         /// <returns></returns>
-        Task UpdateAsync(T slot);
+        Task UpdateAsync(T lobby);
 
         /// <summary>
         /// Returns all voice channels that are stored.

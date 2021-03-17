@@ -16,26 +16,26 @@ namespace DiscordVoiceChannelsOnDemand.Bot.Services
     {
         private readonly IDiscordClient _client;
         private readonly IRoomRepository _roomRepository;
-        private readonly ITenantRepository _tenantRepository;
+        private readonly IServerRepository _serverRepository;
 
-        public RoomService(IDiscordClient client, IRoomRepository roomRepository, ITenantRepository tenantRepository)
+        public RoomService(IDiscordClient client, IRoomRepository roomRepository, IServerRepository serverRepository)
         {
             _client = client;
             _roomRepository = roomRepository;
-            _tenantRepository = tenantRepository;
+            _serverRepository = serverRepository;
         }
 
         /// <inheritdoc />
         public async Task<IVoiceChannel> CreateNewRoomAsync(IGuildUser user)
         {
-            var slot = await _tenantRepository.FindSlotAsync(user.VoiceChannel.Id.ToString());
+            var lobby = await _serverRepository.FindLobbyAsync(user.VoiceChannel.Id.ToString());
             var guild = await _client.GetGuildAsync(user.Guild.Id);
 
-            var name = string.Format(slot.GetSuggestedName(), user.Nickname);
+            var name = string.Format(lobby.GetSuggestedName(), user.Nickname);
             var roomVoiceChannel = await guild.CreateVoiceChannelAsync(name,
                 p =>
                 {
-                    p.CategoryId = Convert.ToUInt64(slot.CategoryId);
+                    p.CategoryId = Convert.ToUInt64(lobby.CategoryId);
                     p.PermissionOverwrites = new Optional<IEnumerable<Overwrite>>(new[]
                     {
                         new Overwrite(user.Id, PermissionTarget.User,

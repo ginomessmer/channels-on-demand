@@ -2,7 +2,6 @@ using System;
 using System.Threading.Tasks;
 using Discord;
 using DiscordVoiceChannelsOnDemand.Bot.Infrastructure;
-using DiscordVoiceChannelsOnDemand.Bot.Options;
 using DiscordVoiceChannelsOnDemand.Bot.Services;
 using Microsoft.Extensions.Options;
 using Moq;
@@ -17,7 +16,6 @@ namespace DiscordVoiceChannelsOnDemand.Tests
         {
             // Arrange
             var repository = new InMemoryRoomRepository();
-            var options = new BotOptions();
 
             // Mock => Voice Channel
             var voiceChannelMock = new Mock<IVoiceChannel>();
@@ -52,8 +50,7 @@ namespace DiscordVoiceChannelsOnDemand.Tests
             }
 
             // Service
-            var service = new RoomService(discordClientMock.Object, repository,
-                new OptionsWrapper<BotOptions>(options));
+            var service = new RoomService(discordClientMock.Object, repository, null);
 
             // Act
             var room = await service.CreateNewRoomAsync(userMock.Object);

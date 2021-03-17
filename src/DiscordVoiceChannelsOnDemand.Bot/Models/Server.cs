@@ -5,14 +5,14 @@ using LiteDB;
 
 namespace DiscordVoiceChannelsOnDemand.Bot.Models
 {
-    public class Tenant
+    public class Server
     {
         [Key]
         [BsonId]
         public string GuildId { get; set; }
 
-        public ICollection<Slot> Slots { get; set; } = new List<Slot>();
+        public ICollection<Lobby> Lobbys { get; set; } = new List<Lobby>();
 
-        public Slot GetSlot(string id) => Slots.FirstOrDefault(x => x.TriggerVoiceChannelId == id);
+        public Lobby GetLobby(string id) => Lobbys.FirstOrDefault(x => x.TriggerVoiceChannelId == id);
     }
 }

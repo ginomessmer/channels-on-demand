@@ -6,7 +6,7 @@ using LiteDB;
 
 namespace DiscordVoiceChannelsOnDemand.Bot.Models
 {
-    public class Slot
+    public class Lobby
     {
         [Key]
         [BsonId]

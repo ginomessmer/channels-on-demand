@@ -12,16 +12,16 @@ using DiscordVoiceChannelsOnDemand.Bot.Services;
 
 namespace DiscordVoiceChannelsOnDemand.Bot.Commands
 {
-    [Group("slot")]
-    public class SlotCommands : ModuleBase<SocketCommandContext>
+    [Group("lobby")]
+    public class LobbyCommands : ModuleBase<SocketCommandContext>
     {
-        private readonly ITenantService _tenantService;
-        private readonly ITenantRepository _tenantRepository;
+        private readonly IServerService _serverService;
+        private readonly IServerRepository _serverRepository;
 
-        public SlotCommands(ITenantService tenantService, ITenantRepository tenantRepository)
+        public LobbyCommands(IServerService serverService, IServerRepository serverRepository)
         {
-            _tenantService = tenantService;
-            _tenantRepository = tenantRepository;
+            _serverService = serverService;
+            _serverRepository = serverRepository;
         }
 
         [Command("register")]
@@ -33,27 +33,27 @@ namespace DiscordVoiceChannelsOnDemand.Bot.Commands
             categoryChannel ??= await voiceChannel.GetCategoryAsync();
 
             // Get server
-            var tenant = await _tenantRepository.GetAsync(categoryChannel.GuildId.ToString());
+            var server = await _serverRepository.GetAsync(categoryChannel.GuildId.ToString());
 
-            // Check if slot already exists
+            // Check if lobby already exists
             var id = voiceChannel.Id.ToString();
-            var slots = await _tenantRepository.QueryAllSlotsAsync();
-            if (slots.ToList().Exists(x => x.TriggerVoiceChannelId == id))
+            var lobbys = await _serverRepository.QueryAllLobbysAsync();
+            if (lobbys.ToList().Exists(x => x.TriggerVoiceChannelId == id))
             {
-                await ReplyAsync($"Voice channel `{voiceChannel.Name}` is already configured as a slot");
+                await ReplyAsync($"Voice channel `{voiceChannel.Name}` is already configured as a lobby");
                 return;
             }
 
-            var slot = new Slot
+            var lobby = new Lobby
             {
                 TriggerVoiceChannelId = id,
                 CategoryId = categoryChannel.Id.ToString()
             };
 
-            tenant.Slots.Add(slot);
-            await _tenantRepository.UpdateAsync(tenant);
+            server.Lobbys.Add(lobby);
+            await _serverRepository.UpdateAsync(server);
 
-            await ReplyAsync($"Voice channel `{voiceChannel.Name}` was successfully registered as a slot");
+            await ReplyAsync($"Voice channel `{voiceChannel.Name}` was successfully registered as a lobby");
         }
 
         [Command("unregister")]
@@ -62,8 +62,8 @@ namespace DiscordVoiceChannelsOnDemand.Bot.Commands
         [RequireContext(ContextType.Guild)]
         public async Task Unregister(IVoiceChannel voiceChannel)
         {
-            var slot = await _tenantRepository.FindSlotAsync(voiceChannel.Id.ToString());
-            await _tenantRepository.DeleteSlotAsync(voiceChannel.Id.ToString());
+            var lobby = await _serverRepository.FindLobbyAsync(voiceChannel.Id.ToString());
+            await _serverRepository.DeleteLobbyAsync(voiceChannel.Id.ToString());
 
             await ReplyAsync($"Voice channel `{voiceChannel.Name}` was successfully unregistered");
         }
@@ -74,10 +74,10 @@ namespace DiscordVoiceChannelsOnDemand.Bot.Commands
         [RequireContext(ContextType.Guild)]
         public async Task List()
         {
-            var guild = await _tenantRepository.GetAsync(Context.Guild.Id.ToString());
-            var slots = guild.Slots;
+            var guild = await _serverRepository.GetAsync(Context.Guild.Id.ToString());
+            var lobbys = guild.Lobbys;
 
-            var channels = slots.Select(x => Context.Guild.GetVoiceChannel(Convert.ToUInt64(x.TriggerVoiceChannelId)));
+            var channels = lobbys.Select(x => Context.Guild.GetVoiceChannel(Convert.ToUInt64(x.TriggerVoiceChannelId)));
             var list = string.Join("\n", channels.Select(x => $"{x.Name}\t#{x.Id}"));
             await ReplyAsync(list);
         }
@@ -88,18 +88,18 @@ namespace DiscordVoiceChannelsOnDemand.Bot.Commands
         [RequireContext(ContextType.Guild)]
         public async Task SetNames(IVoiceChannel voiceChannel, params string[] names)
         {
-            var tenant = await _tenantRepository.GetAsync(Context.Guild.Id.ToString());
-            var slot = tenant.GetSlot(voiceChannel.Id.ToString());
+            var server = await _serverRepository.GetAsync(Context.Guild.Id.ToString());
+            var lobby = server.GetLobby(voiceChannel.Id.ToString());
 
             if (names.Length > 1)
-                slot.RandomNames = names;
+                lobby.RandomNames = names;
             else
             {
-                slot.RandomNames = new List<string>();
-                slot.NameFormat = names.First();
+                lobby.RandomNames = new List<string>();
+                lobby.NameFormat = names.First();
             }
 
-            await _tenantRepository.UpdateAsync(tenant);
+            await _serverRepository.UpdateAsync(server);
         }
     }
 }

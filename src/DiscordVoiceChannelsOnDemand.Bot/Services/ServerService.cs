@@ -5,16 +5,16 @@ using Discord;
 
 namespace DiscordVoiceChannelsOnDemand.Bot.Services
 {
-    public class TenantService : ITenantService
+    public class ServerService : IServerService
     {
         private readonly IDiscordClient _client;
 
-        public TenantService(IDiscordClient client)
+        public ServerService(IDiscordClient client)
         {
             _client = client;
         }
 
-        #region Implementation of ITenantService
+        #region Implementation of IServerService
 
         /// <inheritdoc />
         public async Task<IEnumerable<IGuild>> GetAllGuildsAsync()

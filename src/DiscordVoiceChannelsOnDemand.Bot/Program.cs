@@ -29,11 +29,11 @@ namespace DiscordVoiceChannelsOnDemand.Bot
                 {
                     // Infrastructure
                     services.AddSingleton<ILiteDatabase, LiteDatabase>(_ => new LiteDatabase("data.db"));
-                    services.AddSingleton<ITenantRepository, LiteDbTenantRepository>();
+                    services.AddSingleton<IServerRepository, LiteDbServerRepository>();
                     services.AddSingleton<IRoomRepository, LiteDbRoomRepository>();
 
                     // Bot Services
-                    services.AddSingleton<ITenantService, TenantService>();
+                    services.AddSingleton<IServerService, ServerService>();
                     services.AddSingleton<IRoomService, RoomService>();
                     services.AddSingleton<IVoiceChannelService, VoiceChannelService>();
 
