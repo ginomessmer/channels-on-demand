@@ -33,5 +33,11 @@ namespace DiscordVoiceChannelsOnDemand.Bot.Infrastructure
         /// <param name="voiceChannelId"></param>
         /// <returns></returns>
         Task<bool> ExistsAsync(string voiceChannelId);
+
+        /// <summary>
+        /// Returns all voice channels that are stored.
+        /// </summary>
+        /// <returns></returns>
+        Task<IEnumerable<Room>> GetAllAsync();
     }
 }
