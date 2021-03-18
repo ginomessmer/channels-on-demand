@@ -51,7 +51,8 @@ namespace DiscordVoiceChannelsOnDemand.Bot.Workers
                 return;
 
             // Create new voice channel
-            var channel = await _roomService.CreateNewRoomAsync(user);
+            var lobby = await _serverService.GetLobbyAsync(voiceChannel);
+            var channel = await _roomService.CreateNewRoomAsync(user, lobby);
             _logger.LogInformation("Created new room {VoiceChannel} for user {User}", channel, user);
         }
 

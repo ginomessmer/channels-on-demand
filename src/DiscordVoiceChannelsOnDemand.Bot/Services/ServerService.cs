@@ -127,6 +127,16 @@ namespace DiscordVoiceChannelsOnDemand.Bot.Services
             await _serverRepository.UpdateAsync(server);
         }
 
+        /// <inheritdoc />
+        public async Task<Lobby> GetLobbyAsync(IVoiceChannel userVoiceChannel)
+        {
+            if (userVoiceChannel is null)
+                return null;
+
+            var lobby = await _serverRepository.FindLobbyAsync(userVoiceChannel.Id.ToString());
+            return lobby;
+        }
+
         #endregion
     }
 }

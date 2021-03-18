@@ -7,6 +7,8 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Threading.Tasks;
 using Discord.Net;
+using DiscordVoiceChannelsOnDemand.Bot.Abstractions;
+using DiscordVoiceChannelsOnDemand.Bot.Models;
 using Microsoft.Extensions.Logging;
 
 namespace DiscordVoiceChannelsOnDemand.Bot.Services
@@ -19,29 +21,26 @@ namespace DiscordVoiceChannelsOnDemand.Bot.Services
     {
         private readonly IDiscordClient _client;
         private readonly IRoomRepository _roomRepository;
-        private readonly IServerRepository _serverRepository;
         private readonly ILogger<RoomService> _logger;
 
-        public RoomService(IDiscordClient client, IRoomRepository roomRepository, IServerRepository serverRepository,
+        public RoomService(IDiscordClient client, IRoomRepository roomRepository,
             ILogger<RoomService> logger)
         {
             _client = client;
             _roomRepository = roomRepository;
-            _serverRepository = serverRepository;
             _logger = logger;
         }
 
         /// <inheritdoc />
-        public async Task<IVoiceChannel> CreateNewRoomAsync(IGuildUser user)
+        public async Task<IVoiceChannel> CreateNewRoomAsync(IGuildUser user, ILobby lobby)
         {
-            var lobby = await _serverRepository.FindLobbyAsync(user.VoiceChannel.Id.ToString());
             var guild = await _client.GetGuildAsync(user.Guild.Id);
 
-            var name = string.Format(lobby.GetSuggestedName(), user.Nickname);
+            var name = string.Format(lobby.SuggestRoomName(), user.Nickname);
             var roomVoiceChannel = await guild.CreateVoiceChannelAsync(name,
                 p =>
                 {
-                    p.CategoryId = lobby.HasCategory() ? Convert.ToUInt64(lobby.CategoryId) : null;
+                    p.CategoryId = lobby.HasCategory ? Convert.ToUInt64(lobby.CategoryId) : null;
                     p.PermissionOverwrites = new Optional<IEnumerable<Overwrite>>(new[]
                     {
                         new Overwrite(user.Id, PermissionTarget.User,
