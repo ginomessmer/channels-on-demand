@@ -1,5 +1,6 @@
 using Discord;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Threading.Tasks;
 using Discord.WebSocket;
 using DiscordVoiceChannelsOnDemand.Bot.Data;
@@ -52,7 +53,7 @@ namespace DiscordVoiceChannelsOnDemand.Bot.Services
         /// <param name="voiceChannel"></param>
         /// <param name="categoryChannel"></param>
         /// <returns></returns>
-        Task<Lobby> RegisterLobbyAsync(IVoiceChannel voiceChannel, ICategoryChannel categoryChannel);
+        Task<Lobby> RegisterLobbyAsync([NotNull] IVoiceChannel voiceChannel, ICategoryChannel categoryChannel = null);
 
         /// <summary>
         /// Deregisters a lobby.

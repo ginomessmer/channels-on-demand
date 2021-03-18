@@ -41,7 +41,7 @@ namespace DiscordVoiceChannelsOnDemand.Bot.Services
             var roomVoiceChannel = await guild.CreateVoiceChannelAsync(name,
                 p =>
                 {
-                    p.CategoryId = Convert.ToUInt64(lobby.CategoryId);
+                    p.CategoryId = lobby.HasCategory() ? Convert.ToUInt64(lobby.CategoryId) : null;
                     p.PermissionOverwrites = new Optional<IEnumerable<Overwrite>>(new[]
                     {
                         new Overwrite(user.Id, PermissionTarget.User,
