@@ -11,6 +11,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System;
+using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -29,7 +30,8 @@ namespace DiscordVoiceChannelsOnDemand.Bot
                 .ConfigureServices((hostContext, services) =>
                 {
                     // Infrastructure
-                    services.AddSingleton<ILiteDatabase, LiteDatabase>(_ => new LiteDatabase("data.db"));
+                    services.AddSingleton<ILiteDatabase, LiteDatabase>(_ => 
+                        new LiteDatabase(Path.Combine(hostContext.HostingEnvironment.ContentRootPath, "data", "data.litedb")));
                     services.AddSingleton<IServerRepository, LiteDbServerRepository>();
                     services.AddSingleton<IRoomRepository, LiteDbRoomRepository>();
 
