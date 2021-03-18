@@ -2,6 +2,8 @@
 using Discord.WebSocket;
 using System;
 using System.Threading.Tasks;
+using Discord;
+using Microsoft.Extensions.Logging;
 
 namespace DiscordVoiceChannelsOnDemand.Bot.Commands
 {
@@ -10,12 +12,15 @@ namespace DiscordVoiceChannelsOnDemand.Bot.Commands
         private readonly DiscordSocketClient _client;
         private readonly CommandService _commands;
         private readonly IServiceProvider _serviceProvider;
+        private readonly ILogger<CommandHandler> _logger;
 
         // Retrieve client and CommandService instance via ctor
-        public CommandHandler(DiscordSocketClient client, CommandService commands, IServiceProvider serviceProvider)
+        public CommandHandler(DiscordSocketClient client, CommandService commands, IServiceProvider serviceProvider,
+            ILogger<CommandHandler> logger)
         {
             _commands = commands;
             _serviceProvider = serviceProvider;
+            _logger = logger;
             _client = client;
         }
 
@@ -32,7 +37,26 @@ namespace DiscordVoiceChannelsOnDemand.Bot.Commands
             //
             // If you do not use Dependency Injection, pass null.
             // See Dependency Injection guide for more information.
+            _commands.Log += CommandsOnLog;
             await _commands.AddModulesAsync(typeof(CommandHandler).Assembly, _serviceProvider);
+        }
+
+        private Task CommandsOnLog(LogMessage arg)
+        {
+            var level = arg.Severity switch
+            {
+                LogSeverity.Verbose => LogLevel.Trace,
+                LogSeverity.Debug => LogLevel.Debug,
+                LogSeverity.Info => LogLevel.Information,
+                LogSeverity.Warning => LogLevel.Warning,
+                LogSeverity.Error => LogLevel.Error,
+                LogSeverity.Critical => LogLevel.Critical,
+
+                _ => LogLevel.None
+            };
+
+            _logger.Log(level, arg.Exception, arg.Message);
+            return Task.CompletedTask;
         }
 
         private async Task HandleCommandAsync(SocketMessage messageParam)
