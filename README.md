@@ -14,6 +14,11 @@
 - [x] Multi-server support
 - [x] Let's you use pre-defined voice channel names chosen at random
 
+## Pending Work
+- [ ] Use a relational database to improve performance
+- [ ] Use a logger provider (such as Serilog)
+- [ ] Help command
+
 ---
 
 ## Run
@@ -38,15 +43,14 @@
 ---
 
 ## Build
-TODO
+- Uses .NET 5.
+- Built using Visual Studio 2019 (.NET Workload enabled). VS Code works too.
+- Run the bot like any other .NET application. Make sure to provide a bot token in the secrets file.
 
 ## Contribute
+[![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/P5P72WHKK)
 ### Bugs and Fixes
 You found a bug? Awesome! Head over to the GitHub issues and create a new issue to discuss possible solutions. If you have a solution in mind already, feel free to fork the project and create a new pull request. Remember to create a new branch and set the destination branch to the main branch.
 
 ## Suggestions
 Do you have any ideas in mind? Great, go ahead. Navigate to the Discussions tab and create a new discussion. I'd love to hear what you have in mind. And if you're feeling adventurous, feel free to create a fork.
-
----
-
-[![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/P5P72WHKK)
