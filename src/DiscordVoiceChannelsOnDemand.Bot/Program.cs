@@ -48,9 +48,10 @@ namespace DiscordVoiceChannelsOnDemand.Bot
                     // Workers
                     services.AddHostedService<CommandWorker>();
                     services.AddHostedService<InitializeWorker>();
+                    services.AddHostedService<ServerRegistrationWorker>();
                     services.AddHostedService<RestoreWorker>();
                     services.AddHostedService<CreateRoomWorker>();
-                    services.AddHostedService<ClearRoomWorker>();
+                    services.AddHostedService<PurgeRoomWorker>();
                 });
 
         private static DiscordSocketClient CreateDiscordSocketClient(HostBuilderContext hostContext)

@@ -58,9 +58,13 @@ namespace DiscordVoiceChannelsOnDemand.Bot.Commands
         public async Task List()
         {
             var lobbies = await _serverService.ListLobbiesAsync(Context.Guild);
-            
-            var list = string.Join("\n", lobbies.Select(x => $"{x.VoiceChannel.Name} (#{x.VoiceChannel.Id})"));
-            await ReplyAsync(list);
+            var lobbyResults = lobbies.ToList();
+
+            var message = lobbyResults.Any()
+                ? string.Join("\n", lobbyResults.Select(x => $"{x.VoiceChannel.Name} (#{x.VoiceChannel.Id})"))
+                : "No lobbies";
+
+            await ReplyAsync(message);
         }
 
         [Command("set names")]

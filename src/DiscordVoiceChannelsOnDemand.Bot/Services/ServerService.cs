@@ -57,19 +57,25 @@ namespace DiscordVoiceChannelsOnDemand.Bot.Services
         }
 
         /// <inheritdoc />
+        public async Task DeregisterAsync(IGuild guild)
+        {
+            await _serverRepository.RemoveAsync(guild.Id.ToString());
+        }
+
+        /// <inheritdoc />
         public Task<Server> GetAsync(IGuild guild)
         {
             return _serverRepository.GetAsync(guild.Id.ToString());
         }
 
         /// <inheritdoc />
-        public async Task<Lobby> RegisterLobbyAsync(IVoiceChannel voiceChannel, ICategoryChannel categoryChannel)
+        public async Task<Lobby> RegisterLobbyAsync([NotNull] IVoiceChannel voiceChannel, ICategoryChannel categoryChannel = null)
         {
             var server = await GetAsync(voiceChannel.Guild);
             var lobby = new Lobby
             {
                 TriggerVoiceChannelId = voiceChannel.Id.ToString(),
-                CategoryId = categoryChannel.Id.ToString()
+                CategoryId = categoryChannel?.Id.ToString()
             };
 
             server.Lobbies.Add(lobby);

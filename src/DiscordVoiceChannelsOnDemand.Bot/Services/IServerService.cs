@@ -1,5 +1,6 @@
 using Discord;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Threading.Tasks;
 using Discord.WebSocket;
 using DiscordVoiceChannelsOnDemand.Bot.Data;
@@ -33,6 +34,13 @@ namespace DiscordVoiceChannelsOnDemand.Bot.Services
         Task RegisterAsync(IGuild guild);
 
         /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="guild"></param>
+        /// <returns></returns>
+        Task DeregisterAsync(IGuild guild);
+
+        /// <summary>
         /// Returns the server that is linked to <paramref name="guild"/>.
         /// </summary>
         /// <param name="guild"></param>
@@ -45,7 +53,7 @@ namespace DiscordVoiceChannelsOnDemand.Bot.Services
         /// <param name="voiceChannel"></param>
         /// <param name="categoryChannel"></param>
         /// <returns></returns>
-        Task<Lobby> RegisterLobbyAsync(IVoiceChannel voiceChannel, ICategoryChannel categoryChannel);
+        Task<Lobby> RegisterLobbyAsync([NotNull] IVoiceChannel voiceChannel, ICategoryChannel categoryChannel = null);
 
         /// <summary>
         /// Deregisters a lobby.

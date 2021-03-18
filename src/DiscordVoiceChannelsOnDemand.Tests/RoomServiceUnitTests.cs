@@ -6,6 +6,7 @@ using DiscordVoiceChannelsOnDemand.Bot.Services;
 using Moq;
 using System;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
 using Xunit;
 
 namespace DiscordVoiceChannelsOnDemand.Tests
@@ -58,8 +59,11 @@ namespace DiscordVoiceChannelsOnDemand.Tests
                     .ReturnsAsync(guildMock.Object);
             }
 
+            // Logger
+            var loggerMock = new Mock<ILogger<RoomService>>();
+
             // Service
-            var service = new RoomService(discordClientMock.Object, roomRepository, serverRepositoryMock.Object);
+            var service = new RoomService(discordClientMock.Object, roomRepository, serverRepositoryMock.Object, loggerMock.Object);
 
             // Act
             var room = await service.CreateNewRoomAsync(userMock.Object);
