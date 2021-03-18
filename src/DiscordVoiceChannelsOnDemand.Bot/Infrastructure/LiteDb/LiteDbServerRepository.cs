@@ -40,8 +40,8 @@ namespace DiscordVoiceChannelsOnDemand.Bot.Infrastructure.LiteDb
         /// <inheritdoc />
         public async Task<Lobby> FindLobbyAsync(string voiceChannelId)
         {
-            var lobbys = await QueryAllLobbiesAsync();
-            var lobby = lobbys.FirstOrDefault(x => x.TriggerVoiceChannelId == voiceChannelId);
+            var lobbies = await QueryAllLobbiesAsync();
+            var lobby = lobbies.FirstOrDefault(x => x.TriggerVoiceChannelId == voiceChannelId);
             return lobby;
         }
 
