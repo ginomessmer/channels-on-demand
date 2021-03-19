@@ -3,28 +3,23 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using System.Runtime.Serialization;
+using DiscordVoiceChannelsOnDemand.Bot.Abstractions;
 
 namespace DiscordVoiceChannelsOnDemand.Bot.Models
 {
-    public class Lobby
+    public class Lobby : ILobby
     {
-        /// <summary>
-        /// The voice channel's ID that will create a new room on demand.
-        /// </summary>
+        /// <inheritdoc />
         [Key]
         [BsonId]
         [Required]
         public string TriggerVoiceChannelId { get; set; }
 
-        /// <summary>
-        /// The category ID that will be used to append new rooms to.
-        /// </summary>
+        /// <inheritdoc />
         public string CategoryId { get; set; }
 
-        [Required]
-        public string NameFormat { get; set; } = "{0}";
-
-        public ICollection<string> RandomNames { get; set; } = new List<string>();
+        public ICollection<string> RoomNames { get; set; } = new List<string> {"{0}"};
 
         public Lobby()
         {
@@ -40,11 +35,12 @@ namespace DiscordVoiceChannelsOnDemand.Bot.Models
         {
         }
 
-        public string GetSuggestedName()
-        {
-            return !RandomNames.Any() ? NameFormat : RandomNames.OrderBy(_ => Guid.NewGuid().ToString()).FirstOrDefault();
-        }
+        /// <inheritdoc />
+        public string SuggestRoomName() => RoomNames.OrderBy(_ => Guid.NewGuid().ToString()).FirstOrDefault();
 
-        public bool HasCategory() => !string.IsNullOrEmpty(CategoryId);
+        /// <inheritdoc />
+        [IgnoreDataMember]
+        [BsonIgnore]
+        public bool HasCategory => !string.IsNullOrEmpty(CategoryId);
     }
 }

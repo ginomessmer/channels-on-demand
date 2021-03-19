@@ -63,10 +63,10 @@ namespace DiscordVoiceChannelsOnDemand.Tests
             var loggerMock = new Mock<ILogger<RoomService>>();
 
             // Service
-            var service = new RoomService(discordClientMock.Object, roomRepository, serverRepositoryMock.Object, loggerMock.Object);
+            var service = new RoomService(discordClientMock.Object, roomRepository, loggerMock.Object);
 
             // Act
-            var room = await service.CreateNewRoomAsync(userMock.Object);
+            var room = await service.CreateNewRoomAsync(userMock.Object, new Lobby());
 
             // Assert
             Assert.Single(await roomRepository.GetAllAsync());

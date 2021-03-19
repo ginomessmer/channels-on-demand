@@ -2,6 +2,8 @@ using System.Collections.Generic;
 using Discord;
 using System.Threading.Tasks;
 using Discord.WebSocket;
+using DiscordVoiceChannelsOnDemand.Bot.Abstractions;
+using DiscordVoiceChannelsOnDemand.Bot.Models;
 
 namespace DiscordVoiceChannelsOnDemand.Bot.Services
 {
@@ -14,8 +16,9 @@ namespace DiscordVoiceChannelsOnDemand.Bot.Services
         /// Creates a new room and persists it in the state.
         /// </summary>
         /// <param name="user">The owner of the room.</param>
+        /// <param name="lobby"></param>
         /// <returns>The voice channel room.</returns>
-        Task<IVoiceChannel> CreateNewRoomAsync(IGuildUser user);
+        Task<IVoiceChannel> CreateNewRoomAsync(IGuildUser user, ILobby lobby);
 
         /// <summary>
         /// Removes a room.

@@ -116,15 +116,19 @@ namespace DiscordVoiceChannelsOnDemand.Bot.Services
             var server = await _serverRepository.GetAsync(voiceChannel.Guild.Id.ToString());
             var lobby = server.GetLobby(voiceChannel.Id.ToString());
 
-            if (names.Length > 1)
-                lobby.RandomNames = names;
-            else
-            {
-                lobby.RandomNames = new List<string>();
-                lobby.NameFormat = names.First();
-            }
+            lobby.RoomNames = names;
 
             await _serverRepository.UpdateAsync(server);
+        }
+
+        /// <inheritdoc />
+        public async Task<Lobby> GetLobbyAsync(IVoiceChannel userVoiceChannel)
+        {
+            if (userVoiceChannel is null)
+                return null;
+
+            var lobby = await _serverRepository.FindLobbyAsync(userVoiceChannel.Id.ToString());
+            return lobby;
         }
 
         #endregion

@@ -76,5 +76,12 @@ namespace DiscordVoiceChannelsOnDemand.Bot.Services
         /// <param name="names"></param>
         /// <returns></returns>
         Task ConfigureLobbySuggestedNamesAsync(IVoiceChannel voiceChannel, params string[] names);
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="userVoiceChannel"></param>
+        /// <returns></returns>
+        Task<Lobby> GetLobbyAsync(IVoiceChannel userVoiceChannel);
     }
 }
