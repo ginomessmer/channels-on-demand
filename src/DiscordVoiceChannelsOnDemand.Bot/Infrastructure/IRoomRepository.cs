@@ -14,6 +14,7 @@ namespace DiscordVoiceChannelsOnDemand.Bot.Infrastructure
         /// </summary>
         /// <param name="voiceChannelId">The voice channel's ID</param>
         /// <param name="hostUserId">The host's user ID</param>
+        /// <param name="guildId"></param>
         /// <returns>The persisted room model instance</returns>
         Task<Room> AddAsync(string voiceChannelId, string hostUserId, string guildId);
 

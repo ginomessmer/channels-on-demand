@@ -11,7 +11,6 @@ using Xunit;
 
 namespace DiscordVoiceChannelsOnDemand.Tests
 {
-
     public class ServerServiceUnitTests
     {
         [Fact]

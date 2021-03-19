@@ -19,10 +19,7 @@ namespace DiscordVoiceChannelsOnDemand.Bot.Models
         /// <inheritdoc />
         public string CategoryId { get; set; }
 
-        [Required]
-        public string NameFormat { get; set; } = "{0}";
-
-        public ICollection<string> RandomNames { get; set; } = new List<string>();
+        public ICollection<string> RoomNames { get; set; } = new List<string> {"{0}"};
 
         public Lobby()
         {
@@ -39,8 +36,7 @@ namespace DiscordVoiceChannelsOnDemand.Bot.Models
         }
 
         /// <inheritdoc />
-        public string SuggestRoomName() => 
-            !RandomNames.Any() ? NameFormat : RandomNames.OrderBy(_ => Guid.NewGuid().ToString()).FirstOrDefault();
+        public string SuggestRoomName() => RoomNames.OrderBy(_ => Guid.NewGuid().ToString()).FirstOrDefault();
 
         /// <inheritdoc />
         [IgnoreDataMember]

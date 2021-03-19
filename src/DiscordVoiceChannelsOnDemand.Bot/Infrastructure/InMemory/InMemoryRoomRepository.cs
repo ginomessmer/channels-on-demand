@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 namespace DiscordVoiceChannelsOnDemand.Bot.Infrastructure.InMemory
 {
+    [Obsolete]
     public class InMemoryRoomRepository : IRoomRepository
     {
         private readonly List<Room> _rooms = new List<Room>();
