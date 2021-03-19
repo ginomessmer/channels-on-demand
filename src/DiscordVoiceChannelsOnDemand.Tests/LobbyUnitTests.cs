@@ -53,5 +53,22 @@ namespace DiscordVoiceChannelsOnDemand.Tests
                 x => Assert.Equal("Martha", x),
                 x => Assert.Equal("Gino", x));
         }
+
+        [Theory]
+        [InlineData("1234", true)]
+        [InlineData("", false)]
+        [InlineData(null, false)]
+        public void Lobby_Category_Truthful(string category, bool result)
+        {
+            // Arrange
+            var lobby = new Lobby();
+
+            // Act
+            lobby.CategoryId = category;
+
+            // Assert
+            Assert.Equal(result, lobby.HasCategory);
+            Assert.Equal(category, lobby.CategoryId);
+        } 
     }
 }
