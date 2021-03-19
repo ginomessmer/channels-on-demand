@@ -14,6 +14,8 @@ using System;
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
+using DiscordVoiceChannelsOnDemand.Bot.Infrastructure.EntityFramework;
+using Microsoft.EntityFrameworkCore;
 
 namespace DiscordVoiceChannelsOnDemand.Bot
 {
@@ -30,10 +32,9 @@ namespace DiscordVoiceChannelsOnDemand.Bot
                 .ConfigureServices((hostContext, services) =>
                 {
                     // Infrastructure
-                    services.AddSingleton<ILiteDatabase, LiteDatabase>(_ => 
-                        new LiteDatabase(Path.Combine(hostContext.HostingEnvironment.ContentRootPath, "data", "data.litedb")));
-                    services.AddSingleton<IServerRepository, LiteDbServerRepository>();
-                    services.AddSingleton<IRoomRepository, LiteDbRoomRepository>();
+                    services.AddDbContext<BotDbContext>(builder => builder.UseInMemoryDatabase(""));
+                    services.AddSingleton<IServerRepository, EfCoreServerRepository>();
+                    services.AddSingleton<IRoomRepository, EfCoreRoomRepository>();
 
                     // Bot Services
                     services.AddSingleton<IServerService, ServerService>();
