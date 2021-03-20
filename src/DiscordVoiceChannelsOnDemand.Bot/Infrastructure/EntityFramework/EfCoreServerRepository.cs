@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using DiscordVoiceChannelsOnDemand.Bot.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace DiscordVoiceChannelsOnDemand.Bot.Infrastructure.EntityFramework
 {
@@ -11,17 +13,27 @@ namespace DiscordVoiceChannelsOnDemand.Bot.Infrastructure.EntityFramework
         public EfCoreServerRepository(BotDbContext botDbContext) : base(botDbContext)
         {
         }
-        
+
         /// <inheritdoc />
-        public Task<IEnumerable<Lobby>> QueryAllLobbiesAsync()
+        public override Task<Server> GetAsync(string id) => Set
+            .Include(x => x.Lobbies)
+            .FirstOrDefaultAsync(x => x.GuildId == id);
+
+        /// <inheritdoc />
+        public async Task<IEnumerable<Lobby>> QueryAllLobbiesAsync()
         {
-            throw new NotImplementedException();
+            var lobbies = await Set.AsQueryable().SelectMany(x => x.Lobbies).ToListAsync();
+            return lobbies;
         }
 
         /// <inheritdoc />
         public Task<Lobby> FindLobbyAsync(string voiceChannelId)
-        {
-            throw new NotImplementedException();
+        { 
+            return Set.AsQueryable()
+                .Include(x => x.Lobbies)
+                .Where(x => x.Lobbies.FirstOrDefault(x => x.TriggerVoiceChannelId == voiceChannelId) != null)
+                .SelectMany(x => x.Lobbies)
+                .SingleOrDefaultAsync();
         }
 
         /// <inheritdoc />

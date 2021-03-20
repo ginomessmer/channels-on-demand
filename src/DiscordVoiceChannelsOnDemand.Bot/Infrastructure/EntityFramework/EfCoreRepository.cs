@@ -22,37 +22,37 @@ namespace DiscordVoiceChannelsOnDemand.Bot.Infrastructure.EntityFramework
         public Task AddAsync(T item) => Set.AddAsync(item).AsTask();
 
         /// <inheritdoc />
-        public async Task RemoveAsync(string id)
+        public virtual async Task RemoveAsync(string id)
         {
             var result = await Set.FindAsync(id);
             Set.Remove(result);
         }
 
         /// <inheritdoc />
-        public async Task<bool> ExistsAsync(string id)
+        public virtual async Task<bool> ExistsAsync(string id)
         {
             var entity = await Set.FindAsync(id);
             return entity is not null;
         }
 
         /// <inheritdoc />
-        public Task UpdateAsync(T item) => Task.FromResult(Set.Update(item));
+        public virtual Task UpdateAsync(T item) => Task.FromResult(Set.Update(item));
 
         /// <inheritdoc />
-        public async Task<IEnumerable<T>> GetAllAsync()
+        public virtual async Task<IEnumerable<T>> GetAllAsync()
         {
             var result = await Set.AsQueryable().ToListAsync();
             return result;
         }
 
         /// <inheritdoc />
-        public Task<T> GetAsync(string id) => Set.FindAsync(id).AsTask();
+        public virtual Task<T> GetAsync(string id) => Set.FindAsync(id).AsTask();
 
         /// <inheritdoc />
-        public Task<IQueryable<T>> QueryAsync(Expression<Func<T, bool>> expression) => Task.FromResult(Set.AsQueryable());
+        public virtual Task<IQueryable<T>> QueryAsync(Expression<Func<T, bool>> expression) => Task.FromResult(Set.AsQueryable());
 
         /// <inheritdoc />
-        public Task SaveChangesAsync() => _botDbContext.SaveChangesAsync();
+        public virtual Task SaveChangesAsync() => _botDbContext.SaveChangesAsync();
 
         #endregion
 

@@ -54,6 +54,7 @@ namespace DiscordVoiceChannelsOnDemand.Bot.Services
             await _roomRepository.AddAsync(roomVoiceChannel.Id.ToString(), user.Id.ToString(),
                 guild.Id.ToString());
 
+            await _roomRepository.SaveChangesAsync();
             return roomVoiceChannel;
         }
 

@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using DiscordVoiceChannelsOnDemand.Bot.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace DiscordVoiceChannelsOnDemand.Bot.Infrastructure.EntityFramework
 {
@@ -21,9 +23,10 @@ namespace DiscordVoiceChannelsOnDemand.Bot.Infrastructure.EntityFramework
         }
 
         /// <inheritdoc />
-        public Task<IEnumerable<Room>> GetAllAsync(string guildId)
+        public async Task<IEnumerable<Room>> GetAllAsync(string guildId)
         {
-            throw new NotImplementedException();
+            var rooms =  await Set.AsQueryable().Where(x => x.GuildId == guildId).ToListAsync();
+            return rooms;
         }
     }
 }
