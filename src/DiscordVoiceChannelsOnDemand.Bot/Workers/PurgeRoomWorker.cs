@@ -1,8 +1,9 @@
 using Discord.WebSocket;
-using DiscordVoiceChannelsOnDemand.Bot.Infrastructure;
 using DiscordVoiceChannelsOnDemand.Bot.Services;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -13,16 +14,17 @@ namespace DiscordVoiceChannelsOnDemand.Bot.Workers
     /// </summary>
     public class PurgeRoomWorker : BackgroundService
     {
+        private readonly IServiceProvider _serviceProvider;
         private readonly DiscordSocketClient _client;
-        private readonly IRoomService _roomService;
         private readonly ILogger<PurgeRoomWorker> _logger;
+        private IRoomService _roomService;
 
-        public PurgeRoomWorker(DiscordSocketClient client,
-            IRoomService roomService,
+        public PurgeRoomWorker(IServiceProvider serviceProvider,
+            DiscordSocketClient client,
             ILogger<PurgeRoomWorker> logger)
         {
+            _serviceProvider = serviceProvider;
             _client = client;
-            _roomService = roomService;
             _logger = logger;
         }
 
@@ -39,6 +41,9 @@ namespace DiscordVoiceChannelsOnDemand.Bot.Workers
 
             if (voiceChannel is null)
                 return;
+
+            using var scope = _serviceProvider.CreateScope();
+            _roomService = scope.ServiceProvider.GetRequiredService<IRoomService>();
 
             // Check if its a room
             if (!await _roomService.ExistsAsync(voiceChannel))

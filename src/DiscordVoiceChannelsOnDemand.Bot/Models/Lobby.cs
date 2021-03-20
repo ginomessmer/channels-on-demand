@@ -1,10 +1,9 @@
-using LiteDB;
+using DiscordVoiceChannelsOnDemand.Bot.Abstractions;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Runtime.Serialization;
-using DiscordVoiceChannelsOnDemand.Bot.Abstractions;
 
 namespace DiscordVoiceChannelsOnDemand.Bot.Models
 {
@@ -12,7 +11,6 @@ namespace DiscordVoiceChannelsOnDemand.Bot.Models
     {
         /// <inheritdoc />
         [Key]
-        [BsonId]
         [Required]
         public string TriggerVoiceChannelId { get; set; }
 
@@ -40,7 +38,6 @@ namespace DiscordVoiceChannelsOnDemand.Bot.Models
 
         /// <inheritdoc />
         [IgnoreDataMember]
-        [BsonIgnore]
         public bool HasCategory => !string.IsNullOrEmpty(CategoryId);
     }
 }

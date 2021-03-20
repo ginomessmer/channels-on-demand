@@ -1,10 +1,9 @@
 using Discord;
+using DiscordVoiceChannelsOnDemand.Bot.Data;
+using DiscordVoiceChannelsOnDemand.Bot.Models;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Threading.Tasks;
-using Discord.WebSocket;
-using DiscordVoiceChannelsOnDemand.Bot.Data;
-using DiscordVoiceChannelsOnDemand.Bot.Models;
 
 namespace DiscordVoiceChannelsOnDemand.Bot.Services
 {

@@ -1,13 +1,12 @@
-using System;
 using Discord;
+using DiscordVoiceChannelsOnDemand.Bot.Data;
 using DiscordVoiceChannelsOnDemand.Bot.Infrastructure;
 using DiscordVoiceChannelsOnDemand.Bot.Models;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Threading.Tasks;
-using Discord.WebSocket;
-using DiscordVoiceChannelsOnDemand.Bot.Data;
 
 namespace DiscordVoiceChannelsOnDemand.Bot.Services
 {
@@ -54,12 +53,16 @@ namespace DiscordVoiceChannelsOnDemand.Bot.Services
                 GuildId = guild.Id.ToString(),
                 Lobbies = new List<Lobby>()
             });
+
+            await _serverRepository.SaveChangesAsync();
         }
 
         /// <inheritdoc />
         public async Task DeregisterAsync(IGuild guild)
         {
             await _serverRepository.RemoveAsync(guild.Id.ToString());
+
+            await _serverRepository.SaveChangesAsync();
         }
 
         /// <inheritdoc />
@@ -81,6 +84,8 @@ namespace DiscordVoiceChannelsOnDemand.Bot.Services
             server.Lobbies.Add(lobby);
             await _serverRepository.UpdateAsync(server);
 
+            await _serverRepository.SaveChangesAsync();
+
             return lobby;
         }
 
@@ -89,6 +94,8 @@ namespace DiscordVoiceChannelsOnDemand.Bot.Services
         {
             var lobby = await _serverRepository.FindLobbyAsync(voiceChannel.Id.ToString());
             await _serverRepository.DeleteLobbyAsync(voiceChannel.Id.ToString());
+
+            await _serverRepository.SaveChangesAsync();
         }
 
         /// <inheritdoc />
@@ -119,6 +126,8 @@ namespace DiscordVoiceChannelsOnDemand.Bot.Services
             lobby.RoomNames = names;
 
             await _serverRepository.UpdateAsync(server);
+
+            await _serverRepository.SaveChangesAsync();
         }
 
         /// <inheritdoc />

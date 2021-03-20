@@ -1,4 +1,3 @@
-using LiteDB;
 using System.ComponentModel.DataAnnotations;
 
 namespace DiscordVoiceChannelsOnDemand.Bot.Models
@@ -9,7 +8,6 @@ namespace DiscordVoiceChannelsOnDemand.Bot.Models
         /// The voice channel, duh.
         /// </summary>
         [Key]
-        [BsonId]
         public string ChannelId { get; set; }
 
         /// <summary>

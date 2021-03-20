@@ -15,9 +15,10 @@
 - [x] Let's you use pre-defined voice channel names chosen at random
 
 ## Pending Work
-- [ ] Use a relational database to improve performance
+- [x] Use a relational database to improve performance (EF Core)
 - [ ] Use a logger provider (such as Serilog)
 - [ ] Help command
+- [ ] More tests
 
 ---
 
@@ -25,6 +26,7 @@
 1. Create a new Discord application
 2. Create a bot registration for your application
 3. Invite the bot to your server
+   - Required OAuth 2 scopes: `Bot`, `Manage channels`, `Move users`
 4. Copy the Discord bot token
 
 ### Docker

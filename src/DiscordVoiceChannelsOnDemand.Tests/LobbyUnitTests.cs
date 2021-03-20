@@ -1,6 +1,6 @@
-using System.Collections.Generic;
 using DiscordVoiceChannelsOnDemand.Bot.Models;
 using Moq;
+using System.Collections.Generic;
 using Xunit;
 
 namespace DiscordVoiceChannelsOnDemand.Tests
