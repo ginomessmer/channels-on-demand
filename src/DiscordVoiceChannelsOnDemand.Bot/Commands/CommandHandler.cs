@@ -3,6 +3,7 @@ using Discord.WebSocket;
 using System;
 using System.Threading.Tasks;
 using Discord;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
 namespace DiscordVoiceChannelsOnDemand.Bot.Commands
@@ -38,7 +39,8 @@ namespace DiscordVoiceChannelsOnDemand.Bot.Commands
             // If you do not use Dependency Injection, pass null.
             // See Dependency Injection guide for more information.
             _commands.Log += CommandsOnLog;
-            await _commands.AddModulesAsync(typeof(CommandHandler).Assembly, _serviceProvider);
+            using var scope = _serviceProvider.CreateScope();
+            await _commands.AddModulesAsync(typeof(CommandHandler).Assembly, scope.ServiceProvider);
         }
 
         private Task CommandsOnLog(LogMessage arg)
@@ -78,7 +80,8 @@ namespace DiscordVoiceChannelsOnDemand.Bot.Commands
 
             // Execute the command with the command context we just
             // created, along with the service provider for precondition checks.
-            await _commands.ExecuteAsync(context, argPos, _serviceProvider);
+            using var scope = _serviceProvider.CreateScope();
+            await _commands.ExecuteAsync(context, argPos, scope.ServiceProvider);
         }
     }
 }

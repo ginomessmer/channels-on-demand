@@ -30,14 +30,14 @@ namespace DiscordVoiceChannelsOnDemand.Bot
                 .ConfigureServices((hostContext, services) =>
                 {
                     // Infrastructure
-                    services.AddDbContext<BotDbContext>(builder => builder.UseInMemoryDatabase(""));
-                    services.AddSingleton<IServerRepository, EfCoreServerRepository>();
-                    services.AddSingleton<IRoomRepository, EfCoreRoomRepository>();
+                    services.AddDbContext<BotDbContext>(builder => builder.UseSqlite("Data source=data/data.sqlite"));
+                    services.AddScoped<IServerRepository, EfCoreServerRepository>();
+                    services.AddScoped<IRoomRepository, EfCoreRoomRepository>();
 
                     // Bot Services
-                    services.AddSingleton<IServerService, ServerService>();
-                    services.AddSingleton<IRoomService, RoomService>();
-                    services.AddSingleton<IVoiceChannelService, VoiceChannelService>();
+                    services.AddScoped<IServerService, ServerService>();
+                    services.AddScoped<IRoomService, RoomService>();
+                    services.AddScoped<IVoiceChannelService, VoiceChannelService>();
 
                     // Discord
                     services.AddSingleton<DiscordSocketClient>(sp => CreateDiscordSocketClient(hostContext));
@@ -45,6 +45,11 @@ namespace DiscordVoiceChannelsOnDemand.Bot
                     services.AddSingleton<CommandServiceConfig>();
                     services.AddSingleton<CommandService>();
                     services.AddSingleton<CommandHandler>();
+
+                    // Unit of Work
+                    services.AddScoped<OnDemandUnitOfWork>(sp => new OnDemandUnitOfWork(
+                        sp.GetRequiredService<IRoomService>(),
+                        sp.GetRequiredService<IServerService>()));
 
                     // Workers
                     services.AddHostedService<CommandWorker>();

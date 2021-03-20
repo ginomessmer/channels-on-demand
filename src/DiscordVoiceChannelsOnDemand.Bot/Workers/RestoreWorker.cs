@@ -7,6 +7,7 @@ using System;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace DiscordVoiceChannelsOnDemand.Bot.Workers
 {
@@ -15,20 +16,23 @@ namespace DiscordVoiceChannelsOnDemand.Bot.Workers
     /// </summary>
     public class RestoreWorker : BackgroundService
     {
-        private readonly IRoomService _roomService;
+        private readonly IServiceProvider _serviceProvider;
         private readonly ILogger<RestoreWorker> _logger;
 
-        public RestoreWorker(IRoomService roomService,
+        public RestoreWorker(IServiceProvider serviceProvider,
             ILogger<RestoreWorker> logger)
         {
-            _roomService = roomService;
+            _serviceProvider = serviceProvider;
             _logger = logger;
         }
 
         /// <inheritdoc />
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
-            var voiceChannels = (await _roomService.GetAllRoomVoiceChannelsAsync())
+            using var scope = _serviceProvider.CreateScope();
+            var roomService = scope.ServiceProvider.GetRequiredService<IRoomService>();
+
+            var voiceChannels = (await roomService.GetAllRoomVoiceChannelsAsync())
                 .Cast<SocketVoiceChannel>();
 
             foreach (var voiceChannel in voiceChannels)
@@ -42,7 +46,7 @@ namespace DiscordVoiceChannelsOnDemand.Bot.Workers
 
                 try
                 {
-                    await _roomService.DeleteRoomAsync(voiceChannel);
+                    await roomService.DeleteRoomAsync(voiceChannel);
                 }
                 catch (Exception ex)
                 {

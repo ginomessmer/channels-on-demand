@@ -1,29 +1,34 @@
+using System;
 using DiscordVoiceChannelsOnDemand.Bot.Services;
 using Microsoft.Extensions.Hosting;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace DiscordVoiceChannelsOnDemand.Bot.Workers
 {
     public class InitializeWorker : BackgroundService
     {
-        private readonly IServerService _serverService;
+        private readonly IServiceProvider _serviceProvider;
 
-        public InitializeWorker(IServerService serverService)
+        public InitializeWorker(IServiceProvider serviceProvider)
         {
-            _serverService = serverService;
+            _serviceProvider = serviceProvider;
         }
 
         /// <inheritdoc />
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
-            var guilds = await _serverService.GetAllGuildsAsync();
+            using var scope = _serviceProvider.CreateScope();
+            var serverService = scope.ServiceProvider.GetRequiredService<IServerService>();
+
+            var guilds = await serverService.GetAllGuildsAsync();
             foreach (var guild in guilds)
             {
-                if (await _serverService.IsRegisteredAsync(guild))
+                if (await serverService.IsRegisteredAsync(guild))
                     continue;
 
-                await _serverService.RegisterAsync(guild);
+                await serverService.RegisterAsync(guild);
             }
         }
     }

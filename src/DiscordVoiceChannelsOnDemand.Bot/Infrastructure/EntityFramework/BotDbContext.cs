@@ -6,20 +6,21 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DiscordVoiceChannelsOnDemand.Bot.Infrastructure.EntityFramework
 {
-    public class BotDbContext : DbContext
+    public sealed class BotDbContext : DbContext
     {
         public DbSet<Server> Servers { get; set; }
 
         public DbSet<Room> Rooms { get; set; }
 
         /// <inheritdoc />
-        protected BotDbContext()
+        private BotDbContext()
         {
         }
 
         /// <inheritdoc />
         public BotDbContext(DbContextOptions options) : base(options)
         {
+            Database.EnsureCreated();
         }
         
         /// <inheritdoc />

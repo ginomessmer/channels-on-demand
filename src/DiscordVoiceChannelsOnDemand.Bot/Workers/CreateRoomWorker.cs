@@ -1,3 +1,4 @@
+using System;
 using Discord;
 using Discord.WebSocket;
 using DiscordVoiceChannelsOnDemand.Bot.Services;
@@ -5,6 +6,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace DiscordVoiceChannelsOnDemand.Bot.Workers
 {
@@ -14,20 +16,23 @@ namespace DiscordVoiceChannelsOnDemand.Bot.Workers
     /// </summary>
     public class CreateRoomWorker : BackgroundService
     {
+        private readonly IServiceProvider _serviceProvider;
         private readonly DiscordSocketClient _client;
-        private readonly IRoomService _roomService;
-        private readonly IServerService _serverService;
         private readonly ILogger<CreateRoomWorker> _logger;
 
-        public CreateRoomWorker(DiscordSocketClient client,
-            IRoomService roomService,
-            IServerService serverService,
+        public CreateRoomWorker(IServiceProvider serviceProvider,
+            DiscordSocketClient client,
             ILogger<CreateRoomWorker> logger)
         {
+            _serviceProvider = serviceProvider;
             _client = client;
-            _roomService = roomService;
-            _serverService = serverService;
             _logger = logger;
+        }
+
+        protected override Task ExecuteAsync(CancellationToken stoppingToken)
+        {
+            _client.UserVoiceStateUpdated += ClientOnUserVoiceStateUpdated;
+            return Task.CompletedTask;
         }
 
         private Task ClientOnUserVoiceStateUpdated(SocketUser socketUser,
@@ -39,6 +44,9 @@ namespace DiscordVoiceChannelsOnDemand.Bot.Workers
 
         private async Task HandleAsync(IUser socketUser, IVoiceChannel voiceChannel)
         {
+            using var scope = _serviceProvider.CreateScope();
+            var unitOfWork = scope.ServiceProvider.GetRequiredService<OnDemandUnitOfWork>();
+
             // Check if user is typeof(SocketGuildUser)
             if (socketUser is not SocketGuildUser user)
                 return;
@@ -47,19 +55,13 @@ namespace DiscordVoiceChannelsOnDemand.Bot.Workers
                 return;
 
             // Check whether lobby exists for the channel
-            if (!await _serverService.IsLobbyRegisteredAsync(voiceChannel))
+            if (!await unitOfWork.ServerService.IsLobbyRegisteredAsync(voiceChannel))
                 return;
 
             // Create new voice channel
-            var lobby = await _serverService.GetLobbyAsync(voiceChannel);
-            var channel = await _roomService.CreateNewRoomAsync(user, lobby);
+            var lobby = await unitOfWork.ServerService.GetLobbyAsync(voiceChannel);
+            var channel = await unitOfWork.RoomService.CreateNewRoomAsync(user, lobby);
             _logger.LogInformation("Created new room {VoiceChannel} for user {User}", channel, user);
-        }
-
-        protected override Task ExecuteAsync(CancellationToken stoppingToken)
-        {
-            _client.UserVoiceStateUpdated += ClientOnUserVoiceStateUpdated;
-            return Task.CompletedTask;
         }
     }
 }

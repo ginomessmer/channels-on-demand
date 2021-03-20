@@ -7,6 +7,19 @@ using DiscordVoiceChannelsOnDemand.Bot.Models;
 
 namespace DiscordVoiceChannelsOnDemand.Bot.Services
 {
+    public class OnDemandUnitOfWork
+    {
+        public IRoomService RoomService { get; }
+
+        public IServerService ServerService { get; }
+
+        public OnDemandUnitOfWork(IRoomService roomService, IServerService serverService)
+        {
+            RoomService = roomService;
+            ServerService = serverService;
+        }
+    }
+
     /// <summary>
     /// A service class that is responsible for managing the rooms.
     /// </summary>
