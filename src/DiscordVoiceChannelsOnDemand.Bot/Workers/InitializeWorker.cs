@@ -1,9 +1,9 @@
-using System;
 using DiscordVoiceChannelsOnDemand.Bot.Services;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using System;
 using System.Threading;
 using System.Threading.Tasks;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace DiscordVoiceChannelsOnDemand.Bot.Workers
 {

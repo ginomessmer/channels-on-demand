@@ -1,8 +1,6 @@
-﻿using System;
-using System.Linq;
-using System.Text;
-using DiscordVoiceChannelsOnDemand.Bot.Models;
+﻿using DiscordVoiceChannelsOnDemand.Bot.Models;
 using Microsoft.EntityFrameworkCore;
+using System;
 
 namespace DiscordVoiceChannelsOnDemand.Bot.Infrastructure.EntityFramework
 {

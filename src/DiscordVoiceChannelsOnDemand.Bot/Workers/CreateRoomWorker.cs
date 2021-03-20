@@ -1,12 +1,12 @@
-using System;
 using Discord;
 using Discord.WebSocket;
 using DiscordVoiceChannelsOnDemand.Bot.Services;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using System;
 using System.Threading;
 using System.Threading.Tasks;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace DiscordVoiceChannelsOnDemand.Bot.Workers
 {
@@ -45,7 +45,12 @@ namespace DiscordVoiceChannelsOnDemand.Bot.Workers
         private async Task HandleAsync(IUser socketUser, IVoiceChannel voiceChannel)
         {
             using var scope = _serviceProvider.CreateScope();
-            var unitOfWork = scope.ServiceProvider.GetRequiredService<OnDemandUnitOfWork>();
+            var unitOfWork = new
+            {
+                ServerService = scope.ServiceProvider.GetRequiredService<IServerService>(),
+                RoomService = scope.ServiceProvider.GetRequiredService<IRoomService>(),
+            };
+
 
             // Check if user is typeof(SocketGuildUser)
             if (socketUser is not SocketGuildUser user)

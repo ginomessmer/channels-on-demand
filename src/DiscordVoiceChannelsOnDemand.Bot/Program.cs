@@ -3,17 +3,16 @@ using Discord.Commands;
 using Discord.WebSocket;
 using DiscordVoiceChannelsOnDemand.Bot.Commands;
 using DiscordVoiceChannelsOnDemand.Bot.Infrastructure;
+using DiscordVoiceChannelsOnDemand.Bot.Infrastructure.EntityFramework;
 using DiscordVoiceChannelsOnDemand.Bot.Services;
 using DiscordVoiceChannelsOnDemand.Bot.Workers;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System;
-using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
-using DiscordVoiceChannelsOnDemand.Bot.Infrastructure.EntityFramework;
-using Microsoft.EntityFrameworkCore;
 
 namespace DiscordVoiceChannelsOnDemand.Bot
 {
@@ -45,11 +44,6 @@ namespace DiscordVoiceChannelsOnDemand.Bot
                     services.AddSingleton<CommandServiceConfig>();
                     services.AddSingleton<CommandService>();
                     services.AddSingleton<CommandHandler>();
-
-                    // Unit of Work
-                    services.AddScoped<OnDemandUnitOfWork>(sp => new OnDemandUnitOfWork(
-                        sp.GetRequiredService<IRoomService>(),
-                        sp.GetRequiredService<IServerService>()));
 
                     // Workers
                     services.AddHostedService<CommandWorker>();

@@ -1,10 +1,6 @@
 ﻿using Discord;
 using Discord.Commands;
-using DiscordVoiceChannelsOnDemand.Bot.Infrastructure;
-using DiscordVoiceChannelsOnDemand.Bot.Models;
 using DiscordVoiceChannelsOnDemand.Bot.Services;
-using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 

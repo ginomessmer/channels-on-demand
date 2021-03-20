@@ -1,21 +1,20 @@
-using System.Threading.Tasks;
 using DiscordVoiceChannelsOnDemand.Bot.Infrastructure;
 using DiscordVoiceChannelsOnDemand.Bot.Infrastructure.EntityFramework;
 using Microsoft.EntityFrameworkCore;
+using System.Threading.Tasks;
 using Xunit;
 
 namespace DiscordVoiceChannelsOnDemand.Tests
 {
     public class EfCoreIntegrationTests
     {
-        private readonly BotDbContext _botDbContext;
         private readonly IRoomRepository _roomRepository;
 
         public EfCoreIntegrationTests()
         {
             var options = new DbContextOptionsBuilder<BotDbContext>().UseInMemoryDatabase("Test").Options;
-            _botDbContext = new BotDbContext(options);
-            _roomRepository = new EfCoreRoomRepository(_botDbContext);
+            var botDbContext = new BotDbContext(options);
+            _roomRepository = new EfCoreRoomRepository(botDbContext);
         }
 
         [Fact]

@@ -1,25 +1,10 @@
-using System.Collections.Generic;
 using Discord;
-using System.Threading.Tasks;
-using Discord.WebSocket;
 using DiscordVoiceChannelsOnDemand.Bot.Abstractions;
-using DiscordVoiceChannelsOnDemand.Bot.Models;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace DiscordVoiceChannelsOnDemand.Bot.Services
 {
-    public class OnDemandUnitOfWork
-    {
-        public IRoomService RoomService { get; }
-
-        public IServerService ServerService { get; }
-
-        public OnDemandUnitOfWork(IRoomService roomService, IServerService serverService)
-        {
-            RoomService = roomService;
-            ServerService = serverService;
-        }
-    }
-
     /// <summary>
     /// A service class that is responsible for managing the rooms.
     /// </summary>

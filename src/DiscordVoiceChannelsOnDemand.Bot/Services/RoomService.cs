@@ -1,15 +1,13 @@
 using Discord;
 using Discord.WebSocket;
+using DiscordVoiceChannelsOnDemand.Bot.Abstractions;
 using DiscordVoiceChannelsOnDemand.Bot.Infrastructure;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Threading.Tasks;
-using Discord.Net;
-using DiscordVoiceChannelsOnDemand.Bot.Abstractions;
-using DiscordVoiceChannelsOnDemand.Bot.Models;
-using Microsoft.Extensions.Logging;
 
 namespace DiscordVoiceChannelsOnDemand.Bot.Services
 {
