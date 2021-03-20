@@ -55,5 +55,11 @@ namespace DiscordVoiceChannelsOnDemand.Bot.Infrastructure
         /// <param name="expression"></param>
         /// <returns></returns>
         Task<IQueryable<T>> QueryAsync(Expression<Func<T, bool>> expression);
+
+        /// <summary>
+        /// Commits all changes to the data store.
+        /// </summary>
+        /// <returns></returns>
+        Task SaveChangesAsync();
     }
 }

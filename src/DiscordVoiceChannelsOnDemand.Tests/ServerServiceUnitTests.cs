@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Linq.Expressions;
 using Discord;
 using DiscordVoiceChannelsOnDemand.Bot.Infrastructure;
@@ -7,6 +8,7 @@ using DiscordVoiceChannelsOnDemand.Bot.Models;
 using DiscordVoiceChannelsOnDemand.Bot.Services;
 using Moq;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore.Internal;
 using Xunit;
 
 namespace DiscordVoiceChannelsOnDemand.Tests
@@ -49,7 +51,7 @@ namespace DiscordVoiceChannelsOnDemand.Tests
             // Mock => IServerRepository
             var serverRepositoryMock = new Mock<IServerRepository>();
             serverRepositoryMock.Setup(x => x.QueryAsync(It.IsAny<Expression<Func<Server, bool>>>()))
-                .ReturnsAsync(() => new List<Server>() {new()});
+                .ReturnsAsync(() => new List<Server>() {new()}.AsQueryable());
 
             var service = new ServerService(discordClientMock.Object,
                 serverRepositoryMock.Object);

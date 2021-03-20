@@ -2,13 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 
 namespace DiscordVoiceChannelsOnDemand.Bot.Infrastructure.EntityFramework
 {
-    public abstract class EfCoreRepository<T, TKey> : IRepository<T> where T : class
+    public abstract class EfCoreRepository<T> : IRepository<T> where T : class
     {
         private readonly BotDbContext _botDbContext;
 
@@ -51,6 +50,9 @@ namespace DiscordVoiceChannelsOnDemand.Bot.Infrastructure.EntityFramework
 
         /// <inheritdoc />
         public Task<IQueryable<T>> QueryAsync(Expression<Func<T, bool>> expression) => Task.FromResult(Set.AsQueryable());
+
+        /// <inheritdoc />
+        public Task SaveChangesAsync() => _botDbContext.SaveChangesAsync();
 
         #endregion
 

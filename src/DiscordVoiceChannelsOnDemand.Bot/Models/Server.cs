@@ -1,4 +1,3 @@
-using LiteDB;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -8,7 +7,6 @@ namespace DiscordVoiceChannelsOnDemand.Bot.Models
     public class Server
     {
         [Key]
-        [BsonId]
         public string GuildId { get; set; }
 
         public ICollection<Lobby> Lobbies { get; set; } = new List<Lobby>();
