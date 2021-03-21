@@ -28,16 +28,16 @@ namespace DiscordVoiceChannelsOnDemand.Bot.Commands
 
             var embed = new EmbedBuilder()
                 .WithTitle("Discord Voice Channels on Demand")
-                .WithDescription("Type `.help <module>` to inspect the module")
+                .WithDescription("Type `.help module <module>` to inspect the module")
                 .WithUrl("https://github.com/ginomessmer/discord-vcod/")
-                .WithFooter("Like what you are using? Consider contributing or buying a coffee")
+                .WithFooter("Like what you are using? Type `.help support` to contribute")
                 .WithFields(modules);
 
             await ReplyAsync(embed: embed.Build());
         }
 
-        [Command]
-        public async Task Help(string moduleName)
+        [Command("module")]
+        public async Task InspectModule(string moduleName)
         {
             var module = _commandService.Modules.FirstOrDefault(x =>
                 x.Name.Equals(moduleName, StringComparison.InvariantCultureIgnoreCase));
@@ -55,6 +55,21 @@ namespace DiscordVoiceChannelsOnDemand.Bot.Commands
                 .WithFields(fields);
 
             await ReplyAsync(embed: embed.Build());
+        }
+
+        [Command("support")]
+        [Summary("Shows you ways to support the bot")]
+        public async Task Support()
+        {
+            await ReplyAsync(embed: new EmbedBuilder()
+                .WithTitle("View the project on GitHub")
+                .WithUrl("https://github.com/ginomessmer/discord-vcod/")
+                .WithFields(
+                    new EmbedFieldBuilder().WithName("Contribute")
+                        .WithValue("Contribute by suggesting new ideas, submitting issues and creating PRs: https://github.com/ginomessmer/discord-vcod"),
+                    new EmbedFieldBuilder().WithName("Buy a coffee")
+                        .WithValue("Your donation is highly appreciated and keeps the bot running: https://ko-fi.com/ginomessmer"))
+                .Build());
         }
     }
 }

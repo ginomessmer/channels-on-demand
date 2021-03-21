@@ -6,7 +6,7 @@
     "Parameters": []
   },
   {
-    "Name": "Help",
+    "Name": "module",
     "Summary": null,
     "Module": "help",
     "Parameters": [
@@ -18,6 +18,12 @@
         "Type": "String"
       }
     ]
+  },
+  {
+    "Name": "support",
+    "Summary": "Shows you ways to support the bot",
+    "Module": "help",
+    "Parameters": []
   },
   {
     "Name": "register",
