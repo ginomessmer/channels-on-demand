@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 namespace DiscordVoiceChannelsOnDemand.Bot.Commands
 {
     [Group("lobby")]
+    [Summary("Helps you creating new lobbies")]
     public class LobbyCommands : ModuleBase<SocketCommandContext>
     {
         private readonly IServerService _serverService;
@@ -17,6 +18,7 @@ namespace DiscordVoiceChannelsOnDemand.Bot.Commands
         }
 
         [Command("register")]
+        [Summary("Registers the voice channel as a new lobby")]
         [RequireBotPermission(GuildPermission.ManageChannels)]
         [RequireUserPermission(GuildPermission.ManageChannels)]
         [RequireContext(ContextType.Guild)]
@@ -37,6 +39,7 @@ namespace DiscordVoiceChannelsOnDemand.Bot.Commands
         }
 
         [Command("deregister")]
+        [Summary("Deregisters the channel")]
         [RequireBotPermission(GuildPermission.ManageChannels)]
         [RequireUserPermission(GuildPermission.ManageChannels)]
         [RequireContext(ContextType.Guild)]
@@ -48,6 +51,7 @@ namespace DiscordVoiceChannelsOnDemand.Bot.Commands
         }
 
         [Command("list")]
+        [Summary("Lists all lobbies on the server")]
         [RequireBotPermission(GuildPermission.ManageChannels)]
         [RequireUserPermission(GuildPermission.ManageChannels)]
         [RequireContext(ContextType.Guild)]
@@ -64,6 +68,7 @@ namespace DiscordVoiceChannelsOnDemand.Bot.Commands
         }
 
         [Command("set names")]
+        [Summary("Lets you set possible names for rooms that will be chosen at random")]
         [RequireBotPermission(GuildPermission.ManageChannels)]
         [RequireUserPermission(GuildPermission.ManageChannels)]
         [RequireContext(ContextType.Guild)]
