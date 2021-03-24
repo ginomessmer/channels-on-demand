@@ -7,6 +7,7 @@ using DiscordVoiceChannelsOnDemand.Bot.Services;
 namespace DiscordVoiceChannelsOnDemand.Bot.Commands
 {
     [Group("space")]
+    [RequireContext(ContextType.Guild)]
     public class SpaceCommands : ModuleBase<SocketCommandContext>
     {
         private readonly IServerService _serverService;
@@ -18,10 +19,20 @@ namespace DiscordVoiceChannelsOnDemand.Bot.Commands
             _spaceService = spaceService;
         }
 
-        [Command("setup")]
+        [Command("enable")]
+        [RequireUserPermission(GuildPermission.Administrator)]
         public async Task SetupSpace(ICategoryChannel categoryChannel)
         {
+            await _serverService.EnableSpacesAsync(categoryChannel);
+            await Context.Message.AddReactionAsync(new Emoji("✅"));
+        }
 
+        [Command("disable")]
+        [RequireUserPermission(GuildPermission.Administrator)]
+        public async Task DisableSpace()
+        {
+            await _serverService.DisableSpacesAsync(Context.Guild);
+            await Context.Message.AddReactionAsync(new Emoji("✅"));
         }
 
         [Command("create")]

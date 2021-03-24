@@ -140,6 +140,33 @@ namespace DiscordVoiceChannelsOnDemand.Bot.Services
             return lobby;
         }
 
+        /// <inheritdoc />
+        public async Task EnableSpacesAsync(ICategoryChannel parentCategoryChannel)
+        {
+            var id = parentCategoryChannel.Id.ToString();
+            await ToggleSpacesAsync(parentCategoryChannel.Guild, id);
+        }
+        
+        /// <inheritdoc />
+        public async Task DisableSpacesAsync(IGuild guild)
+        {
+            await ToggleSpacesAsync(guild);
+        }
+
+        /// <summary>
+        /// Toggles the spaces feature.
+        /// </summary>
+        /// <param name="guild">The guild server to operate on</param>
+        /// <param name="spaceCategoryId">The category to use for new spaces. Leave blank to disable the feature</param>
+        /// <returns></returns>
+        private async Task ToggleSpacesAsync(IGuild guild, string spaceCategoryId = "")
+        {
+            var server = await _serverRepository.GetAsync(guild.Id.ToString());
+            server.SpaceCategoryId = spaceCategoryId;
+            await _serverRepository.UpdateAsync(server);
+            await _serverRepository.SaveChangesAsync();
+        }
+
         #endregion
     }
 }
