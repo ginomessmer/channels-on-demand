@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -27,7 +28,10 @@ namespace DiscordVoiceChannelsOnDemand.Bot.Services
                 new(owner.Guild.EveryoneRole.Id, PermissionTarget.Role, new OverwritePermissions(viewChannel: PermValue.Deny)),
                 
                 // @owner
-                new(owner.Id, PermissionTarget.User, allowViewChannelPermission)
+                new(owner.Id, PermissionTarget.User, allowViewChannelPermission),
+
+                // self
+                new(_client.CurrentUser.Id, PermissionTarget.User, allowViewChannelPermission)
             };
             
             // Add @invitedUsers
@@ -44,6 +48,18 @@ namespace DiscordVoiceChannelsOnDemand.Bot.Services
             // TODO: Add to database
 
             return textChannel;
+        }
+
+        /// <inheritdoc />
+        public async Task<ITextChannel> CreateSpaceAsync(IGuildUser owner, IEnumerable<IGuildUser> invitedUsers, ulong? parentCategoryChannel = null)
+        {
+            // Get category
+            var guild = await _client.GetGuildAsync(owner.GuildId);
+
+            var categories = await guild.GetCategoriesAsync();
+            var categoryChannel = categories.FirstOrDefault(c => c.Id == Convert.ToUInt64(parentCategoryChannel));
+
+            return await CreateSpaceAsync(owner, invitedUsers, categoryChannel);
         }
     }
 }

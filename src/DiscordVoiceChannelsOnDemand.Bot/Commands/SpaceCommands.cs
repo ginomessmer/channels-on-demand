@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using Discord;
 using Discord.Commands;
 using DiscordVoiceChannelsOnDemand.Bot.Services;
@@ -17,7 +18,14 @@ namespace DiscordVoiceChannelsOnDemand.Bot.Commands
             _spaceService = spaceService;
         }
 
+        [Command("setup")]
+        public async Task SetupSpace(ICategoryChannel categoryChannel)
+        {
+
+        }
+
         [Command("create")]
+        [Alias("new")]
         [Summary("Creates a new private text channel for you and all users you mention")]
         public async Task CreateSpace(params IGuildUser[] users)
         {
@@ -29,11 +37,18 @@ namespace DiscordVoiceChannelsOnDemand.Bot.Commands
                 return;
             }
 
+            // Get category
+            ulong? categoryId = null;
+
+            if (!string.IsNullOrEmpty(server.SpaceCategoryId))
+                categoryId = Convert.ToUInt64(server.SpaceCategoryId);
+
             // Create new text channel
-            var channel = await _spaceService.CreateSpaceAsync(Context.User as IGuildUser, users);
+            var channel = await _spaceService.CreateSpaceAsync(Context.User as IGuildUser, users, categoryId);
 
             // Reply
-            await ReplyAsync($"Your space is ready to go: {channel.Mention}");
+            await channel.SendMessageAsync($"{Context.User.Mention} :wave: Your space is ready to go");
+            await Context.Message.AddReactionAsync(new Emoji("✅"));
         }
     }
 }
