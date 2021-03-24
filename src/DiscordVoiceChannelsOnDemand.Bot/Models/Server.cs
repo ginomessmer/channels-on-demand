@@ -11,6 +11,8 @@ namespace DiscordVoiceChannelsOnDemand.Bot.Models
 
         public ICollection<Lobby> Lobbies { get; set; } = new List<Lobby>();
 
+        public ICollection<Space> Spaces { get; set; } = new List<Space>();
+
         public Lobby GetLobby(string id) => Lobbies.FirstOrDefault(x => x.TriggerVoiceChannelId == id);
     }
 }
