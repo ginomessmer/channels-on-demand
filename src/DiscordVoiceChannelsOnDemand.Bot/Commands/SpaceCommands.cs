@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Discord;
 using Discord.Commands;
 using DiscordVoiceChannelsOnDemand.Bot.Services;
+using Humanizer;
 
 namespace DiscordVoiceChannelsOnDemand.Bot.Commands
 {
@@ -63,9 +64,9 @@ namespace DiscordVoiceChannelsOnDemand.Bot.Commands
             var embed = new EmbedBuilder()
                 .WithTitle("Your space is ready to go")
                 .WithDescription(new StringBuilder()
-                    .AppendLine($"Your space is only visible to you and everyone you invited " +
+                    .Append($"Your space is only visible to you and everyone you invited " +
                                 $"(that is {string.Join(", ", users.Select(x => x.Nickname))}). ")
-                    .Append($"It will expire after {server.SpaceTimeoutThreshold} hours of inactivity.")
+                    .Append($"It will expire after {server.SpaceTimeoutThreshold.Humanize()} of inactivity.")
                     .ToString())
                 .WithThumbnailUrl(Context.User.GetAvatarUrl());
 
