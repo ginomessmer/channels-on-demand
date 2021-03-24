@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Discord;
+using DiscordVoiceChannelsOnDemand.Bot.Infrastructure;
+using DiscordVoiceChannelsOnDemand.Bot.Models;
 
 namespace DiscordVoiceChannelsOnDemand.Bot.Services
 {
@@ -10,10 +12,12 @@ namespace DiscordVoiceChannelsOnDemand.Bot.Services
     public class SpaceService : ISpaceService
     {
         private readonly IDiscordClient _client;
+        private readonly ISpaceRepository _spaceRepository;
 
-        public SpaceService(IDiscordClient client)
+        public SpaceService(IDiscordClient client, ISpaceRepository spaceRepository)
         {
             _client = client;
+            _spaceRepository = spaceRepository;
         }
 
         /// <inheritdoc />
@@ -45,7 +49,15 @@ namespace DiscordVoiceChannelsOnDemand.Bot.Services
                 properties.CategoryId = parentCategoryChannel?.Id;
             });
 
-            // TODO: Add to database
+            // Add to database
+            await _spaceRepository.AddAsync(new Space
+            {
+                CreatorId = owner.Id.ToString(),
+                TextChannelId = textChannel.Id.ToString(),
+                ServerId = guild.Id.ToString()
+            });
+
+            await _spaceRepository.SaveChangesAsync();
 
             return textChannel;
         }

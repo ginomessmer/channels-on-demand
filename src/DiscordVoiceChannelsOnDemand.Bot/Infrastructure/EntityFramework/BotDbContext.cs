@@ -10,6 +10,8 @@ namespace DiscordVoiceChannelsOnDemand.Bot.Infrastructure.EntityFramework
 
         public DbSet<Room> Rooms { get; set; }
 
+        public DbSet<Space> Spaces { get; set; }
+
         /// <inheritdoc />
         private BotDbContext()
         {

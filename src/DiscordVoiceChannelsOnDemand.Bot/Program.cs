@@ -32,6 +32,7 @@ namespace DiscordVoiceChannelsOnDemand.Bot
                     services.AddDbContext<BotDbContext>(builder => builder.UseSqlite("Data source=data/data.sqlite"));
                     services.AddScoped<IServerRepository, EfCoreServerRepository>();
                     services.AddScoped<IRoomRepository, EfCoreRoomRepository>();
+                    services.AddScoped<ISpaceRepository, EfCoreSpaceRepository>();
 
                     // Bot Services
                     services.AddScoped<IServerService, ServerService>();
