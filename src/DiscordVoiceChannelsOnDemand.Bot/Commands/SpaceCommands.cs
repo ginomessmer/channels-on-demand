@@ -9,10 +9,12 @@ namespace DiscordVoiceChannelsOnDemand.Bot.Commands
     public class SpaceCommands : ModuleBase<SocketCommandContext>
     {
         private readonly IServerService _serverService;
+        private readonly ISpaceService _spaceService;
 
-        public SpaceCommands(IServerService serverService)
+        public SpaceCommands(IServerService serverService, ISpaceService spaceService)
         {
             _serverService = serverService;
+            _spaceService = spaceService;
         }
 
         [Command("create")]
@@ -28,14 +30,10 @@ namespace DiscordVoiceChannelsOnDemand.Bot.Commands
             }
 
             // Create new text channel
-
-            // Set up permissions (add all users)
-
-            // Modify by moving to space category
-
-            // Insert in database
+            var channel = await _spaceService.CreateSpaceAsync(Context.User as IGuildUser, users);
 
             // Reply
+            await ReplyAsync($"Your space is ready to go: {channel.Mention}");
         }
     }
 }
