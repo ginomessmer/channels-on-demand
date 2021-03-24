@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using Discord;
 using Discord.Commands;
@@ -58,7 +60,16 @@ namespace DiscordVoiceChannelsOnDemand.Bot.Commands
             var channel = await _spaceService.CreateSpaceAsync(Context.User as IGuildUser, users, categoryId);
 
             // Reply
-            await channel.SendMessageAsync($"{Context.User.Mention} :wave: Your space is ready to go");
+            var embed = new EmbedBuilder()
+                .WithTitle("Your space is ready to go")
+                .WithDescription(new StringBuilder()
+                    .AppendLine($"Your space is only visible to you and everyone you invited " +
+                                $"(that is {string.Join(", ", users.Select(x => x.Nickname))}). ")
+                    .Append($"It will expire after {server.SpaceTimeoutThreshold} hours of inactivity.")
+                    .ToString())
+                .WithThumbnailUrl(Context.User.GetAvatarUrl());
+
+            await channel.SendMessageAsync($"{Context.User.Mention} :wave:", embed: embed.Build());
             await Context.Message.AddReactionAsync(new Emoji("✅"));
         }
     }

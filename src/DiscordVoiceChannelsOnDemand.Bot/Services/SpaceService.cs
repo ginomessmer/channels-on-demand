@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Discord;
+using Discord.WebSocket;
 using DiscordVoiceChannelsOnDemand.Bot.Infrastructure;
 using DiscordVoiceChannelsOnDemand.Bot.Models;
 
@@ -43,7 +44,7 @@ namespace DiscordVoiceChannelsOnDemand.Bot.Services
                 new Overwrite(x.Id, PermissionTarget.User, allowViewChannelPermission)));
 
             // Create text channel
-            var textChannel = await guild.CreateTextChannelAsync("space", properties =>
+            var textChannel = await guild.CreateTextChannelAsync($"space-{owner.Nickname}", properties =>
             {
                 properties.PermissionOverwrites = new Optional<IEnumerable<Overwrite>>(permissions);
                 properties.CategoryId = parentCategoryChannel?.Id;
@@ -72,6 +73,52 @@ namespace DiscordVoiceChannelsOnDemand.Bot.Services
             var categoryChannel = categories.FirstOrDefault(c => c.Id == Convert.ToUInt64(parentCategoryChannel));
 
             return await CreateSpaceAsync(owner, invitedUsers, categoryChannel);
+        }
+
+        /// <inheritdoc />
+        public async Task<DateTime?> GetLastActivityAsync(string spaceId)
+        {
+            var space = await _spaceRepository.GetAsync(spaceId);
+            if (space == null)
+                throw new ArgumentNullException(nameof(space));
+
+            var channel = await _client.GetChannelAsync(Convert.ToUInt64(space.TextChannelId));
+            if (channel is not IMessageChannel messageChannel)
+                throw new ArgumentException(nameof(channel), "How did you achieve this?");
+
+            var messages = await messageChannel.GetMessagesAsync(1).FlattenAsync();
+            var message = messages.FirstOrDefault();
+
+            if (message is null)
+                return null;
+
+            var timestamp = message.EditedTimestamp ?? message.Timestamp;
+            return timestamp.UtcDateTime;
+        }
+
+        /// <inheritdoc />
+        public Task<IEnumerable<Space>> QueryAllSpacesAsync()
+        {
+            return _spaceRepository.GetAllAsync();
+        }
+
+        /// <inheritdoc />
+        public async Task DecommissionAsync(string spaceId)
+        {
+            var space = await _spaceRepository.GetAsync(spaceId);
+            if (space == null)
+                throw new NullReferenceException("Space was not found");
+
+            var id = Convert.ToUInt64(space.TextChannelId);
+            var guildId = Convert.ToUInt64(space.ServerId);
+
+            var guild = await _client.GetGuildAsync(guildId);
+
+            var channel = await guild.GetChannelAsync(id);
+            await channel.DeleteAsync();
+
+            await _spaceRepository.RemoveAsync(spaceId);
+            await _spaceRepository.SaveChangesAsync();
         }
     }
 }
