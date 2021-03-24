@@ -83,6 +83,14 @@ namespace DiscordVoiceChannelsOnDemand.Bot.Services
                 throw new ArgumentNullException(nameof(space));
 
             var channel = await _client.GetChannelAsync(Convert.ToUInt64(space.TextChannelId));
+
+            if (channel is null)
+            {
+                // Preemptively remove space... most likely a left over
+                await _spaceRepository.RemoveAsync(space.TextChannelId);
+                return null; // TODO: Throw custom exception
+            }
+
             if (channel is not IMessageChannel messageChannel)
                 throw new ArgumentException(nameof(channel), "How did you achieve this?");
 
@@ -115,7 +123,9 @@ namespace DiscordVoiceChannelsOnDemand.Bot.Services
             var guild = await _client.GetGuildAsync(guildId);
 
             var channel = await guild.GetChannelAsync(id);
-            await channel.DeleteAsync();
+
+            if (channel is not null)
+                await channel.DeleteAsync();
 
             await _spaceRepository.RemoveAsync(spaceId);
             await _spaceRepository.SaveChangesAsync();
