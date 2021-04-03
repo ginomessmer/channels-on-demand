@@ -162,7 +162,7 @@ namespace DiscordVoiceChannelsOnDemand.Bot.Services
         private async Task ToggleSpacesAsync(IGuild guild, string spaceCategoryId = "")
         {
             var server = await _serverRepository.GetAsync(guild.Id.ToString());
-            server.SpaceCategoryId = spaceCategoryId;
+            server.SpaceConfiguration.SpaceCategoryId = spaceCategoryId;
             await _serverRepository.UpdateAsync(server);
             await _serverRepository.SaveChangesAsync();
         }

@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -20,27 +19,15 @@ namespace DiscordVoiceChannelsOnDemand.Bot.Models
         /// </summary>
         public ICollection<Lobby> Lobbies { get; set; } = new List<Lobby>();
 
-        // Spaces
-
         /// <summary>
-        /// The category's ID for new spaces.
+        /// Space configuration for this server.
         /// </summary>
-        public string SpaceCategoryId { get; set; }
+        public ServerSpaceConfiguration SpaceConfiguration { get; set; } = new ServerSpaceConfiguration();
 
         /// <summary>
         /// All active spaces created on the server.
         /// </summary>
         public ICollection<Space> Spaces { get; set; } = new List<Space>();
-
-        /// <summary>
-        /// Determines whether Spaces is enabled on the server.
-        /// </summary>
-        public bool IsSpacesEnabled => !string.IsNullOrEmpty(SpaceCategoryId);
-
-        /// <summary>
-        /// The duration for spaces to expire.
-        /// </summary>
-        public TimeSpan SpaceTimeoutThreshold { get; set; } = TimeSpan.FromDays(1);
 
         public Lobby GetLobby(string id) => Lobbies.FirstOrDefault(x => x.TriggerVoiceChannelId == id);
     }

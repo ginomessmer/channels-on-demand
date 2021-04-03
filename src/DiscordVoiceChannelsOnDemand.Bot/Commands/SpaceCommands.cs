@@ -45,7 +45,7 @@ namespace DiscordVoiceChannelsOnDemand.Bot.Commands
         {
             // Check whether space is set up/enabled on the server
             var server = await _serverService.GetAsync(Context.Guild);
-            if (!server.IsSpacesEnabled)
+            if (!server.SpaceConfiguration.IsSpacesEnabled)
             {
                 // TODO: Reply
                 return;
@@ -54,8 +54,8 @@ namespace DiscordVoiceChannelsOnDemand.Bot.Commands
             // Get category
             ulong? categoryId = null;
 
-            if (!string.IsNullOrEmpty(server.SpaceCategoryId))
-                categoryId = Convert.ToUInt64(server.SpaceCategoryId);
+            if (!string.IsNullOrEmpty(server.SpaceConfiguration.SpaceCategoryId))
+                categoryId = Convert.ToUInt64(server.SpaceConfiguration.SpaceCategoryId);
 
             // Create new text channel
             var channel = await _spaceService.CreateSpaceAsync(Context.User as IGuildUser, users, categoryId);
@@ -66,7 +66,7 @@ namespace DiscordVoiceChannelsOnDemand.Bot.Commands
                 .WithDescription(new StringBuilder()
                     .Append($"Your space is only visible to you and everyone you invited " +
                                 $"(that is {string.Join(", ", users.Select(x => x.Nickname))}). ")
-                    .Append($"It will expire after {server.SpaceTimeoutThreshold.Humanize()} of inactivity.")
+                    .Append($"It will expire after {server.SpaceConfiguration.SpaceTimeoutThreshold.Humanize()} of inactivity.")
                     .ToString())
                 .WithThumbnailUrl(Context.User.GetAvatarUrl());
 

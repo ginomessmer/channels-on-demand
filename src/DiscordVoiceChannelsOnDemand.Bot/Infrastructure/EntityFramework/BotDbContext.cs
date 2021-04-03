@@ -1,6 +1,8 @@
 ﻿using DiscordVoiceChannelsOnDemand.Bot.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.Collections.Generic;
+using System.Linq.Expressions;
 
 namespace DiscordVoiceChannelsOnDemand.Bot.Infrastructure.EntityFramework
 {
@@ -26,11 +28,24 @@ namespace DiscordVoiceChannelsOnDemand.Bot.Infrastructure.EntityFramework
         /// <inheritdoc />
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            Expression<Func<ICollection<string>, string>> convertToProviderExpression = c => string.Join(';', c);
+            Expression<Func<string, ICollection<string>>> convertFromProviderExpression = c => c.Split(';', StringSplitOptions.RemoveEmptyEntries);
+            
             modelBuilder.Entity<Lobby>()
                 .Property(x => x.RoomNames)
                 .HasConversion(
-                    c => string.Join(';', c),
-                    c => c.Split(';', StringSplitOptions.RemoveEmptyEntries));
+                    convertToProviderExpression,
+                    convertFromProviderExpression);
+
+            modelBuilder.Entity<Server>()
+                .OwnsOne(x => x.SpaceConfiguration, builder =>
+                {
+                    builder.WithOwner();
+                    builder.Property(x => x.SpaceDefaultNames)
+                        .HasConversion(
+                            convertToProviderExpression,
+                            convertFromProviderExpression);
+                });
 
             base.OnModelCreating(modelBuilder);
         }
