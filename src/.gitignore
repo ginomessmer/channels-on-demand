@@ -363,5 +363,7 @@ MigrationBackup/
 FodyWeavers.xsd
 
 data.sqlite
+data.sqlite-wal
+data.sqlite-shm
 data.litedb
 data-log.litedb

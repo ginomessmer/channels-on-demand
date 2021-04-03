@@ -32,11 +32,13 @@ namespace DiscordVoiceChannelsOnDemand.Bot
                     services.AddDbContext<BotDbContext>(builder => builder.UseSqlite("Data source=data/data.sqlite"));
                     services.AddScoped<IServerRepository, EfCoreServerRepository>();
                     services.AddScoped<IRoomRepository, EfCoreRoomRepository>();
+                    services.AddScoped<ISpaceRepository, EfCoreSpaceRepository>();
 
                     // Bot Services
                     services.AddScoped<IServerService, ServerService>();
-                    services.AddScoped<IRoomService, RoomService>();
                     services.AddScoped<IVoiceChannelService, VoiceChannelService>();
+                    services.AddScoped<IRoomService, RoomService>();
+                    services.AddScoped<ISpaceService, SpaceService>();
 
                     // Discord
                     services.AddSingleton<DiscordSocketClient>(sp => CreateDiscordSocketClient(hostContext));
@@ -51,7 +53,8 @@ namespace DiscordVoiceChannelsOnDemand.Bot
                     services.AddHostedService<ServerRegistrationWorker>();
                     services.AddHostedService<RestoreWorker>();
                     services.AddHostedService<CreateRoomWorker>();
-                    services.AddHostedService<PurgeRoomWorker>();
+                    services.AddHostedService<RoomPurgeWorker>();
+                    services.AddHostedService<SpacePurgeWorker>();
                     services.AddHostedService<DocumentationWorker>();
                 });
 

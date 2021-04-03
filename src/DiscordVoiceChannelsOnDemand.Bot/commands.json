@@ -92,5 +92,39 @@
     "Summary": null,
     "Module": "PingCommands",
     "Parameters": []
+  },
+  {
+    "Name": "enable",
+    "Summary": null,
+    "Module": "space",
+    "Parameters": [
+      {
+        "Name": "categoryChannel",
+        "Summary": null,
+        "DefaultValue": null,
+        "IsOptional": false,
+        "Type": "ICategoryChannel"
+      }
+    ]
+  },
+  {
+    "Name": "disable",
+    "Summary": null,
+    "Module": "space",
+    "Parameters": []
+  },
+  {
+    "Name": "create",
+    "Summary": "Creates a new private text channel for you and all users you mention",
+    "Module": "space",
+    "Parameters": [
+      {
+        "Name": "users",
+        "Summary": null,
+        "DefaultValue": null,
+        "IsOptional": false,
+        "Type": "IGuildUser"
+      }
+    ]
   }
 ]

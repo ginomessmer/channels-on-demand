@@ -82,5 +82,19 @@ namespace DiscordVoiceChannelsOnDemand.Bot.Services
         /// <param name="userVoiceChannel"></param>
         /// <returns></returns>
         Task<Lobby> GetLobbyAsync(IVoiceChannel userVoiceChannel);
+
+        /// <summary>
+        /// Enables spaces on the server.
+        /// </summary>
+        /// <param name="parentCategoryChannel"></param>
+        /// <returns></returns>
+        Task EnableSpacesAsync(ICategoryChannel parentCategoryChannel);
+
+        /// <summary>
+        /// Disables the spaces feature on the server.
+        /// </summary>
+        /// <param name="guild"></param>
+        /// <returns></returns>
+        Task DisableSpacesAsync(IGuild guild);
     }
 }

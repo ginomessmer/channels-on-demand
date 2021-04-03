@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 namespace DiscordVoiceChannelsOnDemand.Bot.Services
 {
     /// <summary>
-    /// A service class that is responsible for managing the rooms.
+    /// A service class that is responsible for managing rooms.
     /// </summary>
     public interface IRoomService
     {
