@@ -112,6 +112,13 @@ namespace DiscordVoiceChannelsOnDemand.Bot.Services
         }
 
         /// <inheritdoc />
+        public async Task<bool> ShouldRemoveSpaceAsync(string spaceId)
+        {
+            var lastActivity = await GetLastActivityAsync(spaceId);
+            return !lastActivity.HasValue || DateTime.UtcNow - lastActivity > TimeSpan.FromHours(24);
+        }
+
+        /// <inheritdoc />
         public Task<IEnumerable<Space>> QueryAllSpacesAsync()
         {
             return _spaceRepository.GetAllAsync();

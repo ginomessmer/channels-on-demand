@@ -1,6 +1,8 @@
 using DiscordVoiceChannelsOnDemand.Bot.Models;
 using Moq;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Linq;
 using Xunit;
 
 namespace DiscordVoiceChannelsOnDemand.Tests

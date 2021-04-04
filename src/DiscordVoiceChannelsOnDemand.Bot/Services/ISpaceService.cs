@@ -48,6 +48,13 @@ namespace DiscordVoiceChannelsOnDemand.Bot.Services
         Task<DateTime?> GetLastActivityAsync(string spaceId);
 
         /// <summary>
+        /// Determines whether the space should be removed.
+        /// </summary>
+        /// <param name="spaceId"></param>
+        /// <returns></returns>
+        Task<bool> ShouldRemoveSpaceAsync(string spaceId);
+
+        /// <summary>
         /// Queries all spaces.
         /// </summary>
         /// <returns></returns>
