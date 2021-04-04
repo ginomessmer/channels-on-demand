@@ -105,7 +105,7 @@ namespace DiscordVoiceChannelsOnDemand.Bot.Services
             var message = messages.FirstOrDefault();
 
             if (message is null)
-                return null;
+                return channel.CreatedAt.UtcDateTime;
 
             var timestamp = message.EditedTimestamp ?? message.Timestamp;
             return timestamp.UtcDateTime;

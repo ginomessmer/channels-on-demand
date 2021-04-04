@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Discord;
 using DiscordVoiceChannelsOnDemand.Bot.Infrastructure;
@@ -15,15 +16,13 @@ namespace DiscordVoiceChannelsOnDemand.Tests
         private readonly Mock<IDiscordClient> _discordClientMock = new();
         private readonly Mock<ISpaceRepository> _spaceRepositoryMock = new();
         private readonly Mock<IMessageChannel> _channelMock = new();
-        private readonly DateTime _editedTimeStamp = DateTime.UtcNow - TimeSpan.FromDays(2);
+        private readonly DateTime _editedTimeStampTwoDaysOffset = DateTime.UtcNow - TimeSpan.FromDays(2);
+        private readonly DateTime _editedTimeStampTwoMinutesOffset = DateTime.UtcNow - TimeSpan.FromMinutes(2);
         private readonly Space _space = new();
 
         public SpaceServiceUnitTests()
         {
-            _channelMock
-                .Setup(x => 
-                    x.GetMessagesAsync(1, It.IsAny<CacheMode>(), It.IsAny<RequestOptions>()))
-                .Returns(GetMockChannelsAsync(_editedTimeStamp));
+            SetupChannelMock(_editedTimeStampTwoDaysOffset);
 
             _spaceRepositoryMock
                 .Setup(x => 
@@ -36,6 +35,15 @@ namespace DiscordVoiceChannelsOnDemand.Tests
                 .ReturnsAsync(_channelMock.Object);
         }
 
+        // Setups
+        private void SetupChannelMock(DateTime editedTimeStamp, int count = 1)
+        {
+            _channelMock
+                .Setup(x =>
+                    x.GetMessagesAsync(1, It.IsAny<CacheMode>(), It.IsAny<RequestOptions>()))
+                .Returns(GetMockChannelsAsync(editedTimeStamp, count));
+        }
+
         [Fact]
         public async Task SpaceService_LastActivity_DetermineCorrectly()
         {
@@ -46,31 +54,63 @@ namespace DiscordVoiceChannelsOnDemand.Tests
             var result = await spaceService.GetLastActivityAsync(It.IsAny<string>());
 
             // Assert
-            Assert.Equal(_editedTimeStamp, result);
+            Assert.Equal(_editedTimeStampTwoDaysOffset, result);
         }
 
-        [Fact]
-        public async Task SpaceService_ShouldRemove_DetermineCorrectly()
+        [Theory]
+        [MemberData(nameof(SupplyTimeStampTestData))]
+        public async Task SpaceService_ShouldRemove_DetermineCorrectly(DateTime editedTimeStamp, bool expectedResult)
         {
             // Arrange
+            SetupChannelMock(editedTimeStamp);
             var spaceService = new SpaceService(_discordClientMock.Object, _spaceRepositoryMock.Object);
 
             // Act
             var result = await spaceService.ShouldRemoveSpaceAsync(It.IsAny<string>());
 
             // Assert
-            Assert.True(result);
+            Assert.Equal(expectedResult, result);
         }
 
-        public static async IAsyncEnumerable<IReadOnlyCollection<IMessage>> GetMockChannelsAsync(DateTime editedTimeStamp)
+        [Theory]
+        [MemberData(nameof(SupplyTimeStampTestDataForEmptyChannel))]
+        public async Task SpaceService_ShouldRemoveEmptyChannel_DetermineCorrectly(DateTime createdAt, bool expectedResult)
+        {
+            // Arrange
+            SetupChannelMock(_editedTimeStampTwoMinutesOffset, 0);
+            _channelMock.Setup(x => x.CreatedAt).Returns(createdAt);
+
+            var spaceService = new SpaceService(_discordClientMock.Object, _spaceRepositoryMock.Object);
+
+            // Act
+            var result = await spaceService.ShouldRemoveSpaceAsync(It.IsAny<string>());
+
+            // Assert
+            Assert.Equal(expectedResult, result);
+        }
+
+        // Helper methods
+        public static IEnumerable<object[]> SupplyTimeStampTestData => new[]
+        {
+            new object[] { DateTime.UtcNow - TimeSpan.FromHours(2), false },
+            new object[] { DateTime.UtcNow - TimeSpan.FromMinutes(10), false },
+            new object[] { DateTime.UtcNow - TimeSpan.FromDays(2), true },
+            new object[] { DateTime.UtcNow - TimeSpan.FromDays(10), true }
+        };
+
+        public static IEnumerable<object[]> SupplyTimeStampTestDataForEmptyChannel = new[]
+        {
+            new object[] {DateTime.UtcNow - TimeSpan.FromMinutes(2), false},
+            new object[] {DateTime.UtcNow - TimeSpan.FromDays(2), true}
+        };
+
+        public static async IAsyncEnumerable<IReadOnlyCollection<IMessage>> GetMockChannelsAsync(DateTime editedTimeStamp, int count = 1)
         {
             var mock = new Mock<IMessage>();
             mock.Setup(x => x.EditedTimestamp).Returns(editedTimeStamp);
 
-            yield return await Task.FromResult((IReadOnlyCollection<IMessage>)new List<IMessage>
-            {
-                mock.Object
-            });
+            var enumerable = Enumerable.Repeat(mock.Object, count).ToList();
+            yield return await Task.FromResult((IReadOnlyCollection<IMessage>)enumerable);
         }
     }
 }
