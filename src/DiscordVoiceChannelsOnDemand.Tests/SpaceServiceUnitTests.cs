@@ -18,11 +18,17 @@ namespace DiscordVoiceChannelsOnDemand.Tests
         private readonly Mock<IMessageChannel> _channelMock = new();
         private readonly DateTime _editedTimeStampTwoDaysOffset = DateTime.UtcNow - TimeSpan.FromDays(2);
         private readonly DateTime _editedTimeStampTwoMinutesOffset = DateTime.UtcNow - TimeSpan.FromMinutes(2);
+
+        private readonly TimeSpan _expiry = TimeSpan.FromDays(1);
+
         private readonly Space _space = new();
+        private readonly Server _server = new();
 
         public SpaceServiceUnitTests()
         {
             SetupChannelMock(_editedTimeStampTwoDaysOffset);
+
+            SetupServerModel();
 
             _spaceRepositoryMock
                 .Setup(x => 
@@ -42,6 +48,16 @@ namespace DiscordVoiceChannelsOnDemand.Tests
                 .Setup(x =>
                     x.GetMessagesAsync(1, It.IsAny<CacheMode>(), It.IsAny<RequestOptions>()))
                 .Returns(GetMockChannelsAsync(editedTimeStamp, count));
+        }
+
+        private void SetupServerModel()
+        {
+            _server.SpaceConfiguration = new ServerSpaceConfiguration
+            {
+                SpaceTimeoutThreshold = _expiry
+            };
+
+            _space.Server = _server;
         }
 
         [Fact]

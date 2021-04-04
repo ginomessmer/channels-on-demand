@@ -115,7 +115,14 @@ namespace DiscordVoiceChannelsOnDemand.Bot.Services
         public async Task<bool> ShouldRemoveSpaceAsync(string spaceId)
         {
             var lastActivity = await GetLastActivityAsync(spaceId);
-            return !lastActivity.HasValue || DateTime.UtcNow - lastActivity > TimeSpan.FromHours(24);
+            var serverThreshold = await GetSpaceTimeoutAsync(spaceId);
+            return !lastActivity.HasValue || DateTime.UtcNow - lastActivity > serverThreshold;
+        }
+
+        public async Task<TimeSpan> GetSpaceTimeoutAsync(string spaceId)
+        {
+            var space = await _spaceRepository.GetAsync(spaceId);
+            return space.Server.SpaceConfiguration.SpaceTimeoutThreshold;
         }
 
         /// <inheritdoc />
