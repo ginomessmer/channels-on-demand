@@ -1,0 +1,8 @@
+version: '3.4'
+
+services:
+  discordvoicechannelsondemand.bot:
+    image: ${DOCKER_REGISTRY-}discordvoicechannelsondemandbot
+    build:
+      context: .
+      dockerfile: DiscordVoiceChannelsOnDemand.Bot/Dockerfile
