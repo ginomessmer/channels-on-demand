@@ -49,6 +49,7 @@ namespace DiscordVoiceChannelsOnDemand.Bot.Workers
             {
                 ServerService = scope.ServiceProvider.GetRequiredService<IServerService>(),
                 RoomService = scope.ServiceProvider.GetRequiredService<IRoomService>(),
+                SpaceService = scope.ServiceProvider.GetRequiredService<ISpaceService>()
             };
 
 
@@ -66,6 +67,11 @@ namespace DiscordVoiceChannelsOnDemand.Bot.Workers
             // Create new voice channel
             var lobby = await unitOfWork.ServerService.GetLobbyAsync(voiceChannel);
             var channel = await unitOfWork.RoomService.CreateNewRoomAsync(user, lobby);
+
+            // Create space if auto-create is enabled
+            if (lobby.AutoCreateSpace)
+                await unitOfWork.SpaceService.CreateSpaceAsync(user);
+
             _logger.LogInformation("Created new room {VoiceChannel} for user {User}", channel, user);
         }
     }

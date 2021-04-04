@@ -15,6 +15,21 @@ namespace DiscordVoiceChannelsOnDemand.Bot.Services
         /// <summary>
         /// Creates a new private text channel - a Space.
         /// </summary>
+        /// <param name="user"></param>
+        /// <returns></returns>
+        Task<ITextChannel> CreateSpaceAsync(IGuildUser user);
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="owner"></param>
+        /// <param name="invitedUsers"></param>
+        /// <returns></returns>
+        Task<ITextChannel> CreateSpaceAsync(IGuildUser owner, IEnumerable<IGuildUser> invitedUsers);
+
+        /// <summary>
+        /// Creates a new private text channel - a Space.
+        /// </summary>
         /// <param name="owner">The owner of the space</param>
         /// <param name="invitedUsers">All users who gain access to the space</param>
         /// <param name="parentCategoryChannel">The category that will serve as the space's parent</param>
@@ -23,8 +38,7 @@ namespace DiscordVoiceChannelsOnDemand.Bot.Services
             ICategoryChannel parentCategoryChannel = null);
 
         /// <inheritdoc cref="CreateSpaceAsync(Discord.IGuildUser,System.Collections.Generic.IEnumerable{Discord.IGuildUser},Discord.ICategoryChannel)"/>
-        Task<ITextChannel> CreateSpaceAsync(IGuildUser owner, IEnumerable<IGuildUser> invitedUsers,
-            ulong? parentCategoryChannel = null);
+        Task<ITextChannel> CreateSpaceAsync(IGuildUser owner, IEnumerable<IGuildUser> invitedUsers, ulong parentCategoryChannel);
 
         /// <summary>
         /// Retrieves the last activity as a date time.

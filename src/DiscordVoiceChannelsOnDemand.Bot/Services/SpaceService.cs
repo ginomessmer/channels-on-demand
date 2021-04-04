@@ -22,6 +22,13 @@ namespace DiscordVoiceChannelsOnDemand.Bot.Services
         }
 
         /// <inheritdoc />
+        public Task<ITextChannel> CreateSpaceAsync(IGuildUser owner) => CreateSpaceAsync(owner, Enumerable.Empty<IGuildUser>());
+
+        /// <inheritdoc />
+        public Task<ITextChannel> CreateSpaceAsync(IGuildUser owner, IEnumerable<IGuildUser> invitedUsers) =>
+            CreateSpaceAsync(owner, Enumerable.Empty<IGuildUser>(), null);
+
+        /// <inheritdoc />
         public async Task<ITextChannel> CreateSpaceAsync(IGuildUser owner, IEnumerable<IGuildUser> invitedUsers, ICategoryChannel parentCategoryChannel = null)
         {
             var guild = await _client.GetGuildAsync(owner.GuildId);
@@ -64,7 +71,7 @@ namespace DiscordVoiceChannelsOnDemand.Bot.Services
         }
 
         /// <inheritdoc />
-        public async Task<ITextChannel> CreateSpaceAsync(IGuildUser owner, IEnumerable<IGuildUser> invitedUsers, ulong? parentCategoryChannel = null)
+        public async Task<ITextChannel> CreateSpaceAsync(IGuildUser owner, IEnumerable<IGuildUser> invitedUsers, ulong parentCategoryChannel)
         {
             // Get category
             var guild = await _client.GetGuildAsync(owner.GuildId);
