@@ -1,10 +1,10 @@
+using System.Threading.Tasks;
 using DiscordVoiceChannelsOnDemand.Bot.Infrastructure;
 using DiscordVoiceChannelsOnDemand.Bot.Infrastructure.EntityFramework;
 using Microsoft.EntityFrameworkCore;
-using System.Threading.Tasks;
 using Xunit;
 
-namespace DiscordVoiceChannelsOnDemand.Tests
+namespace DiscordVoiceChannelsOnDemand.Tests.Infrastructure
 {
     public class EfCoreIntegrationTests
     {

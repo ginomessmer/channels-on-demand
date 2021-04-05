@@ -41,6 +41,7 @@
 |`.lobby deregister <VOICE_CHANNEL_ID>`|Deregisters the lobby.|
 |`.lobby list`|Lists all lobbies on the server.|
 |`.lobby set names [NAME] <names...>`|Sets the possible names for rooms. The names will be chosen randomly if more than one name exists.|
+|`.lobby set space autocreate <VOICE_CHANNEL_ID> <true\|false>`|Auto creates spaces when users join the lobby|
 |`.space enable`|Enables spaces for the entire server.|
 |`.space disable`|Disables spaces for the entire server.|
 |`.space new [USERS...]`|Creates a new space and invites all mentioned users.|

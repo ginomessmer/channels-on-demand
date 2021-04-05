@@ -1,11 +1,8 @@
-using DiscordVoiceChannelsOnDemand.Bot.Models;
-using Moq;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
+using Moq;
 using Xunit;
 
-namespace DiscordVoiceChannelsOnDemand.Tests
+namespace DiscordVoiceChannelsOnDemand.Tests.Features.Lobby
 {
     public class LobbyUnitTests
     {
@@ -13,7 +10,7 @@ namespace DiscordVoiceChannelsOnDemand.Tests
         public void Lobby_SuggestName_Single()
         {
             // Arrange
-            var lobby = new Lobby(It.IsAny<string>(), It.IsAny<string>());
+            var lobby = new Bot.Models.Lobby(It.IsAny<string>(), It.IsAny<string>());
             const string name = "Martha";
 
             // Act
@@ -28,7 +25,7 @@ namespace DiscordVoiceChannelsOnDemand.Tests
         public void Lobby_SuggestName_ContainsFromList()
         {
             // Arrange
-            var lobby = new Lobby(It.IsAny<string>(), It.IsAny<string>());
+            var lobby = new Bot.Models.Lobby(It.IsAny<string>(), It.IsAny<string>());
             var names = new[] { "Martha", "Gino" };
 
             // Act
@@ -43,7 +40,7 @@ namespace DiscordVoiceChannelsOnDemand.Tests
         public void Lobby_SetNames_Correctly()
         {
             // Arrange
-            var lobby = new Lobby();
+            var lobby = new Bot.Models.Lobby();
             var names = new[] {"Martha", "Gino"};
 
             // Act
@@ -63,7 +60,7 @@ namespace DiscordVoiceChannelsOnDemand.Tests
         public void Lobby_Category_Truthful(string category, bool result)
         {
             // Arrange
-            var lobby = new Lobby();
+            var lobby = new Bot.Models.Lobby();
 
             // Act
             lobby.CategoryId = category;

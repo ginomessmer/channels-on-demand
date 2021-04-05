@@ -9,7 +9,7 @@ using DiscordVoiceChannelsOnDemand.Bot.Services;
 using Moq;
 using Xunit;
 
-namespace DiscordVoiceChannelsOnDemand.Tests
+namespace DiscordVoiceChannelsOnDemand.Tests.Features.Space
 {
     public class SpaceServiceUnitTests
     {
@@ -21,7 +21,7 @@ namespace DiscordVoiceChannelsOnDemand.Tests
 
         private readonly TimeSpan _expiry = TimeSpan.FromDays(1);
 
-        private readonly Space _space = new();
+        private readonly Bot.Models.Space _space = new();
         private readonly Server _server = new();
 
         public SpaceServiceUnitTests()
