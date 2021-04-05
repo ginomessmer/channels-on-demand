@@ -1,7 +1,7 @@
 # COD - Channels on Demand for Discord
 [![.NET Build and Test](https://github.com/ginomessmer/discord-vcaas/actions/workflows/dotnet.yml/badge.svg)](https://github.com/ginomessmer/discord-vcaas/actions/workflows/dotnet.yml)
-[![Docker Build](https://github.com/ginomessmer/discord-vcod/actions/workflows/docker.yml/badge.svg)](https://github.com/ginomessmer/discord-vcod/actions/workflows/docker.yml)
-[![Docker Pulls](https://img.shields.io/docker/pulls/ginomessmer/discord-vcod?logo=docker)](https://hub.docker.com/r/ginomessmer/discord-vcod)
+[![Docker Build](https://github.com/ginomessmer/channels-on-demand/actions/workflows/docker.yml/badge.svg)](https://github.com/ginomessmer/channels-on-demand/actions/workflows/docker.yml)
+[![Docker Pulls](https://img.shields.io/docker/pulls/ginomessmer/discord-cod?logo=docker)](https://hub.docker.com/r/ginomessmer/discord-cod)
 [![ko-fi](https://img.shields.io/badge/%E2%98%95-buy%20me%20a%20coffee-orange)](https://ko-fi.com/P5P72WHKK)
 
 **A lightweight Discord bot that creates voice and text channels for you on demand, whenever you need them.**
@@ -30,7 +30,7 @@
 4. Copy the Discord bot token
 
 ### Docker
-5. Run: `docker run ginomessmer/discord-vcod -e ConnectionStrings:DiscordBotToken=<TOKEN>`
+5. Run: `docker run ginomessmer/discord-cod -e ConnectionStrings:DiscordBotToken=<TOKEN>`
 
 6. Register your first lobby. See Commands below for instructions.
 

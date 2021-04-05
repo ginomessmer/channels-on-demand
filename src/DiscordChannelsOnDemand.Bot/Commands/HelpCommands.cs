@@ -29,7 +29,7 @@ namespace DiscordChannelsOnDemand.Bot.Commands
             var embed = new EmbedBuilder()
                 .WithTitle("Discord Voice Channels on Demand")
                 .WithDescription("Type `.help module <module>` to inspect the module")
-                .WithUrl("https://github.com/ginomessmer/discord-vcod/")
+                .WithUrl("https://github.com/ginomessmer/channels-on-demand/")
                 .WithFooter("Like what you are using? Type `.help support` to contribute")
                 .WithFields(modules);
 
@@ -63,10 +63,10 @@ namespace DiscordChannelsOnDemand.Bot.Commands
         {
             await ReplyAsync(embed: new EmbedBuilder()
                 .WithTitle("View the project on GitHub")
-                .WithUrl("https://github.com/ginomessmer/discord-vcod/")
+                .WithUrl("https://github.com/ginomessmer/channels-on-demand/")
                 .WithFields(
                     new EmbedFieldBuilder().WithName("Contribute")
-                        .WithValue("Contribute by suggesting new ideas, submitting issues and creating PRs: https://github.com/ginomessmer/discord-vcod"),
+                        .WithValue("Contribute by suggesting new ideas, submitting issues and creating PRs: https://github.com/ginomessmer/discord-cod"),
                     new EmbedFieldBuilder().WithName("Buy a coffee")
                         .WithValue("Your donation is highly appreciated and keeps the bot running: https://ko-fi.com/ginomessmer"))
                 .Build());
