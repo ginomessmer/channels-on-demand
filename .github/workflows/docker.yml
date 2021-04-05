@@ -27,6 +27,6 @@ jobs:
         uses: docker/build-push-action@v2.3.0
         with:
           context: ./src
-          file: ./src/DiscordVoiceChannelsOnDemand.Bot/Dockerfile
-          tags: ginomessmer/discord-vcod:latest,ginomessmer/discord-vcod:${{ github.run_id }}
+          file: ./src/DiscordChannelsOnDemand.Bot/Dockerfile
+          tags: ginomessmer/discord-cod:latest,ginomessmer/discord-cod:${{ github.run_id }}
           push: true
