@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using DiscordVoiceChannelsOnDemand.Bot.Abstractions;
 
 namespace DiscordVoiceChannelsOnDemand.Bot.Services
@@ -15,12 +16,15 @@ namespace DiscordVoiceChannelsOnDemand.Bot.Services
     {
         private readonly IDiscordClient _client;
         private readonly IServerRepository _serverRepository;
+        private readonly IMapper _mapper;
 
         public ServerService(IDiscordClient client,
-            IServerRepository serverRepository)
+            IServerRepository serverRepository,
+            IMapper mapper)
         {
             _client = client;
             _serverRepository = serverRepository;
+            _mapper = mapper;
         }
 
         #region Implementation of IServerService
@@ -162,16 +166,13 @@ namespace DiscordVoiceChannelsOnDemand.Bot.Services
         /// <inheritdoc />
         public async Task ConfigureSpaceAsync(ILobby lobby, Action<LobbySpaceConfiguration> configuration)
         {
-            var result = await GetLobbyAsync(lobby.TriggerVoiceChannelId);
+            var lobbyResult = await GetLobbyAsync(lobby.TriggerVoiceChannelId);
 
-            var lobbySpaceConfiguration = new LobbySpaceConfiguration
-            {
-                AutoCreate = result.AutoCreateSpace
-            };
+            var lobbySpaceConfiguration = _mapper.Map<LobbySpaceConfiguration>(lobbyResult);
             configuration.Invoke(lobbySpaceConfiguration);
 
             var updateLobby = await _serverRepository.FindLobbyAsync(lobby.TriggerVoiceChannelId);
-            updateLobby.AutoCreateSpace = lobbySpaceConfiguration.AutoCreate;
+            _mapper.Map(lobbySpaceConfiguration, updateLobby);
 
             await _serverRepository.SaveChangesAsync();
 

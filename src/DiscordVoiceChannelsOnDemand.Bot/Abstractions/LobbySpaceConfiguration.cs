@@ -1,4 +1,4 @@
-namespace DiscordVoiceChannelsOnDemand.Bot.Services
+namespace DiscordVoiceChannelsOnDemand.Bot.Abstractions
 {
     public class LobbySpaceConfiguration
     {
