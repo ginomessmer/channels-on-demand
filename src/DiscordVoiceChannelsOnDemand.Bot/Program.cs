@@ -13,20 +13,30 @@ using Microsoft.Extensions.Hosting;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
+using Serilog;
 
 namespace DiscordVoiceChannelsOnDemand.Bot
 {
     public class Program
     {
-        public static void Main(string[] args) => CreateHostBuilder(args).Build().Run();
+        public static void Main(string[] args)
+        {
+            ConfigureLogging();
+            CreateHostBuilder(args).Build().Run();
+        }
+
+        private static void ConfigureLogging() =>
+            Log.Logger = new LoggerConfiguration()
+                .Enrich.FromLogContext()
+                .WriteTo.File("logs/bot.log")
+                .WriteTo.Console()
+                .CreateLogger();
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
             Host.CreateDefaultBuilder(args)
                 .ConfigureAppConfiguration(x => x.AddUserSecrets<Program>())
                 .ConfigureServices((hostContext, services) =>
                 {
-                    services.AddAutoMapper(typeof(Program));
-
                     // Infrastructure
                     services.AddDbContext<BotDbContext>(builder => builder.UseSqlite("Data source=data/data.sqlite"));
                     services.AddScoped<IServerRepository, EfCoreServerRepository>();
@@ -55,7 +65,11 @@ namespace DiscordVoiceChannelsOnDemand.Bot
                     services.AddHostedService<RoomPurgeWorker>();
                     services.AddHostedService<SpacePurgeWorker>();
                     services.AddHostedService<DocumentationWorker>();
-                });
+
+                    // Misc
+                    services.AddAutoMapper(typeof(Program));
+                })
+                .UseSerilog();
 
         private static DiscordSocketClient CreateDiscordSocketClient(HostBuilderContext hostContext)
         {
