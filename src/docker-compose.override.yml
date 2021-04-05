@@ -1,0 +1,9 @@
+version: '3.4'
+services:
+  bot:
+    volumes:
+      - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
+  
+  db:
+    ports:
+    - 5432:5432 
