@@ -6,6 +6,9 @@ on:
   pull_request:
     branches: [ main, dev ]
 
+env:
+  SOLUTION_FILE: ./src/DiscordChannelsOnDemand.sln
+
 jobs:
   build:
 
@@ -18,8 +21,8 @@ jobs:
       with:
         dotnet-version: 5.0.x
     - name: Restore dependencies
-      run: dotnet restore ./src
+      run: dotnet restore ${SOLUTION_FILE}
     - name: Build
-      run: dotnet build ./src --no-restore
+      run: dotnet build ${SOLUTION_FILE} --no-restore
     - name: Test
-      run: dotnet test ./src --no-build --verbosity normal
+      run: dotnet test ${SOLUTION_FILE} --no-build --verbosity normal
