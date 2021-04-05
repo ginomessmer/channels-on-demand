@@ -1,8 +1,16 @@
 version: '3.4'
 
 services:
-  discordvoicechannelsondemand.bot:
-    image: ${DOCKER_REGISTRY-}discordvoicechannelsondemandbot
+  bot:
+    image: ${DOCKER_REGISTRY-}discord-cod
+    environment:
+        ConnectionStrings__DefaultDbContext: Host=db;Database=cod;Username=postgres;Password=postgres
     build:
       context: .
-      dockerfile: DiscordVoiceChannelsOnDemand.Bot/Dockerfile
+      dockerfile: DiscordChannelsOnDemand.Bot/Dockerfile
+
+  db:
+    image: postgres
+    environment:
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: cod

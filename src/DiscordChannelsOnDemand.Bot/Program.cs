@@ -38,7 +38,8 @@ namespace DiscordChannelsOnDemand.Bot
                 .ConfigureServices((hostContext, services) =>
                 {
                     // Infrastructure
-                    services.AddDbContext<BotDbContext>(builder => builder.UseSqlite("Data source=data/data.sqlite"));
+                    services.AddDbContext<BotDbContext>(builder => 
+                        builder.UseNpgsql(hostContext.Configuration.GetConnectionString("DefaultDbContext")));
                     services.AddScoped<IServerRepository, EfCoreServerRepository>();
                     services.AddScoped<IRoomRepository, EfCoreRoomRepository>();
                     services.AddScoped<ISpaceRepository, EfCoreSpaceRepository>();
