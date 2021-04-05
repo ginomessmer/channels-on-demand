@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Threading.Tasks;
+using DiscordVoiceChannelsOnDemand.Bot.Abstractions;
 
 namespace DiscordVoiceChannelsOnDemand.Bot.Services
 {
@@ -136,7 +137,12 @@ namespace DiscordVoiceChannelsOnDemand.Bot.Services
             if (userVoiceChannel is null)
                 return null;
 
-            var lobby = await _serverRepository.FindLobbyAsync(userVoiceChannel.Id.ToString());
+            return await GetLobbyAsync(userVoiceChannel.Id.ToString());
+        }
+
+        private async Task<Lobby> GetLobbyAsync(string id)
+        {
+            var lobby = await _serverRepository.FindLobbyAsync(id);
             return lobby;
         }
 
@@ -151,6 +157,24 @@ namespace DiscordVoiceChannelsOnDemand.Bot.Services
         public async Task DisableSpacesAsync(IGuild guild)
         {
             await ToggleSpacesAsync(guild);
+        }
+
+        /// <inheritdoc />
+        public async Task ConfigureSpaceAsync(ILobby lobby, Action<LobbySpaceConfiguration> configuration)
+        {
+            var result = await GetLobbyAsync(lobby.TriggerVoiceChannelId);
+
+            var lobbySpaceConfiguration = new LobbySpaceConfiguration
+            {
+                AutoCreate = result.AutoCreateSpace
+            };
+            configuration.Invoke(lobbySpaceConfiguration);
+
+            var updateLobby = await _serverRepository.FindLobbyAsync(lobby.TriggerVoiceChannelId);
+            updateLobby.AutoCreateSpace = lobbySpaceConfiguration.AutoCreate;
+
+            await _serverRepository.SaveChangesAsync();
+
         }
 
         /// <summary>

@@ -77,5 +77,19 @@ namespace DiscordVoiceChannelsOnDemand.Bot.Commands
             await _serverService.ConfigureLobbySuggestedNamesAsync(voiceChannel, names);
             await ReplyAsync("Names set successfully.");
         }
+
+        [Command("set space autocreate")]
+        [RequireBotPermission(GuildPermission.ManageChannels)]
+        [RequireUserPermission(GuildPermission.ManageChannels)]
+        [RequireContext(ContextType.Guild)]
+        public async Task SetSpaceAutoCreate(IVoiceChannel voiceChannel, bool autoCreate = true)
+        {
+            var lobby = await _serverService.GetLobbyAsync(voiceChannel);
+            await _serverService.ConfigureSpaceAsync(lobby, x =>
+            {
+                x.AutoCreate = autoCreate;
+            });
+            await ReplyAsync("Auto create set"); // TODO: Better response message
+        }
     }
 }
