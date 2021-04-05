@@ -22,6 +22,13 @@ namespace DiscordVoiceChannelsOnDemand.Bot.Services
         }
 
         /// <inheritdoc />
+        public Task<ITextChannel> CreateSpaceAsync(IGuildUser owner) => CreateSpaceAsync(owner, Enumerable.Empty<IGuildUser>());
+
+        /// <inheritdoc />
+        public Task<ITextChannel> CreateSpaceAsync(IGuildUser owner, IEnumerable<IGuildUser> invitedUsers) =>
+            CreateSpaceAsync(owner, Enumerable.Empty<IGuildUser>(), null);
+
+        /// <inheritdoc />
         public async Task<ITextChannel> CreateSpaceAsync(IGuildUser owner, IEnumerable<IGuildUser> invitedUsers, ICategoryChannel parentCategoryChannel = null)
         {
             var guild = await _client.GetGuildAsync(owner.GuildId);
@@ -64,7 +71,7 @@ namespace DiscordVoiceChannelsOnDemand.Bot.Services
         }
 
         /// <inheritdoc />
-        public async Task<ITextChannel> CreateSpaceAsync(IGuildUser owner, IEnumerable<IGuildUser> invitedUsers, ulong? parentCategoryChannel = null)
+        public async Task<ITextChannel> CreateSpaceAsync(IGuildUser owner, IEnumerable<IGuildUser> invitedUsers, ulong parentCategoryChannel)
         {
             // Get category
             var guild = await _client.GetGuildAsync(owner.GuildId);
@@ -98,10 +105,24 @@ namespace DiscordVoiceChannelsOnDemand.Bot.Services
             var message = messages.FirstOrDefault();
 
             if (message is null)
-                return null;
+                return channel.CreatedAt.UtcDateTime;
 
             var timestamp = message.EditedTimestamp ?? message.Timestamp;
             return timestamp.UtcDateTime;
+        }
+
+        /// <inheritdoc />
+        public async Task<bool> ShouldRemoveSpaceAsync(string spaceId)
+        {
+            var lastActivity = await GetLastActivityAsync(spaceId);
+            var serverThreshold = await GetSpaceTimeoutAsync(spaceId);
+            return !lastActivity.HasValue || DateTime.UtcNow - lastActivity > serverThreshold;
+        }
+
+        public async Task<TimeSpan> GetSpaceTimeoutAsync(string spaceId)
+        {
+            var space = await _spaceRepository.GetAsync(spaceId);
+            return space.Server.SpaceConfiguration.SpaceTimeoutThreshold;
         }
 
         /// <inheritdoc />

@@ -35,9 +35,7 @@ namespace DiscordVoiceChannelsOnDemand.Bot.Workers
 
                 foreach (var space in spaces)
                 {
-                    var lastActivity = await spaceService.GetLastActivityAsync(space.TextChannelId);
-
-                    var remove = !lastActivity.HasValue || DateTime.UtcNow - lastActivity > TimeSpan.FromHours(24);
+                    var remove = await spaceService.ShouldRemoveSpaceAsync(space.TextChannelId);
                     if (!remove)
                         continue;
 

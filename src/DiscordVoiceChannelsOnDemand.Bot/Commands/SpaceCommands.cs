@@ -58,7 +58,8 @@ namespace DiscordVoiceChannelsOnDemand.Bot.Commands
                 categoryId = Convert.ToUInt64(server.SpaceConfiguration.SpaceCategoryId);
 
             // Create new text channel
-            var channel = await _spaceService.CreateSpaceAsync(Context.User as IGuildUser, users, categoryId);
+            var channel = categoryId is null ? await _spaceService.CreateSpaceAsync(Context.User as IGuildUser, users)
+                : await _spaceService.CreateSpaceAsync(Context.User as IGuildUser, users, (ulong) categoryId);
 
             // Reply
             var embed = new EmbedBuilder()

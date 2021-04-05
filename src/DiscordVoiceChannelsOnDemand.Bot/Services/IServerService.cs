@@ -1,9 +1,11 @@
+using System;
 using Discord;
 using DiscordVoiceChannelsOnDemand.Bot.Data;
 using DiscordVoiceChannelsOnDemand.Bot.Models;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Threading.Tasks;
+using DiscordVoiceChannelsOnDemand.Bot.Abstractions;
 
 namespace DiscordVoiceChannelsOnDemand.Bot.Services
 {
@@ -96,5 +98,12 @@ namespace DiscordVoiceChannelsOnDemand.Bot.Services
         /// <param name="guild"></param>
         /// <returns></returns>
         Task DisableSpacesAsync(IGuild guild);
+
+        /// <summary>
+        /// Configures space options for a server.
+        /// </summary>
+        /// <param name="action"></param>
+        /// <returns></returns>
+        Task ConfigureSpaceAsync(ILobby lobby, Action<LobbySpaceConfiguration> configuration);
     }
 }

@@ -7,6 +7,8 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
+using DiscordVoiceChannelsOnDemand.Bot.Abstractions;
 
 namespace DiscordVoiceChannelsOnDemand.Bot.Services
 {
@@ -14,12 +16,15 @@ namespace DiscordVoiceChannelsOnDemand.Bot.Services
     {
         private readonly IDiscordClient _client;
         private readonly IServerRepository _serverRepository;
+        private readonly IMapper _mapper;
 
         public ServerService(IDiscordClient client,
-            IServerRepository serverRepository)
+            IServerRepository serverRepository,
+            IMapper mapper)
         {
             _client = client;
             _serverRepository = serverRepository;
+            _mapper = mapper;
         }
 
         #region Implementation of IServerService
@@ -136,7 +141,12 @@ namespace DiscordVoiceChannelsOnDemand.Bot.Services
             if (userVoiceChannel is null)
                 return null;
 
-            var lobby = await _serverRepository.FindLobbyAsync(userVoiceChannel.Id.ToString());
+            return await GetLobbyAsync(userVoiceChannel.Id.ToString());
+        }
+
+        private async Task<Lobby> GetLobbyAsync(string id)
+        {
+            var lobby = await _serverRepository.FindLobbyAsync(id);
             return lobby;
         }
 
@@ -151,6 +161,21 @@ namespace DiscordVoiceChannelsOnDemand.Bot.Services
         public async Task DisableSpacesAsync(IGuild guild)
         {
             await ToggleSpacesAsync(guild);
+        }
+
+        /// <inheritdoc />
+        public async Task ConfigureSpaceAsync(ILobby lobby, Action<LobbySpaceConfiguration> configuration)
+        {
+            var lobbyResult = await GetLobbyAsync(lobby.TriggerVoiceChannelId);
+
+            var lobbySpaceConfiguration = _mapper.Map<LobbySpaceConfiguration>(lobbyResult);
+            configuration.Invoke(lobbySpaceConfiguration);
+
+            var updateLobby = await _serverRepository.FindLobbyAsync(lobby.TriggerVoiceChannelId);
+            _mapper.Map(lobbySpaceConfiguration, updateLobby);
+
+            await _serverRepository.SaveChangesAsync();
+
         }
 
         /// <summary>

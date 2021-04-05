@@ -16,9 +16,14 @@ namespace DiscordVoiceChannelsOnDemand.Bot.Models
         public string HostUserId { get; set; }
 
         /// <summary>
-        /// The voice channel's server ID
+        /// The voice channel's server ID.
         /// </summary>
         public string GuildId { get; set; }
+
+        /// <summary>
+        /// An optional space linked to the room.
+        /// </summary>
+        public Space LinkedSpace { get; set; }
 
         public Room(ulong channelId, ulong hostUserId, ulong guildId) 
             : this(channelId.ToString(), hostUserId.ToString(), guildId.ToString())
@@ -35,5 +40,7 @@ namespace DiscordVoiceChannelsOnDemand.Bot.Models
         public Room()
         {
         }
+
+        public bool HasSpace => LinkedSpace is not null;
     }
 }

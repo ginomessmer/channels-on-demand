@@ -19,6 +19,8 @@ namespace DiscordVoiceChannelsOnDemand.Bot.Models
 
         public ICollection<string> RoomNames { get; set; } = new List<string> {"{0}"};
 
+        public bool AutoCreateSpace { get; set; }
+
         public Lobby()
         {
         }

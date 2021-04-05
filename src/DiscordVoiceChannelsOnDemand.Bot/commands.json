@@ -88,6 +88,27 @@
     ]
   },
   {
+    "Name": "set space autocreate",
+    "Summary": null,
+    "Module": "lobby",
+    "Parameters": [
+      {
+        "Name": "voiceChannel",
+        "Summary": null,
+        "DefaultValue": null,
+        "IsOptional": false,
+        "Type": "IVoiceChannel"
+      },
+      {
+        "Name": "autoCreate",
+        "Summary": null,
+        "DefaultValue": true,
+        "IsOptional": true,
+        "Type": "Boolean"
+      }
+    ]
+  },
+  {
     "Name": "ping",
     "Summary": null,
     "Module": "PingCommands",
