@@ -22,7 +22,8 @@ namespace DiscordChannelsOnDemand.Bot.Infrastructure.EntityFramework
         /// <inheritdoc />
         public BotDbContext(DbContextOptions options) : base(options)
         {
-            Database.Migrate();
+            if(Database.IsRelational())
+                Database.Migrate();
         }
         
         /// <inheritdoc />
