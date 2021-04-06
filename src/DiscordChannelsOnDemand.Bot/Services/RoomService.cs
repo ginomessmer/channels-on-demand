@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Threading.Tasks;
+using DiscordChannelsOnDemand.Bot.Models;
 
 namespace DiscordChannelsOnDemand.Bot.Services
 {
@@ -118,6 +119,13 @@ namespace DiscordChannelsOnDemand.Bot.Services
         public Task<bool> ExistsAsync([NotNull] IVoiceChannel voiceChannel)
         {
             return _roomRepository.ExistsAsync(voiceChannel.Id.ToString());
+        }
+
+        /// <inheritdoc />
+        public Task<Room> GetRoomAsync(IVoiceChannel voiceChannel)
+        {
+            var id = voiceChannel.Id.ToString();
+            return _roomRepository.GetAsync(id);
         }
     }
 }

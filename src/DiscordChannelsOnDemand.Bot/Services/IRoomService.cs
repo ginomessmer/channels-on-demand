@@ -2,6 +2,8 @@ using Discord;
 using DiscordChannelsOnDemand.Bot.Abstractions;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Discord.WebSocket;
+using DiscordChannelsOnDemand.Bot.Models;
 
 namespace DiscordChannelsOnDemand.Bot.Services
 {
@@ -45,5 +47,12 @@ namespace DiscordChannelsOnDemand.Bot.Services
         /// <param name="voiceChannel"></param>
         /// <returns></returns>
         Task<bool> ExistsAsync(IVoiceChannel voiceChannel);
+
+        /// <summary>
+        /// Gets a room
+        /// </summary>
+        /// <param name="voiceChannel"></param>
+        /// <returns></returns>
+        Task<Room> GetRoomAsync(IVoiceChannel voiceChannel);
     }
 }

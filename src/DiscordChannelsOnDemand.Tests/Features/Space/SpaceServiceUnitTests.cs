@@ -6,6 +6,7 @@ using Discord;
 using DiscordChannelsOnDemand.Bot.Infrastructure;
 using DiscordChannelsOnDemand.Bot.Models;
 using DiscordChannelsOnDemand.Bot.Services;
+using DiscordChannelsOnDemand.Tests.SeedWork;
 using Moq;
 using Xunit;
 
@@ -103,6 +104,32 @@ namespace DiscordChannelsOnDemand.Tests.Features.Space
 
             // Assert
             Assert.Equal(expectedResult, result);
+        }
+
+        [Fact]
+        public async Task Test()
+        {
+            // Arrange
+            var userFake = new GuildUserFake();
+            var host = userFake.Generate();
+            var users = userFake.Generate(10).Cast<IGuildUser>().ToList();
+            
+            var channelMock = new Mock<IGuildChannel>();
+            channelMock.Setup(x => x.PermissionOverwrites).Returns(users
+                .Take(3)
+                .Select(x => 
+                    new Overwrite(x.Id, PermissionTarget.User, new OverwritePermissions(viewChannel: PermValue.Allow)))
+                .ToList);
+
+            channelMock.SetupGet(x => x.Guild).Returns(new GuildFake());
+
+            var spaceService = new SpaceService(_discordClientMock.Object, _spaceRepositoryMock.Object);
+
+            // Act
+            await spaceService.ApplyPermissionsAsync(channelMock.Object, host, users.ToArray());
+
+            // Assert
+
         }
 
         // Helper methods

@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 using Discord;
 using Discord.WebSocket;
@@ -150,6 +151,43 @@ namespace DiscordChannelsOnDemand.Bot.Services
 
             await _spaceRepository.RemoveAsync(spaceId);
             await _spaceRepository.SaveChangesAsync();
+        }
+
+        /// <inheritdoc />
+        public async Task ApplyPermissionsAsync(string spaceId, IGuildUser host, params IGuildUser[] users)
+        {
+            var channel = await _client.GetChannelAsync(Convert.ToUInt64(spaceId)) as IGuildChannel;
+
+            await ApplyPermissionsAsync(channel, host, users);
+        }
+
+        public async Task ApplyPermissionsAsync(IGuildChannel channel, IGuildUser host, params IGuildUser[] users)
+        {
+            var allUsers = new List<IGuildUser>(users) {host};
+
+            var channelPermissionUserIds = channel.PermissionOverwrites
+                .Where(x => x.TargetType is PermissionTarget.User)
+                .Select(x => x.TargetId)
+                .ToList();
+
+            var pendingUserIds = allUsers.Select(x => x.Id).Except(channelPermissionUserIds).ToList();
+            var pendingUsers = await Task.WhenAll(pendingUserIds.Select(x => channel.Guild.GetUserAsync(x)));
+
+            foreach (var pendingUser in pendingUsers)
+            {
+                await channel.AddPermissionOverwriteAsync(pendingUser,
+                    new OverwritePermissions(viewChannel: PermValue.Allow));
+            }
+
+
+            // All removed users
+            var removeUserIds = channelPermissionUserIds.Except(allUsers.Select(x => x.Id));
+            var removeUsers = await Task.WhenAll(removeUserIds.Select(x => channel.Guild.GetUserAsync(x)));
+
+            foreach (var removeUser in removeUsers)
+            {
+                await channel.RemovePermissionOverwriteAsync(removeUser);
+            }
         }
     }
 }

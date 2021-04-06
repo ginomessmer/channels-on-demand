@@ -66,5 +66,14 @@ namespace DiscordChannelsOnDemand.Bot.Services
         /// <param name="spaceId"></param>
         /// <returns></returns>
         Task DecommissionAsync(string spaceId);
+
+        /// <summary>
+        /// Applies permissions to the space.
+        /// </summary>
+        /// <param name="spaceId"></param>
+        /// <param name="host"></param>
+        /// <param name="voiceChannelUsers"></param>
+        /// <returns></returns>
+        Task ApplyPermissionsAsync(string spaceId, IGuildUser host, params IGuildUser[] voiceChannelUsers);
     }
 }
