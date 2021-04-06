@@ -27,13 +27,13 @@ namespace DiscordChannelsOnDemand.Bot.Infrastructure.EntityFramework
         }
 
         /// <inheritdoc />
-        public Task<Lobby> FindLobbyAsync(string voiceChannelId)
-        { 
-            return Set.AsQueryable()
-                .Include(x => x.Lobbies)
-                .Where(x => x.Lobbies.FirstOrDefault(x => x.TriggerVoiceChannelId == voiceChannelId) != null)
+        public async Task<Lobby> FindLobbyAsync(string voiceChannelId)
+        {
+            var lobby = await Set.Include(x => x.Lobbies)
                 .SelectMany(x => x.Lobbies)
-                .SingleOrDefaultAsync();
+                .SingleOrDefaultAsync(x => x.TriggerVoiceChannelId == voiceChannelId);
+            
+            return lobby;
         }
 
         /// <inheritdoc />
