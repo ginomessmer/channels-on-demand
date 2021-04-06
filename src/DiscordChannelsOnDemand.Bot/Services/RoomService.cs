@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Threading.Tasks;
+using DiscordChannelsOnDemand.Bot.Extensions;
 
 namespace DiscordChannelsOnDemand.Bot.Services
 {
@@ -34,7 +35,7 @@ namespace DiscordChannelsOnDemand.Bot.Services
         {
             var guild = await _client.GetGuildAsync(user.Guild.Id);
 
-            var name = string.Format(lobby.SuggestRoomName(), user.Nickname);
+            var name = string.Format(lobby.SuggestRoomName(), user.GetPreferredName());
             var roomVoiceChannel = await guild.CreateVoiceChannelAsync(name,
                 p =>
                 {
