@@ -1,7 +1,7 @@
 using DiscordChannelsOnDemand.Bot.Core.Infrastructure;
-using DiscordChannelsOnDemand.Bot.Core.Infrastructure.EntityFramework;
 using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
+using DiscordChannelsOnDemand.Bot.Features.Rooms;
 using Xunit;
 
 namespace DiscordChannelsOnDemand.Tests.Infrastructure
@@ -14,7 +14,7 @@ namespace DiscordChannelsOnDemand.Tests.Infrastructure
         {
             var options = new DbContextOptionsBuilder<BotDbContext>().UseInMemoryDatabase("Test").Options;
             var botDbContext = new BotDbContext(options);
-            _roomRepository = new EfCoreRoomRepository(botDbContext);
+            _roomRepository = new EfRoomRepository(botDbContext);
         }
 
         [Fact]

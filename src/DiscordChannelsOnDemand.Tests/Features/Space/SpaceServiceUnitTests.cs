@@ -1,6 +1,5 @@
 using Discord;
 using DiscordChannelsOnDemand.Bot.Core.Infrastructure;
-using DiscordChannelsOnDemand.Bot.Core.Services;
 using DiscordChannelsOnDemand.Bot.Models;
 using DiscordChannelsOnDemand.Tests.SeedWork;
 using Moq;

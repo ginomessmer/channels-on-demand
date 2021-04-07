@@ -3,8 +3,6 @@ using Discord.Commands;
 using Discord.WebSocket;
 using DiscordChannelsOnDemand.Bot.Commands;
 using DiscordChannelsOnDemand.Bot.Core.Infrastructure;
-using DiscordChannelsOnDemand.Bot.Core.Infrastructure.EntityFramework;
-using DiscordChannelsOnDemand.Bot.Core.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -13,8 +11,8 @@ using Serilog;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
-using DiscordChannelsOnDemand.Bot.Core.Startup;
 using DiscordChannelsOnDemand.Bot.Features.Rooms;
+using DiscordChannelsOnDemand.Bot.Features.Servers;
 using DiscordChannelsOnDemand.Bot.Features.Spaces;
 
 namespace DiscordChannelsOnDemand.Bot
@@ -42,9 +40,9 @@ namespace DiscordChannelsOnDemand.Bot
                     // Infrastructure
                     services.AddDbContext<BotDbContext>(builder => 
                         builder.UseNpgsql(hostContext.Configuration.GetConnectionString("DefaultDbContext")));
-                    services.AddScoped<IServerRepository, EfCoreServerRepository>();
-                    services.AddScoped<IRoomRepository, EfCoreRoomRepository>();
-                    services.AddScoped<ISpaceRepository, EfCoreSpaceRepository>();
+                    services.AddScoped<IServerRepository, EfServerRepository>();
+                    services.AddScoped<IRoomRepository, EfRoomRepository>();
+                    services.AddScoped<ISpaceRepository, EfSpaceRepository>();
 
                     // Bot Services
                     services.AddScoped<IServerService, ServerService>();
@@ -61,14 +59,13 @@ namespace DiscordChannelsOnDemand.Bot
 
                     // Workers
                     services.AddHostedService<CommandWorker>();
-                    services.AddHostedService<InitializeWorker>();
+                    services.AddHostedService<ServerRegistrationStartupWorker>();
                     services.AddHostedService<ServerRegistrationWorker>();
                     services.AddHostedService<RestoreRoomsWorker>();
                     services.AddHostedService<CreateRoomWorker>();
                     services.AddHostedService<RoomPurgeWorker>();
                     services.AddHostedService<SpacePurgeWorker>();
                     services.AddHostedService<SpaceLobbySyncWorker>();
-                    services.AddHostedService<DocumentationWorker>();
 
                     // Misc
                     services.AddAutoMapper(typeof(Program));

@@ -1,16 +1,17 @@
-﻿using DiscordChannelsOnDemand.Bot.Models;
-using Microsoft.EntityFrameworkCore;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using DiscordChannelsOnDemand.Bot.Core.Infrastructure;
+using DiscordChannelsOnDemand.Bot.Models;
+using Microsoft.EntityFrameworkCore;
 
-namespace DiscordChannelsOnDemand.Bot.Core.Infrastructure.EntityFramework
+namespace DiscordChannelsOnDemand.Bot.Features.Servers
 {
-    public class EfCoreServerRepository : EfCoreRepository<Server>, IServerRepository
+    public class EfServerRepository : EfRepository<Server>, IServerRepository
     {
         /// <inheritdoc />
-        public EfCoreServerRepository(BotDbContext botDbContext) : base(botDbContext)
+        public EfServerRepository(BotDbContext botDbContext) : base(botDbContext)
         {
         }
 

@@ -2,7 +2,7 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 using Discord.WebSocket;
-using DiscordChannelsOnDemand.Bot.Core.Services;
+using DiscordChannelsOnDemand.Bot.Features.Servers;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;

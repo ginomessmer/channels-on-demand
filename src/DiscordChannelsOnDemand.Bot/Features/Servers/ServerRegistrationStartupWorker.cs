@@ -1,17 +1,16 @@
 using System;
 using System.Threading;
 using System.Threading.Tasks;
-using DiscordChannelsOnDemand.Bot.Core.Services;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
-namespace DiscordChannelsOnDemand.Bot.Core.Startup
+namespace DiscordChannelsOnDemand.Bot.Features.Servers
 {
-    public class InitializeWorker : BackgroundService
+    public class ServerRegistrationStartupWorker : BackgroundService
     {
         private readonly IServiceProvider _serviceProvider;
 
-        public InitializeWorker(IServiceProvider serviceProvider)
+        public ServerRegistrationStartupWorker(IServiceProvider serviceProvider)
         {
             _serviceProvider = serviceProvider;
         }

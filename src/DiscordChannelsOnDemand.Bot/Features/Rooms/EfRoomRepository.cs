@@ -1,15 +1,16 @@
-﻿using DiscordChannelsOnDemand.Bot.Models;
-using Microsoft.EntityFrameworkCore;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using DiscordChannelsOnDemand.Bot.Core.Infrastructure;
+using DiscordChannelsOnDemand.Bot.Models;
+using Microsoft.EntityFrameworkCore;
 
-namespace DiscordChannelsOnDemand.Bot.Core.Infrastructure.EntityFramework
+namespace DiscordChannelsOnDemand.Bot.Features.Rooms
 {
-    public class EfCoreRoomRepository : EfCoreRepository<Room>, IRoomRepository
+    public class EfRoomRepository : EfRepository<Room>, IRoomRepository
     {
         /// <inheritdoc />
-        public EfCoreRoomRepository(BotDbContext botDbContext) : base(botDbContext)
+        public EfRoomRepository(BotDbContext botDbContext) : base(botDbContext)
         {
         }
         
@@ -28,7 +29,7 @@ namespace DiscordChannelsOnDemand.Bot.Core.Infrastructure.EntityFramework
             return rooms;
         }
 
-        #region Overrides of EfCoreRepository<Room>
+        #region Overrides of EfRepository<Room>
 
         /// <inheritdoc />
         public override Task<Room> GetAsync(string id) => 

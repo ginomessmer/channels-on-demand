@@ -7,6 +7,7 @@ using Discord;
 using Discord.WebSocket;
 using DiscordChannelsOnDemand.Bot.Core.Abstractions;
 using DiscordChannelsOnDemand.Bot.Core.Infrastructure;
+using DiscordChannelsOnDemand.Bot.Features.Spaces;
 using DiscordChannelsOnDemand.Bot.Models;
 using EnsureThat;
 using Microsoft.Extensions.Logging;

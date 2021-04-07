@@ -1,17 +1,17 @@
-﻿using Microsoft.EntityFrameworkCore;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 
-namespace DiscordChannelsOnDemand.Bot.Core.Infrastructure.EntityFramework
+namespace DiscordChannelsOnDemand.Bot.Core.Infrastructure
 {
-    public abstract class EfCoreRepository<T> : IRepository<T> where T : class
+    public abstract class EfRepository<T> : IRepository<T> where T : class
     {
         private readonly BotDbContext _botDbContext;
 
-        protected EfCoreRepository(BotDbContext botDbContext)
+        protected EfRepository(BotDbContext botDbContext)
         {
             _botDbContext = botDbContext;
         }
