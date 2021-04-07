@@ -1,10 +1,10 @@
-﻿using Discord;
-using Discord.Commands;
-using System;
+﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
+using Discord;
+using Discord.Commands;
 
-namespace DiscordChannelsOnDemand.Bot.Commands
+namespace DiscordChannelsOnDemand.Bot.Commands.Modules.Utils
 {
     [Group("help")]
     [Summary("Retrieves a list of all modules")]

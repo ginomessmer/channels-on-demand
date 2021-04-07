@@ -1,7 +1,7 @@
-﻿using Discord.Commands;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
+using Discord.Commands;
 
-namespace DiscordChannelsOnDemand.Bot.Commands
+namespace DiscordChannelsOnDemand.Bot.Commands.Modules.Utils
 {
     public class PingCommands : ModuleBase<SocketCommandContext>
     {

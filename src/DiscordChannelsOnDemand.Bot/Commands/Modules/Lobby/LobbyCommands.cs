@@ -1,10 +1,10 @@
-﻿using Discord;
+﻿using System.Linq;
+using System.Threading.Tasks;
+using Discord;
 using Discord.Commands;
 using DiscordChannelsOnDemand.Bot.Core.Services;
-using System.Linq;
-using System.Threading.Tasks;
 
-namespace DiscordChannelsOnDemand.Bot.Commands
+namespace DiscordChannelsOnDemand.Bot.Commands.Modules.Lobby
 {
     [Group("lobby")]
     [Summary("Helps you creating new lobbies")]
