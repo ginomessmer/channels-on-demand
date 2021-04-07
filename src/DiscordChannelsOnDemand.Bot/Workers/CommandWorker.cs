@@ -1,4 +1,3 @@
-using System.Text.Json.Serialization;
 using DiscordChannelsOnDemand.Bot.Commands;
 using Microsoft.Extensions.Hosting;
 using System.Threading;

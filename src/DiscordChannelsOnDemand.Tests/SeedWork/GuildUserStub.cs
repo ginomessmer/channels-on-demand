@@ -1,9 +1,8 @@
-﻿using System;
+﻿using Discord;
+using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Threading.Tasks;
-using Bogus;
-using Discord;
 
 namespace DiscordChannelsOnDemand.Tests.SeedWork
 {

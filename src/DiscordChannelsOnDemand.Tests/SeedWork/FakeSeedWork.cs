@@ -1,6 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using Discord;
+using System.Collections.Generic;
 using System.Linq;
-using Discord;
 
 namespace DiscordChannelsOnDemand.Tests.SeedWork
 {

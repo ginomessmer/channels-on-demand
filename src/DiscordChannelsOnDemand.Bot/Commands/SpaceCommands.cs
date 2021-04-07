@@ -1,11 +1,11 @@
-﻿using System;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Discord;
+﻿using Discord;
 using Discord.Commands;
 using DiscordChannelsOnDemand.Bot.Core.Services;
 using Humanizer;
+using System;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace DiscordChannelsOnDemand.Bot.Commands
 {

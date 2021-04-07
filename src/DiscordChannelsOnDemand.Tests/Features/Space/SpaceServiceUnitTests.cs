@@ -1,13 +1,13 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Discord;
 using DiscordChannelsOnDemand.Bot.Core.Infrastructure;
 using DiscordChannelsOnDemand.Bot.Core.Services;
 using DiscordChannelsOnDemand.Bot.Models;
 using DiscordChannelsOnDemand.Tests.SeedWork;
 using Moq;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using Xunit;
 
 namespace DiscordChannelsOnDemand.Tests.Features.Space

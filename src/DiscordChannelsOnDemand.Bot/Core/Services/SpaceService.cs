@@ -1,11 +1,11 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Discord;
 using DiscordChannelsOnDemand.Bot.Core.Infrastructure;
 using DiscordChannelsOnDemand.Bot.Models;
 using Microsoft.Extensions.Logging;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace DiscordChannelsOnDemand.Bot.Core.Services
 {

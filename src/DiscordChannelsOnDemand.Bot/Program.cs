@@ -2,18 +2,18 @@ using Discord;
 using Discord.Commands;
 using Discord.WebSocket;
 using DiscordChannelsOnDemand.Bot.Commands;
+using DiscordChannelsOnDemand.Bot.Core.Infrastructure;
+using DiscordChannelsOnDemand.Bot.Core.Infrastructure.EntityFramework;
+using DiscordChannelsOnDemand.Bot.Core.Services;
 using DiscordChannelsOnDemand.Bot.Workers;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Serilog;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
-using DiscordChannelsOnDemand.Bot.Core.Infrastructure;
-using DiscordChannelsOnDemand.Bot.Core.Infrastructure.EntityFramework;
-using DiscordChannelsOnDemand.Bot.Core.Services;
-using Serilog;
 
 namespace DiscordChannelsOnDemand.Bot
 {

@@ -1,7 +1,7 @@
-using System.Threading.Tasks;
 using DiscordChannelsOnDemand.Bot.Core.Infrastructure;
 using DiscordChannelsOnDemand.Bot.Core.Infrastructure.EntityFramework;
 using Microsoft.EntityFrameworkCore;
+using System.Threading.Tasks;
 using Xunit;
 
 namespace DiscordChannelsOnDemand.Tests.Infrastructure

@@ -1,4 +1,5 @@
 using Discord.WebSocket;
+using DiscordChannelsOnDemand.Bot.Core.Services;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
@@ -6,7 +7,6 @@ using System;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using DiscordChannelsOnDemand.Bot.Core.Services;
 
 namespace DiscordChannelsOnDemand.Bot.Workers
 {

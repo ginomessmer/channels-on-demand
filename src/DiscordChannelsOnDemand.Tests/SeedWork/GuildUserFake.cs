@@ -1,7 +1,4 @@
-﻿using System.Text;
-using Bogus;
-using Discord.WebSocket;
-using Moq;
+﻿using Bogus;
 
 namespace DiscordChannelsOnDemand.Tests.SeedWork
 {

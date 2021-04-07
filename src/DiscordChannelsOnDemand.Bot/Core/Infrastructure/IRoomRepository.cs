@@ -1,6 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using DiscordChannelsOnDemand.Bot.Models;
+using System.Collections.Generic;
 using System.Threading.Tasks;
-using DiscordChannelsOnDemand.Bot.Models;
 
 namespace DiscordChannelsOnDemand.Bot.Core.Infrastructure
 {

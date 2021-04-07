@@ -1,8 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using DiscordChannelsOnDemand.Bot.Models;
+using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using DiscordChannelsOnDemand.Bot.Models;
-using Microsoft.EntityFrameworkCore;
 
 namespace DiscordChannelsOnDemand.Bot.Core.Infrastructure.EntityFramework
 {

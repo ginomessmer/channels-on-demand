@@ -1,11 +1,11 @@
-﻿using System;
+﻿using Discord;
+using Discord.Audio;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
-using Discord;
-using Discord.Audio;
 
 namespace DiscordChannelsOnDemand.Tests.SeedWork
 {

@@ -1,6 +1,6 @@
-﻿using System.Threading.Tasks;
-using DiscordChannelsOnDemand.Bot.Models;
+﻿using DiscordChannelsOnDemand.Bot.Models;
 using Microsoft.EntityFrameworkCore;
+using System.Threading.Tasks;
 
 namespace DiscordChannelsOnDemand.Bot.Core.Infrastructure.EntityFramework
 {

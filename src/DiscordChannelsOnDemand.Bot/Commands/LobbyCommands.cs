@@ -1,8 +1,8 @@
 ﻿using Discord;
 using Discord.Commands;
+using DiscordChannelsOnDemand.Bot.Core.Services;
 using System.Linq;
 using System.Threading.Tasks;
-using DiscordChannelsOnDemand.Bot.Core.Services;
 
 namespace DiscordChannelsOnDemand.Bot.Commands
 {
