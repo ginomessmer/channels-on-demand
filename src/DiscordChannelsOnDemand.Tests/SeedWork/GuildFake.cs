@@ -11,6 +11,8 @@ namespace DiscordChannelsOnDemand.Tests.SeedWork
 {
     public class GuildFake : IGuild
     {
+        public List<IGuildUser> Users { get; } = FakeSeedWork.GuildUsers.ToList();
+
         #region Implementation of IDeletable
 
         /// <inheritdoc />
@@ -276,13 +278,13 @@ namespace DiscordChannelsOnDemand.Tests.SeedWork
         /// <inheritdoc />
         public Task<IReadOnlyCollection<IGuildUser>> GetUsersAsync(CacheMode mode = CacheMode.AllowDownload, RequestOptions options = null)
         {
-            IReadOnlyCollection<IGuildUser> collection = new ReadOnlyCollection<IGuildUser>(FakeSeedWork.GuildUsers.ToList());
+            IReadOnlyCollection<IGuildUser> collection = new ReadOnlyCollection<IGuildUser>(Users.ToList());
             return Task.FromResult(collection);
         }
 
         /// <inheritdoc />
         public Task<IGuildUser> GetUserAsync(ulong id, CacheMode mode = CacheMode.AllowDownload, RequestOptions options = null) => 
-            Task.FromResult(FakeSeedWork.GuildUsers.SingleOrDefault(x => x.Id == id));
+            Task.FromResult(Users.SingleOrDefault(x => x.Id == id));
 
         /// <inheritdoc />
         public Task<IGuildUser> GetCurrentUserAsync(CacheMode mode = CacheMode.AllowDownload, RequestOptions options = null)

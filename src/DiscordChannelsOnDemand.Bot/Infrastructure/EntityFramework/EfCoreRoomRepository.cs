@@ -27,5 +27,14 @@ namespace DiscordChannelsOnDemand.Bot.Infrastructure.EntityFramework
             var rooms =  await Set.AsQueryable().Where(x => x.GuildId == guildId).ToListAsync();
             return rooms;
         }
+
+        #region Overrides of EfCoreRepository<Room>
+
+        /// <inheritdoc />
+        public override Task<Room> GetAsync(string id) => 
+            Set.Include(x => x.LinkedSpace)
+                .SingleOrDefaultAsync(x => x.ChannelId == id);
+
+        #endregion
     }
 }

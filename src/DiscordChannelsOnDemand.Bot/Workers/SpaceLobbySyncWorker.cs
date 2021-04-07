@@ -33,7 +33,7 @@ namespace DiscordChannelsOnDemand.Bot.Workers
 
         private async Task ClientOnUserVoiceStateUpdated(SocketUser user, SocketVoiceState previousState, SocketVoiceState newState)
         {
-            if (user is not IGuildUser)
+            if (user is not IGuildUser guildUser)
                 return;
 
             using var scope = _serviceProvider.CreateScope();
@@ -44,11 +44,14 @@ namespace DiscordChannelsOnDemand.Bot.Workers
                 SpaceService = scope.ServiceProvider.GetRequiredService<ISpaceService>()
             };
 
-            var voiceChannel = previousState.VoiceChannel ?? newState.VoiceChannel;
+            var voiceChannel = newState.VoiceChannel;
+            if (voiceChannel is null)
+                return;
 
             // Get room
             var room = await unitOfWork.RoomService.GetRoomAsync(voiceChannel);
-            var host = _client.GetGuild(voiceChannel.Guild.Id).GetUser(Convert.ToUInt64(room.HostUserId));
+            if (room is null)
+                return;
 
             // Check if it has space
             if (!room.HasSpace)
@@ -56,8 +59,7 @@ namespace DiscordChannelsOnDemand.Bot.Workers
 
             // Add permission
             var space = room.LinkedSpace;
-            await unitOfWork.SpaceService.ApplyPermissionsAsync(null, host, voiceChannel.Users.Cast<IGuildUser>().ToArray());
-            
+            await unitOfWork.SpaceService.InviteAsync(space.TextChannelId, guildUser);
         }
 
         #endregion

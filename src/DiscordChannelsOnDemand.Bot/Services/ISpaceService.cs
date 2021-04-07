@@ -75,5 +75,13 @@ namespace DiscordChannelsOnDemand.Bot.Services
         /// <param name="voiceChannelUsers"></param>
         /// <returns></returns>
         Task ApplyPermissionsAsync(string spaceId, IGuildUser host, params IGuildUser[] voiceChannelUsers);
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="spaceId"></param>
+        /// <param name="user"></param>
+        /// <returns></returns>
+        Task InviteAsync(string spaceId, IGuildUser user);
     }
 }

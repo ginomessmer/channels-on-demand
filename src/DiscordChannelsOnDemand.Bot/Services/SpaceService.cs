@@ -7,6 +7,7 @@ using Discord;
 using Discord.WebSocket;
 using DiscordChannelsOnDemand.Bot.Infrastructure;
 using DiscordChannelsOnDemand.Bot.Models;
+using Microsoft.Extensions.Logging;
 
 namespace DiscordChannelsOnDemand.Bot.Services
 {
@@ -15,11 +16,14 @@ namespace DiscordChannelsOnDemand.Bot.Services
     {
         private readonly IDiscordClient _client;
         private readonly ISpaceRepository _spaceRepository;
+        private readonly ILogger<SpaceService> _logger;
 
-        public SpaceService(IDiscordClient client, ISpaceRepository spaceRepository)
+        public SpaceService(IDiscordClient client, ISpaceRepository spaceRepository,
+            ILogger<SpaceService> logger)
         {
             _client = client;
             _spaceRepository = spaceRepository;
+            _logger = logger;
         }
 
         /// <inheritdoc />
@@ -44,7 +48,8 @@ namespace DiscordChannelsOnDemand.Bot.Services
                 new(owner.Id, PermissionTarget.User, allowViewChannelPermission),
 
                 // self
-                new(_client.CurrentUser.Id, PermissionTarget.User, allowViewChannelPermission)
+                new(_client.CurrentUser.Id, PermissionTarget.User, new OverwritePermissions(
+                    viewChannel: PermValue.Allow))
             };
             
             // Add @invitedUsers
@@ -159,6 +164,21 @@ namespace DiscordChannelsOnDemand.Bot.Services
             var channel = await _client.GetChannelAsync(Convert.ToUInt64(spaceId)) as IGuildChannel;
 
             await ApplyPermissionsAsync(channel, host, users);
+        }
+
+        /// <inheritdoc />
+        public async Task InviteAsync(string spaceId, IGuildUser user)
+        {
+            var channel = await _client.GetChannelAsync(Convert.ToUInt64(spaceId)) as IGuildChannel ?? throw new NullReferenceException();
+
+            try
+            {
+                await channel.AddPermissionOverwriteAsync(user, new OverwritePermissions(viewChannel: PermValue.Allow));
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Couldn't invite {User} to Space {Channel}", user, channel);
+            }
         }
 
         public async Task ApplyPermissionsAsync(IGuildChannel channel, IGuildUser host, params IGuildUser[] users)
