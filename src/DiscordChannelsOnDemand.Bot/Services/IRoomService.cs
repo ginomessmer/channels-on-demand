@@ -54,5 +54,13 @@ namespace DiscordChannelsOnDemand.Bot.Services
         /// <param name="voiceChannel"></param>
         /// <returns></returns>
         Task<Room> GetRoomAsync(IVoiceChannel voiceChannel);
+
+        /// <summary>
+        /// Links a space to a room.
+        /// </summary>
+        /// <param name="lobbyTriggerVoiceChannelId"></param>
+        /// <param name="spaceTextChannelId"></param>
+        /// <returns></returns>
+        Task LinkSpaceAsync(string roomId, string spaceId);
     }
 }

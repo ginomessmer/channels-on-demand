@@ -70,7 +70,10 @@ namespace DiscordChannelsOnDemand.Bot.Workers
 
             // Create space if auto-create is enabled
             if (lobby.AutoCreateSpace)
-                await unitOfWork.SpaceService.CreateSpaceAsync(user);
+            {
+                var space = await unitOfWork.SpaceService.CreateSpaceAsync(user);
+                await unitOfWork.RoomService.LinkSpaceAsync(lobby.TriggerVoiceChannelId, space.TextChannelId);
+            }
 
             _logger.LogInformation("Created new room {VoiceChannel} for user {User}", channel, user);
         }

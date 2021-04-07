@@ -27,14 +27,14 @@ namespace DiscordChannelsOnDemand.Bot.Services
         }
 
         /// <inheritdoc />
-        public Task<ITextChannel> CreateSpaceAsync(IGuildUser owner) => CreateSpaceAsync(owner, Enumerable.Empty<IGuildUser>());
+        public Task<Space> CreateSpaceAsync(IGuildUser owner) => CreateSpaceAsync(owner, Enumerable.Empty<IGuildUser>());
 
         /// <inheritdoc />
-        public Task<ITextChannel> CreateSpaceAsync(IGuildUser owner, IEnumerable<IGuildUser> invitedUsers) =>
+        public Task<Space> CreateSpaceAsync(IGuildUser owner, IEnumerable<IGuildUser> invitedUsers) =>
             CreateSpaceAsync(owner, Enumerable.Empty<IGuildUser>(), null);
 
         /// <inheritdoc />
-        public async Task<ITextChannel> CreateSpaceAsync(IGuildUser owner, IEnumerable<IGuildUser> invitedUsers, ICategoryChannel parentCategoryChannel = null)
+        public async Task<Space> CreateSpaceAsync(IGuildUser owner, IEnumerable<IGuildUser> invitedUsers, ICategoryChannel parentCategoryChannel = null)
         {
             var guild = await _client.GetGuildAsync(owner.GuildId);
             var allowViewChannelPermission = new OverwritePermissions(viewChannel: PermValue.Allow);
@@ -64,20 +64,21 @@ namespace DiscordChannelsOnDemand.Bot.Services
             });
 
             // Add to database
-            await _spaceRepository.AddAsync(new Space
+            var space = new Space
             {
                 CreatorId = owner.Id.ToString(),
                 TextChannelId = textChannel.Id.ToString(),
                 ServerId = guild.Id.ToString()
-            });
+            };
 
+            await _spaceRepository.AddAsync(space);
             await _spaceRepository.SaveChangesAsync();
 
-            return textChannel;
+            return space;
         }
 
         /// <inheritdoc />
-        public async Task<ITextChannel> CreateSpaceAsync(IGuildUser owner, IEnumerable<IGuildUser> invitedUsers, ulong parentCategoryChannel)
+        public async Task<Space> CreateSpaceAsync(IGuildUser owner, IEnumerable<IGuildUser> invitedUsers, ulong parentCategoryChannel)
         {
             // Get category
             var guild = await _client.GetGuildAsync(owner.GuildId);
