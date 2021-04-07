@@ -1,12 +1,11 @@
-using DiscordChannelsOnDemand.Bot.Core.Services;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 
-namespace DiscordChannelsOnDemand.Bot.Workers
+namespace DiscordChannelsOnDemand.Bot.Features.Spaces
 {
     public class SpacePurgeWorker : BackgroundService
     {

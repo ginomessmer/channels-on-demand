@@ -1,10 +1,10 @@
-using Discord;
-using DiscordChannelsOnDemand.Bot.Models;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Discord;
+using DiscordChannelsOnDemand.Bot.Models;
 
-namespace DiscordChannelsOnDemand.Bot.Core.Services
+namespace DiscordChannelsOnDemand.Bot.Features.Spaces
 {
     /// <summary>
     /// A service class that is responsible for managing spaces.

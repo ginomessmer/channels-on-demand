@@ -1,10 +1,10 @@
+using System.Collections.Generic;
+using System.Threading.Tasks;
 using Discord;
 using DiscordChannelsOnDemand.Bot.Core.Abstractions;
 using DiscordChannelsOnDemand.Bot.Models;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 
-namespace DiscordChannelsOnDemand.Bot.Core.Services
+namespace DiscordChannelsOnDemand.Bot.Features.Rooms
 {
     /// <summary>
     /// A service class that is responsible for managing rooms.

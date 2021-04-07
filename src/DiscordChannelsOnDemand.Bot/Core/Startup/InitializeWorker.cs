@@ -1,11 +1,11 @@
-using DiscordChannelsOnDemand.Bot.Core.Services;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
+using DiscordChannelsOnDemand.Bot.Core.Services;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 
-namespace DiscordChannelsOnDemand.Bot.Workers
+namespace DiscordChannelsOnDemand.Bot.Core.Startup
 {
     public class InitializeWorker : BackgroundService
     {

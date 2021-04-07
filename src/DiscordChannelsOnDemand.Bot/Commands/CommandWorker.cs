@@ -1,9 +1,8 @@
-using DiscordChannelsOnDemand.Bot.Commands;
-using Microsoft.Extensions.Hosting;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Hosting;
 
-namespace DiscordChannelsOnDemand.Bot.Workers
+namespace DiscordChannelsOnDemand.Bot.Commands
 {
     public class CommandWorker : BackgroundService
     {

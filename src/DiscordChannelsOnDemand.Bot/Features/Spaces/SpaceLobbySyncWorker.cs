@@ -1,13 +1,14 @@
-using Discord;
-using Discord.WebSocket;
-using DiscordChannelsOnDemand.Bot.Core.Services;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
+using Discord;
+using Discord.WebSocket;
+using DiscordChannelsOnDemand.Bot.Core.Services;
+using DiscordChannelsOnDemand.Bot.Features.Rooms;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 
-namespace DiscordChannelsOnDemand.Bot.Workers
+namespace DiscordChannelsOnDemand.Bot.Features.Spaces
 {
     public class SpaceLobbySyncWorker : BackgroundService
     {

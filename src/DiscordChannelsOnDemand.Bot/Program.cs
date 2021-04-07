@@ -5,7 +5,6 @@ using DiscordChannelsOnDemand.Bot.Commands;
 using DiscordChannelsOnDemand.Bot.Core.Infrastructure;
 using DiscordChannelsOnDemand.Bot.Core.Infrastructure.EntityFramework;
 using DiscordChannelsOnDemand.Bot.Core.Services;
-using DiscordChannelsOnDemand.Bot.Workers;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -14,6 +13,9 @@ using Serilog;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
+using DiscordChannelsOnDemand.Bot.Core.Startup;
+using DiscordChannelsOnDemand.Bot.Features.Rooms;
+using DiscordChannelsOnDemand.Bot.Features.Spaces;
 
 namespace DiscordChannelsOnDemand.Bot
 {
@@ -61,7 +63,7 @@ namespace DiscordChannelsOnDemand.Bot
                     services.AddHostedService<CommandWorker>();
                     services.AddHostedService<InitializeWorker>();
                     services.AddHostedService<ServerRegistrationWorker>();
-                    services.AddHostedService<RestoreWorker>();
+                    services.AddHostedService<RestoreRoomsWorker>();
                     services.AddHostedService<CreateRoomWorker>();
                     services.AddHostedService<RoomPurgeWorker>();
                     services.AddHostedService<SpacePurgeWorker>();

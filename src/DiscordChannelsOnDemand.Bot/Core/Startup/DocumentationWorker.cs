@@ -1,12 +1,12 @@
-using Discord.Commands;
-using Microsoft.Extensions.Hosting;
-using Newtonsoft.Json;
 using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Discord.Commands;
+using Microsoft.Extensions.Hosting;
+using Newtonsoft.Json;
 
-namespace DiscordChannelsOnDemand.Bot.Workers
+namespace DiscordChannelsOnDemand.Bot.Core.Startup
 {
     /// <summary>
     /// It's like a swagger doc generator but better.

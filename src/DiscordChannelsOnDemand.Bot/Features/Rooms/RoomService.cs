@@ -1,3 +1,8 @@
+using System;
+using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
+using System.Linq;
+using System.Threading.Tasks;
 using Discord;
 using Discord.WebSocket;
 using DiscordChannelsOnDemand.Bot.Core.Abstractions;
@@ -5,13 +10,8 @@ using DiscordChannelsOnDemand.Bot.Core.Infrastructure;
 using DiscordChannelsOnDemand.Bot.Models;
 using EnsureThat;
 using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
-using System.Linq;
-using System.Threading.Tasks;
 
-namespace DiscordChannelsOnDemand.Bot.Core.Services
+namespace DiscordChannelsOnDemand.Bot.Features.Rooms
 {
     /// <summary>
     /// <inheritdoc />

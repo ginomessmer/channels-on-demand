@@ -1,25 +1,24 @@
-using Discord.WebSocket;
-using DiscordChannelsOnDemand.Bot.Core.Services;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using System;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Discord.WebSocket;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 
-namespace DiscordChannelsOnDemand.Bot.Workers
+namespace DiscordChannelsOnDemand.Bot.Features.Rooms
 {
     /// <summary>
     /// Restores the bot in case of shutdown and purges dangling channels and cleans the database.
     /// </summary>
-    public class RestoreWorker : BackgroundService
+    public class RestoreRoomsWorker : BackgroundService
     {
         private readonly IServiceProvider _serviceProvider;
-        private readonly ILogger<RestoreWorker> _logger;
+        private readonly ILogger<RestoreRoomsWorker> _logger;
 
-        public RestoreWorker(IServiceProvider serviceProvider,
-            ILogger<RestoreWorker> logger)
+        public RestoreRoomsWorker(IServiceProvider serviceProvider,
+            ILogger<RestoreRoomsWorker> logger)
         {
             _serviceProvider = serviceProvider;
             _logger = logger;

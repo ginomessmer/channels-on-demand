@@ -1,9 +1,9 @@
-using Discord;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Discord;
 
-namespace DiscordChannelsOnDemand.Bot.Core.Services
+namespace DiscordChannelsOnDemand.Bot.Features.Rooms
 {
     public class VoiceChannelService : IVoiceChannelService
     {

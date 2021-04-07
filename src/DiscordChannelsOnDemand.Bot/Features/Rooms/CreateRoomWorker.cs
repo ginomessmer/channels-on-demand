@@ -1,14 +1,15 @@
-using Discord;
-using Discord.WebSocket;
-using DiscordChannelsOnDemand.Bot.Core.Services;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
+using Discord;
+using Discord.WebSocket;
+using DiscordChannelsOnDemand.Bot.Core.Services;
+using DiscordChannelsOnDemand.Bot.Features.Spaces;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 
-namespace DiscordChannelsOnDemand.Bot.Workers
+namespace DiscordChannelsOnDemand.Bot.Features.Rooms
 {
     /// <summary>
     /// This worker creates a new room on demand whenever someone joins

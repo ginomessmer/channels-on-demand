@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using DiscordChannelsOnDemand.Bot.Features.Spaces;
 using Xunit;
 
 namespace DiscordChannelsOnDemand.Tests.Features.Space
