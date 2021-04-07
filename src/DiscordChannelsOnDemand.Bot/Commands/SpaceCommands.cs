@@ -58,7 +58,7 @@ namespace DiscordChannelsOnDemand.Bot.Commands
                 categoryId = Convert.ToUInt64(server.SpaceConfiguration.SpaceCategoryId);
 
             // Create new text channel
-            var channel = categoryId is null ? await _spaceService.CreateSpaceAsync(Context.User as IGuildUser, users)
+            var space = categoryId is null ? await _spaceService.CreateSpaceAsync(Context.User as IGuildUser, users)
                 : await _spaceService.CreateSpaceAsync(Context.User as IGuildUser, users, (ulong) categoryId);
 
             // Reply
@@ -71,6 +71,7 @@ namespace DiscordChannelsOnDemand.Bot.Commands
                     .ToString())
                 .WithThumbnailUrl(Context.User.GetAvatarUrl());
 
+            var channel = Context.Guild.GetTextChannel(Convert.ToUInt64(space.TextChannelId));
             await channel.SendMessageAsync($"{Context.User.Mention} :wave:", embed: embed.Build());
             await Context.Message.AddReactionAsync(new Emoji("✅"));
         }

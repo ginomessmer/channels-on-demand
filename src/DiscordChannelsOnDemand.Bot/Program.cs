@@ -65,6 +65,7 @@ namespace DiscordChannelsOnDemand.Bot
                     services.AddHostedService<CreateRoomWorker>();
                     services.AddHostedService<RoomPurgeWorker>();
                     services.AddHostedService<SpacePurgeWorker>();
+                    services.AddHostedService<SpaceLobbySyncWorker>();
                     services.AddHostedService<DocumentationWorker>();
 
                     // Misc

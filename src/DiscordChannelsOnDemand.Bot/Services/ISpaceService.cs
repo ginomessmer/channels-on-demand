@@ -17,7 +17,7 @@ namespace DiscordChannelsOnDemand.Bot.Services
         /// </summary>
         /// <param name="user"></param>
         /// <returns></returns>
-        Task<ITextChannel> CreateSpaceAsync(IGuildUser user);
+        Task<Space> CreateSpaceAsync(IGuildUser user);
 
         /// <summary>
         /// 
@@ -25,7 +25,7 @@ namespace DiscordChannelsOnDemand.Bot.Services
         /// <param name="owner"></param>
         /// <param name="invitedUsers"></param>
         /// <returns></returns>
-        Task<ITextChannel> CreateSpaceAsync(IGuildUser owner, IEnumerable<IGuildUser> invitedUsers);
+        Task<Space> CreateSpaceAsync(IGuildUser owner, IEnumerable<IGuildUser> invitedUsers);
 
         /// <summary>
         /// Creates a new private text channel - a Space.
@@ -34,11 +34,11 @@ namespace DiscordChannelsOnDemand.Bot.Services
         /// <param name="invitedUsers">All users who gain access to the space</param>
         /// <param name="parentCategoryChannel">The category that will serve as the space's parent</param>
         /// <returns></returns>
-        Task<ITextChannel> CreateSpaceAsync(IGuildUser owner, IEnumerable<IGuildUser> invitedUsers,
+        Task<Space> CreateSpaceAsync(IGuildUser owner, IEnumerable<IGuildUser> invitedUsers,
             ICategoryChannel parentCategoryChannel = null);
 
         /// <inheritdoc cref="CreateSpaceAsync(Discord.IGuildUser,System.Collections.Generic.IEnumerable{Discord.IGuildUser},Discord.ICategoryChannel)"/>
-        Task<ITextChannel> CreateSpaceAsync(IGuildUser owner, IEnumerable<IGuildUser> invitedUsers, ulong parentCategoryChannel);
+        Task<Space> CreateSpaceAsync(IGuildUser owner, IEnumerable<IGuildUser> invitedUsers, ulong parentCategoryChannel);
 
         /// <summary>
         /// Retrieves the last activity as a date time.
@@ -66,5 +66,22 @@ namespace DiscordChannelsOnDemand.Bot.Services
         /// <param name="spaceId"></param>
         /// <returns></returns>
         Task DecommissionAsync(string spaceId);
+
+        /// <summary>
+        /// Applies permissions to the space.
+        /// </summary>
+        /// <param name="spaceId"></param>
+        /// <param name="host"></param>
+        /// <param name="voiceChannelUsers"></param>
+        /// <returns></returns>
+        Task ApplyPermissionsAsync(string spaceId, IGuildUser host, params IGuildUser[] voiceChannelUsers);
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="spaceId"></param>
+        /// <param name="user"></param>
+        /// <returns></returns>
+        Task InviteAsync(string spaceId, IGuildUser user);
     }
 }

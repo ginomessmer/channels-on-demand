@@ -9,6 +9,8 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Threading.Tasks;
 using DiscordChannelsOnDemand.Bot.Extensions;
+using DiscordChannelsOnDemand.Bot.Models;
+using EnsureThat;
 
 namespace DiscordChannelsOnDemand.Bot.Services
 {
@@ -20,13 +22,17 @@ namespace DiscordChannelsOnDemand.Bot.Services
     {
         private readonly IDiscordClient _client;
         private readonly IRoomRepository _roomRepository;
+        private readonly ISpaceRepository _spaceRepository;
         private readonly ILogger<RoomService> _logger;
 
-        public RoomService(IDiscordClient client, IRoomRepository roomRepository,
+        public RoomService(IDiscordClient client,
+            IRoomRepository roomRepository,
+            ISpaceRepository spaceRepository,
             ILogger<RoomService> logger)
         {
             _client = client;
             _roomRepository = roomRepository;
+            _spaceRepository = spaceRepository;
             _logger = logger;
         }
 
@@ -82,6 +88,7 @@ namespace DiscordChannelsOnDemand.Bot.Services
                 _logger.LogWarning("Couldn't find voice channel {VoiceChannelId}. Removing from database...", voiceChannelId);
 
             await _roomRepository.RemoveAsync(voiceChannelId.ToString());
+            await _roomRepository.SaveChangesAsync();
         }
 
         /// <inheritdoc />
@@ -119,6 +126,27 @@ namespace DiscordChannelsOnDemand.Bot.Services
         public Task<bool> ExistsAsync([NotNull] IVoiceChannel voiceChannel)
         {
             return _roomRepository.ExistsAsync(voiceChannel.Id.ToString());
+        }
+
+        /// <inheritdoc />
+        public Task<Room> GetRoomAsync(IVoiceChannel voiceChannel)
+        {
+            var id = voiceChannel.Id.ToString();
+            return _roomRepository.GetAsync(id);
+        }
+
+        /// <inheritdoc />
+        public async Task LinkSpaceAsync(string roomId, string spaceId)
+        {
+            var room = await _roomRepository.GetAsync(roomId);
+            Ensure.That(room).IsNotNull();
+
+            var space = await _spaceRepository.GetAsync(spaceId);
+            Ensure.That(space).IsNotNull();
+
+            room.LinkedSpace = space;
+            await _roomRepository.UpdateAsync(room);
+            await _roomRepository.SaveChangesAsync();
         }
     }
 }

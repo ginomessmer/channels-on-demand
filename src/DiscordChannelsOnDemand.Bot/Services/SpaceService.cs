@@ -1,11 +1,13 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 using Discord;
 using Discord.WebSocket;
 using DiscordChannelsOnDemand.Bot.Infrastructure;
 using DiscordChannelsOnDemand.Bot.Models;
+using Microsoft.Extensions.Logging;
 
 namespace DiscordChannelsOnDemand.Bot.Services
 {
@@ -14,22 +16,25 @@ namespace DiscordChannelsOnDemand.Bot.Services
     {
         private readonly IDiscordClient _client;
         private readonly ISpaceRepository _spaceRepository;
+        private readonly ILogger<SpaceService> _logger;
 
-        public SpaceService(IDiscordClient client, ISpaceRepository spaceRepository)
+        public SpaceService(IDiscordClient client, ISpaceRepository spaceRepository,
+            ILogger<SpaceService> logger)
         {
             _client = client;
             _spaceRepository = spaceRepository;
+            _logger = logger;
         }
 
         /// <inheritdoc />
-        public Task<ITextChannel> CreateSpaceAsync(IGuildUser owner) => CreateSpaceAsync(owner, Enumerable.Empty<IGuildUser>());
+        public Task<Space> CreateSpaceAsync(IGuildUser owner) => CreateSpaceAsync(owner, Enumerable.Empty<IGuildUser>());
 
         /// <inheritdoc />
-        public Task<ITextChannel> CreateSpaceAsync(IGuildUser owner, IEnumerable<IGuildUser> invitedUsers) =>
+        public Task<Space> CreateSpaceAsync(IGuildUser owner, IEnumerable<IGuildUser> invitedUsers) =>
             CreateSpaceAsync(owner, Enumerable.Empty<IGuildUser>(), null);
 
         /// <inheritdoc />
-        public async Task<ITextChannel> CreateSpaceAsync(IGuildUser owner, IEnumerable<IGuildUser> invitedUsers, ICategoryChannel parentCategoryChannel = null)
+        public async Task<Space> CreateSpaceAsync(IGuildUser owner, IEnumerable<IGuildUser> invitedUsers, ICategoryChannel parentCategoryChannel = null)
         {
             var guild = await _client.GetGuildAsync(owner.GuildId);
             var allowViewChannelPermission = new OverwritePermissions(viewChannel: PermValue.Allow);
@@ -43,7 +48,8 @@ namespace DiscordChannelsOnDemand.Bot.Services
                 new(owner.Id, PermissionTarget.User, allowViewChannelPermission),
 
                 // self
-                new(_client.CurrentUser.Id, PermissionTarget.User, allowViewChannelPermission)
+                new(_client.CurrentUser.Id, PermissionTarget.User, new OverwritePermissions(
+                    viewChannel: PermValue.Allow))
             };
             
             // Add @invitedUsers
@@ -58,20 +64,21 @@ namespace DiscordChannelsOnDemand.Bot.Services
             });
 
             // Add to database
-            await _spaceRepository.AddAsync(new Space
+            var space = new Space
             {
                 CreatorId = owner.Id.ToString(),
                 TextChannelId = textChannel.Id.ToString(),
                 ServerId = guild.Id.ToString()
-            });
+            };
 
+            await _spaceRepository.AddAsync(space);
             await _spaceRepository.SaveChangesAsync();
 
-            return textChannel;
+            return space;
         }
 
         /// <inheritdoc />
-        public async Task<ITextChannel> CreateSpaceAsync(IGuildUser owner, IEnumerable<IGuildUser> invitedUsers, ulong parentCategoryChannel)
+        public async Task<Space> CreateSpaceAsync(IGuildUser owner, IEnumerable<IGuildUser> invitedUsers, ulong parentCategoryChannel)
         {
             // Get category
             var guild = await _client.GetGuildAsync(owner.GuildId);
@@ -150,6 +157,58 @@ namespace DiscordChannelsOnDemand.Bot.Services
 
             await _spaceRepository.RemoveAsync(spaceId);
             await _spaceRepository.SaveChangesAsync();
+        }
+
+        /// <inheritdoc />
+        public async Task ApplyPermissionsAsync(string spaceId, IGuildUser host, params IGuildUser[] users)
+        {
+            var channel = await _client.GetChannelAsync(Convert.ToUInt64(spaceId)) as IGuildChannel;
+
+            await ApplyPermissionsAsync(channel, host, users);
+        }
+
+        /// <inheritdoc />
+        public async Task InviteAsync(string spaceId, IGuildUser user)
+        {
+            var channel = await _client.GetChannelAsync(Convert.ToUInt64(spaceId)) as IGuildChannel ?? throw new NullReferenceException();
+
+            try
+            {
+                await channel.AddPermissionOverwriteAsync(user, new OverwritePermissions(viewChannel: PermValue.Allow));
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Couldn't invite {User} to Space {Channel}", user, channel);
+            }
+        }
+
+        public async Task ApplyPermissionsAsync(IGuildChannel channel, IGuildUser host, params IGuildUser[] users)
+        {
+            var allUsers = new List<IGuildUser>(users) {host};
+
+            var channelPermissionUserIds = channel.PermissionOverwrites
+                .Where(x => x.TargetType is PermissionTarget.User)
+                .Select(x => x.TargetId)
+                .ToList();
+
+            var pendingUserIds = allUsers.Select(x => x.Id).Except(channelPermissionUserIds).ToList();
+            var pendingUsers = await Task.WhenAll(pendingUserIds.Select(x => channel.Guild.GetUserAsync(x)));
+
+            foreach (var pendingUser in pendingUsers)
+            {
+                await channel.AddPermissionOverwriteAsync(pendingUser,
+                    new OverwritePermissions(viewChannel: PermValue.Allow));
+            }
+
+
+            // All removed users
+            var removeUserIds = channelPermissionUserIds.Except(allUsers.Select(x => x.Id));
+            var removeUsers = await Task.WhenAll(removeUserIds.Select(x => channel.Guild.GetUserAsync(x)));
+
+            foreach (var removeUser in removeUsers)
+            {
+                await channel.RemovePermissionOverwriteAsync(removeUser);
+            }
         }
     }
 }
