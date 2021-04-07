@@ -1,6 +1,6 @@
 using System.Threading.Tasks;
-using DiscordChannelsOnDemand.Bot.Infrastructure;
-using DiscordChannelsOnDemand.Bot.Infrastructure.EntityFramework;
+using DiscordChannelsOnDemand.Bot.Core.Infrastructure;
+using DiscordChannelsOnDemand.Bot.Core.Infrastructure.EntityFramework;
 using Microsoft.EntityFrameworkCore;
 using Xunit;
 

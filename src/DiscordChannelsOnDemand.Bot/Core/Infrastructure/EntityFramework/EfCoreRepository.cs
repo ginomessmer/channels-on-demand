@@ -1,11 +1,11 @@
-﻿using Microsoft.EntityFrameworkCore;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 
-namespace DiscordChannelsOnDemand.Bot.Infrastructure.EntityFramework
+namespace DiscordChannelsOnDemand.Bot.Core.Infrastructure.EntityFramework
 {
     public abstract class EfCoreRepository<T> : IRepository<T> where T : class
     {

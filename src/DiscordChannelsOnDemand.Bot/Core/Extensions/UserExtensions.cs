@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Discord;
+﻿using Discord;
 
-namespace DiscordChannelsOnDemand.Bot.Extensions
+namespace DiscordChannelsOnDemand.Bot.Core.Extensions
 {
     public static class UserExtensions
     {

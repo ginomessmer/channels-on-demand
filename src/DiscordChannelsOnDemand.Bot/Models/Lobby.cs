@@ -1,9 +1,9 @@
-using DiscordChannelsOnDemand.Bot.Abstractions;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Runtime.Serialization;
+using DiscordChannelsOnDemand.Bot.Core.Abstractions;
 
 namespace DiscordChannelsOnDemand.Bot.Models
 {

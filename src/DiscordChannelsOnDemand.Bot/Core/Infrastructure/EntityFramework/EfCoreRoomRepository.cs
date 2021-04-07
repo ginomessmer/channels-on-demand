@@ -1,10 +1,10 @@
-﻿using DiscordChannelsOnDemand.Bot.Models;
-using Microsoft.EntityFrameworkCore;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using DiscordChannelsOnDemand.Bot.Models;
+using Microsoft.EntityFrameworkCore;
 
-namespace DiscordChannelsOnDemand.Bot.Infrastructure.EntityFramework
+namespace DiscordChannelsOnDemand.Bot.Core.Infrastructure.EntityFramework
 {
     public class EfCoreRoomRepository : EfCoreRepository<Room>, IRoomRepository
     {

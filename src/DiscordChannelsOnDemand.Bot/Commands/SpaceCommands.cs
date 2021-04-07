@@ -4,7 +4,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Discord;
 using Discord.Commands;
-using DiscordChannelsOnDemand.Bot.Services;
+using DiscordChannelsOnDemand.Bot.Core.Services;
 using Humanizer;
 
 namespace DiscordChannelsOnDemand.Bot.Commands

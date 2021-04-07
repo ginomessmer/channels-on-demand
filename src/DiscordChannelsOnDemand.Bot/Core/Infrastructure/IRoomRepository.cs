@@ -1,8 +1,8 @@
-﻿using DiscordChannelsOnDemand.Bot.Models;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using DiscordChannelsOnDemand.Bot.Models;
 
-namespace DiscordChannelsOnDemand.Bot.Infrastructure
+namespace DiscordChannelsOnDemand.Bot.Core.Infrastructure
 {
     /// <summary>
     /// The room repository - what did ya expect?

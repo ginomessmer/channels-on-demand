@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Discord;
-using DiscordChannelsOnDemand.Bot.Extensions;
+using DiscordChannelsOnDemand.Bot.Core.Extensions;
 using Moq;
 using Xunit;
 

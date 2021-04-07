@@ -1,13 +1,13 @@
 using System;
-using Discord;
-using DiscordChannelsOnDemand.Bot.Data;
-using DiscordChannelsOnDemand.Bot.Models;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Threading.Tasks;
-using DiscordChannelsOnDemand.Bot.Abstractions;
+using Discord;
+using DiscordChannelsOnDemand.Bot.Core.Abstractions;
+using DiscordChannelsOnDemand.Bot.Core.Data;
+using DiscordChannelsOnDemand.Bot.Models;
 
-namespace DiscordChannelsOnDemand.Bot.Services
+namespace DiscordChannelsOnDemand.Bot.Core.Services
 {
     public interface IServerService
     {

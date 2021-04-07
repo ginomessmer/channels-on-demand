@@ -1,16 +1,16 @@
-using Discord;
-using DiscordChannelsOnDemand.Bot.Data;
-using DiscordChannelsOnDemand.Bot.Infrastructure;
-using DiscordChannelsOnDemand.Bot.Models;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
-using DiscordChannelsOnDemand.Bot.Abstractions;
+using Discord;
+using DiscordChannelsOnDemand.Bot.Core.Abstractions;
+using DiscordChannelsOnDemand.Bot.Core.Data;
+using DiscordChannelsOnDemand.Bot.Core.Infrastructure;
+using DiscordChannelsOnDemand.Bot.Models;
 
-namespace DiscordChannelsOnDemand.Bot.Services
+namespace DiscordChannelsOnDemand.Bot.Core.Services
 {
     public class ServerService : IServerService
     {

@@ -2,10 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Discord;
-using Discord.WebSocket;
 using DiscordChannelsOnDemand.Bot.Models;
 
-namespace DiscordChannelsOnDemand.Bot.Services
+namespace DiscordChannelsOnDemand.Bot.Core.Services
 {
     /// <summary>
     /// A service class that is responsible for managing spaces.

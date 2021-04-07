@@ -2,7 +2,7 @@ using AutoMapper;
 using AutoMapper.Configuration.Annotations;
 using DiscordChannelsOnDemand.Bot.Models;
 
-namespace DiscordChannelsOnDemand.Bot.Abstractions
+namespace DiscordChannelsOnDemand.Bot.Core.Abstractions
 {
     [AutoMap(typeof(Lobby), ReverseMap = true)]
     public class LobbySpaceConfiguration

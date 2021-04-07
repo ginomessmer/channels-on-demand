@@ -4,7 +4,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 
-namespace DiscordChannelsOnDemand.Bot.Infrastructure
+namespace DiscordChannelsOnDemand.Bot.Core.Infrastructure
 {
     public interface IRepository<T>
     {

@@ -1,4 +1,4 @@
-namespace DiscordChannelsOnDemand.Bot.Abstractions
+namespace DiscordChannelsOnDemand.Bot.Core.Abstractions
 {
     public interface ILobby
     {

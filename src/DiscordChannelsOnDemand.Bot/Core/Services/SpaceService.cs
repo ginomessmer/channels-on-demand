@@ -1,15 +1,13 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 using Discord;
-using Discord.WebSocket;
-using DiscordChannelsOnDemand.Bot.Infrastructure;
+using DiscordChannelsOnDemand.Bot.Core.Infrastructure;
 using DiscordChannelsOnDemand.Bot.Models;
 using Microsoft.Extensions.Logging;
 
-namespace DiscordChannelsOnDemand.Bot.Services
+namespace DiscordChannelsOnDemand.Bot.Core.Services
 {
     /// <inheritdoc />
     public class SpaceService : ISpaceService
