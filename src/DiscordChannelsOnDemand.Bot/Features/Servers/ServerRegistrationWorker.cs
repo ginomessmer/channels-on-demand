@@ -1,27 +1,25 @@
-using System;
 using System.Threading;
 using System.Threading.Tasks;
 using Discord.WebSocket;
-using DiscordChannelsOnDemand.Bot.Features.Servers;
-using Microsoft.Extensions.DependencyInjection;
+using DiscordChannelsOnDemand.Bot.Events;
+using MediatR;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
-namespace DiscordChannelsOnDemand.Bot.Features.Spaces
+namespace DiscordChannelsOnDemand.Bot.Features.Servers
 {
     public class ServerRegistrationWorker : BackgroundService
     {
-        private readonly IServiceProvider _serviceProvider;
-        private readonly DiscordSocketClient _client;
+        private readonly IMediator _mediator;
         private readonly ILogger<ServerRegistrationWorker> _logger;
-        private IServerService _serverService;
+        private readonly DiscordSocketClient _client;
 
-        public ServerRegistrationWorker(IServiceProvider serviceProvider,
-            DiscordSocketClient client,
+        public ServerRegistrationWorker(DiscordSocketClient client,
+            IMediator mediator,
             ILogger<ServerRegistrationWorker> logger)
         {
-            _serviceProvider = serviceProvider;
             _client = client;
+            _mediator = mediator;
             _logger = logger;
         }
 
@@ -35,19 +33,13 @@ namespace DiscordChannelsOnDemand.Bot.Features.Spaces
 
         private async Task ClientOnJoinedGuild(SocketGuild guild)
         {
-            using var scope = _serviceProvider.CreateScope();
-            _serverService = scope.ServiceProvider.GetRequiredService<IServerService>();
-
-            await _serverService.RegisterAsync(guild);
+            await _mediator.Send(new GuildJoinedEvent(guild.Id));
             _logger.LogInformation("Joined new server {Guild}", guild);
         }
 
         private async Task ClientOnLeftGuild(SocketGuild guild)
         {
-            using var scope = _serviceProvider.CreateScope();
-            _serverService = scope.ServiceProvider.GetRequiredService<IServerService>();
-
-            await _serverService.DeregisterAsync(guild);
+            await _mediator.Send(new GuildLeftEvent(guild.Id));
             _logger.LogInformation("Left server {Guild}", guild);
         }
     }

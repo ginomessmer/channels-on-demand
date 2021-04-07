@@ -1,5 +1,4 @@
 using Discord;
-using DiscordChannelsOnDemand.Bot.Core.Infrastructure;
 using DiscordChannelsOnDemand.Bot.Models;
 using DiscordChannelsOnDemand.Tests.SeedWork;
 using Moq;
@@ -65,7 +64,7 @@ namespace DiscordChannelsOnDemand.Tests.Features.Space
         public async Task SpaceService_LastActivity_DetermineCorrectly()
         {
             // Arrange
-            var spaceService = new SpaceService(_discordClientMock.Object, _spaceRepositoryMock.Object);
+            var spaceService = new SpaceService(_discordClientMock.Object, _spaceRepositoryMock.Object, null);
 
             // Act
             var result = await spaceService.GetLastActivityAsync(It.IsAny<string>());
@@ -80,7 +79,7 @@ namespace DiscordChannelsOnDemand.Tests.Features.Space
         {
             // Arrange
             SetupChannelMock(editedTimeStamp);
-            var spaceService = new SpaceService(_discordClientMock.Object, _spaceRepositoryMock.Object);
+            var spaceService = new SpaceService(_discordClientMock.Object, _spaceRepositoryMock.Object, null);
 
             // Act
             var result = await spaceService.ShouldRemoveSpaceAsync(It.IsAny<string>());
@@ -97,7 +96,7 @@ namespace DiscordChannelsOnDemand.Tests.Features.Space
             SetupChannelMock(_editedTimeStampTwoMinutesOffset, 0);
             _channelMock.Setup(x => x.CreatedAt).Returns(createdAt);
 
-            var spaceService = new SpaceService(_discordClientMock.Object, _spaceRepositoryMock.Object);
+            var spaceService = new SpaceService(_discordClientMock.Object, _spaceRepositoryMock.Object, null);
 
             // Act
             var result = await spaceService.ShouldRemoveSpaceAsync(It.IsAny<string>());
@@ -123,7 +122,7 @@ namespace DiscordChannelsOnDemand.Tests.Features.Space
 
             channelMock.SetupGet(x => x.Guild).Returns(new GuildFake());
 
-            var spaceService = new SpaceService(_discordClientMock.Object, _spaceRepositoryMock.Object);
+            var spaceService = new SpaceService(_discordClientMock.Object, _spaceRepositoryMock.Object, null);
 
             // Act
             await spaceService.ApplyPermissionsAsync(channelMock.Object, host, users.ToArray());

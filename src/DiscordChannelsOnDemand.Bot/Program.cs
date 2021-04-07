@@ -14,6 +14,7 @@ using System.Threading.Tasks;
 using DiscordChannelsOnDemand.Bot.Features.Rooms;
 using DiscordChannelsOnDemand.Bot.Features.Servers;
 using DiscordChannelsOnDemand.Bot.Features.Spaces;
+using MediatR;
 
 namespace DiscordChannelsOnDemand.Bot
 {
@@ -69,6 +70,7 @@ namespace DiscordChannelsOnDemand.Bot
 
                     // Misc
                     services.AddAutoMapper(typeof(Program));
+                    services.AddMediatR(typeof(Program));
                 })
                 .UseSerilog();
 
