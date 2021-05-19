@@ -33,13 +33,13 @@ namespace DiscordChannelsOnDemand.Bot.Features.Servers
 
         private async Task ClientOnJoinedGuild(SocketGuild guild)
         {
-            await _mediator.Send(new GuildJoinedEvent(guild.Id));
+            await _mediator.Publish(new GuildJoinedEvent(guild.Id));
             _logger.LogInformation("Joined new server {Guild}", guild);
         }
 
         private async Task ClientOnLeftGuild(SocketGuild guild)
         {
-            await _mediator.Send(new GuildLeftEvent(guild.Id));
+            await _mediator.Publish(new GuildLeftEvent(guild.Id));
             _logger.LogInformation("Left server {Guild}", guild);
         }
     }

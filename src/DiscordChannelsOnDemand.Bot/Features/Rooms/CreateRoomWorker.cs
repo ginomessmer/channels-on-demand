@@ -3,8 +3,10 @@ using System.Threading;
 using System.Threading.Tasks;
 using Discord;
 using Discord.WebSocket;
+using DiscordChannelsOnDemand.Bot.Events;
 using DiscordChannelsOnDemand.Bot.Features.Servers;
 using DiscordChannelsOnDemand.Bot.Features.Spaces;
+using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
@@ -20,14 +22,17 @@ namespace DiscordChannelsOnDemand.Bot.Features.Rooms
         private readonly IServiceProvider _serviceProvider;
         private readonly DiscordSocketClient _client;
         private readonly ILogger<CreateRoomWorker> _logger;
+        private readonly IMediator _mediator;
 
         public CreateRoomWorker(IServiceProvider serviceProvider,
             DiscordSocketClient client,
-            ILogger<CreateRoomWorker> logger)
+            ILogger<CreateRoomWorker> logger,
+            IMediator mediator)
         {
             _serviceProvider = serviceProvider;
             _client = client;
             _logger = logger;
+            _mediator = mediator;
         }
 
         protected override Task ExecuteAsync(CancellationToken stoppingToken)
@@ -36,11 +41,24 @@ namespace DiscordChannelsOnDemand.Bot.Features.Rooms
             return Task.CompletedTask;
         }
 
-        private Task ClientOnUserVoiceStateUpdated(SocketUser socketUser,
+        private async Task ClientOnUserVoiceStateUpdated(SocketUser socketUser,
             SocketVoiceState previousState, SocketVoiceState newState)
         {
-            var voiceChannel = newState.VoiceChannel ?? previousState.VoiceChannel;
-            return HandleAsync(socketUser, voiceChannel);
+            var hasJoinedNewChannel = newState.VoiceChannel is not null;
+            var hasParticipatedInPreviousChannel = previousState.VoiceChannel is not null;
+            var hasSwitchedChannels = hasJoinedNewChannel && hasParticipatedInPreviousChannel;
+            var hasJoinedForTheFirstTime = previousState.VoiceChannel is null && hasJoinedNewChannel;
+            var hasLeftEntirely = previousState.VoiceChannel is not null && newState.VoiceChannel is null;
+
+            if (newState.VoiceChannel is not null)
+            {
+                await _mediator.Publish(new UserJoinedVoiceChannelEvent(socketUser.Id, newState.VoiceChannel.Id));
+            }
+
+            if (newState.VoiceChannel is null && previousState.VoiceChannel is not null)
+            {
+                await _mediator.Publish(new UserLeftVoiceChannelEvent(socketUser.Id, previousState.VoiceChannel.Id));
+            }
         }
 
         private async Task HandleAsync(IUser socketUser, IVoiceChannel voiceChannel)
